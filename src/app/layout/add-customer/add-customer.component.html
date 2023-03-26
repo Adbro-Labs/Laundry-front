@@ -1,0 +1,24 @@
+<div class="container">
+    <p *ngIf="errorMessage" style="text-align: center;color: red;">{{errorMessage}}</p>
+    <form class="form" [formGroup]="customerForm" (ngSubmit)="saveCustomer()">
+        <mat-form-field>
+            <input formControlName="mobile" autocomplete="off" matInput type="number" placeholder="Mobile Number"/>
+        </mat-form-field>
+        <mat-form-field>
+            <input formControlName="cardNumber" autocomplete="off" matInput type="number" placeholder="Card Number"/>
+        </mat-form-field>
+        <mat-form-field>
+            <input formControlName="customerName" autocomplete="off" matInput type="text" placeholder="Name"/>
+        </mat-form-field>
+        <mat-form-field>
+            <textarea formControlName="address" autocomplete="off" placeholder="Address" matInput></textarea>
+        </mat-form-field>
+        <mat-form-field>
+            <input formControlName="emailId" autocomplete="off" matInput type="email" placeholder="e-mail"/>
+        </mat-form-field>
+        <div class="btn-group">
+            <button type="submit" mat-raised-button color="primary">Submit</button>
+            <button (click)="closePopup()" type="reset" mat-raised-button color="accent">Cancel</button>
+        </div>
+    </form>
+</div>

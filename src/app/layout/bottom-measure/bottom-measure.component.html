@@ -1,0 +1,233 @@
+<form [formGroup]="bottomMeasureForm" class="container" (ngSubmit)="saveMeasure()">
+    <div class="order-dates">
+        <div class="dategroup">
+            <label>Measure Name</label>
+            <mat-form-field>
+                <input
+                    matInput
+                    type="text"
+                    placeholder="Name"
+                    autocomplete="off"
+                    formControlName="measureName"
+                />
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="heading" *ngIf="0">
+        <h4>Measurement</h4>
+    </div>
+    <div class="shirt-measures">
+        <table>
+            <thead>
+                <th>LENGTH</th>
+                <th>INSEAM</th>
+                <th>CROATCH</th>
+                <th>WAIST</th>
+                <th>HIP</th>
+                <th>THIGH</th>
+                <th>KNEE</th>
+                <th>BOTTOM</th>
+                <th>F.LOW</th>
+            </thead>
+            <tbody>
+                <td (keyup)="setValue('length', $event.target.innerText)" contenteditable="true"></td>
+                <td (keyup)="setValue('inseam', $event.target.innerText)" contenteditable="true"></td>
+                <td (keyup)="setValue('croatch', $event.target.innerText)" contenteditable="true"></td>
+                <td (keyup)="setValue('waist', $event.target.innerText)" contenteditable="true"></td>
+                <td (keyup)="setValue('hip', $event.target.innerText)" contenteditable="true"></td>
+                <td (keyup)="setValue('thigh', $event.target.innerText)" contenteditable="true"></td>
+                <td (keyup)="setValue('knee', $event.target.innerText)" contenteditable="true"></td>
+                <td (keyup)="setValue('bottom', $event.target.innerText)" contenteditable="true"></td>
+                <td (keyup)="setValue('flow', $event.target.innerText)" contenteditable="true"></td>
+            </tbody>
+        </table>
+    </div>
+    <div class="heading" *ngIf="0">
+        <h4>Style Details</h4>
+    </div>
+    <br/>
+    <div class="shirt-measures">
+        <table>
+            <thead>
+                <th>BELT</th>
+                <th>PLEAT</th>
+                <th>FRONT POCKET</th>
+                <th>BACK POCKET</th>
+                <th>BOTTOM</th>
+                <th>LOOPS</th>
+                <th>FIT</th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td rowspan="2">
+                        <div class="checkboxgroup">
+                            <label>CUT</label>
+                            <input type="checkbox" formControlName="beltCut"/>
+                        </div>
+                        <div class="checkboxgroup">
+                            <label>LONG</label>
+                            <input type="checkbox" formControlName="beltLong"/>
+                        </div>
+                        <div class="checkboxgroup">
+                            <label>HOOK</label>
+                            <input type="checkbox" formControlName="beltHook"/>
+                        </div>
+                        <div class="checkboxgroup">
+                            <label>BUTTON</label>
+                            <input type="checkbox" formControlName="beltButton"/>
+                        </div>
+                        <div class="checkboxgroup">
+                            <label>SQUARE</label>
+                            <input type="checkbox" formControlName="beltSquare"/>
+                        </div>
+                        <div class="checkboxgroup">
+                            <label>ROUND</label>
+                            <input type="checkbox" formControlName="beltRound"/>
+                        </div>
+                        <div class="checkboxgroup">
+                            <label>V SHAPE</label>
+                            <input type="checkbox" formControlName="beltVshape"/>
+                        </div>
+                    </td>
+                    <td rowspan="2">
+                        <div class="checkboxgroup">
+                            <label>SINGLE</label>
+                            <input type="checkbox" formControlName="pleatSingle"/>
+                        </div>
+                        <div class="checkboxgroup">
+                            <label>DOUBLE</label>
+                            <input type="checkbox" formControlName="pleatDouble"/>
+                        </div>
+                        <div class="checkboxgroup">
+                            <label>FLAT</label>
+                            <input type="checkbox" formControlName="pleatFlat"/>
+                        </div>
+                    </td>
+                    <td rowspan="2">
+                        <div class="checkboxgroup">
+                            <label>CROSS</label>
+                            <input type="checkbox" formControlName="fpCross"/>
+                        </div>
+                        <div class="checkboxgroup">
+                            <label>STRIGHT</label>
+                            <input type="checkbox" formControlName="fpStright"/>
+                        </div>
+                        <div class="checkboxgroup">
+                            <label>L POCKET</label>
+                            <input type="checkbox" formControlName="fpLpocket"/>
+                        </div>
+                        <div class="checkboxgroup">
+                            <label>MOBILE</label>
+                            <input type="checkbox" formControlName="fpMobile"/>
+                        </div>
+                        <div class="checkboxgroup">
+                            <label>COIN</label>
+                            <input type="checkbox" formControlName="fpCoin"/>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="checkboxgroup">
+                            <label>1 POCKET</label>
+                            <input type="checkbox" formControlName="bpOne"/>
+                        </div>
+                        <div class="checkboxgroup">
+                            <label>2 POCKET</label>
+                            <input type="checkbox" formControlName="bpTwo"/>
+                        </div>
+                        <div class="checkboxgroup">
+                            <label>NO</label>
+                            <input type="checkbox" formControlName="bpNone"/>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="checkboxgroup">
+                            <label>PLAIN</label>
+                            <input type="checkbox" formControlName="bottomPlain"/>
+                        </div>
+                        <div class="checkboxgroup">
+                            <label>SHOE SHAPE</label>
+                            <input type="checkbox" formControlName="bottomShoeShape"/>
+                        </div>
+                        <div class="checkboxgroup">
+                            <label>TURNUP</label>
+                            <input type="checkbox" formControlName="bottomTurnUp"/>
+                        </div>
+                    </td>
+                    <td (keyup)="setValue('loops', $event.target.innerText)" contenteditable="true" rowspan="1"></td>
+                    <td>
+                        <div class="checkboxgroup">
+                            <label>REGULAR</label>
+                            <input type="checkbox" formControlName="fitRegular"/>
+                        </div>
+                        <div class="checkboxgroup">
+                            <label>SLIM</label>
+                            <input type="checkbox" formControlName="fitSlim"/>
+                        </div>
+                        <div class="checkboxgroup">
+                            <label>TAPERD</label>
+                            <input type="checkbox" formControlName="fitTaperd"/>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="checkboxgroup">
+                            <label>LOOP BTS</label>
+                            <input type="checkbox" formControlName="loopBts"/>
+                        </div>
+                        <div class="checkboxgroup">
+                            <label>KAAJ BTS</label>
+                            <input type="checkbox" formControlName="kaajBts"/>
+                        </div>
+                        <div class="checkboxgroup">
+                            <label>FLAP</label>
+                            <input type="checkbox" formControlName="flap"/>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="heading">
+                            <h4>LINING</h4>
+                        </div>
+                        <div class="checkboxgroup">
+                            <label>KNEE</label>
+                            <input type="checkbox" formControlName="liningKnee"/>
+                        </div>
+                        <div class="checkboxgroup">
+                            <label>CALF F/8</label>
+                            <input type="checkbox" formControlName="liningCalf"/>
+                        </div>
+                        <div class="checkboxgroup">
+                            <label>FULL F/8</label>
+                            <input type="checkbox" formControlName="liningFull"/>
+                        </div>
+                    </td>
+                    <td
+                        contenteditable="true"
+                        data-placeholder="LOOP SIZE"
+                        class="editable"
+                        (keyup)="setValue('loopSize', $event.target.innerText)"
+                    ></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="heading">
+        <mat-form-field style="flex-grow: 2">
+            <textarea
+                matInput
+                type="text"
+                placeholder="Remarks"
+                autocomplete="off"
+                formControlName="remarks"
+            ></textarea>
+        </mat-form-field>
+        <div style="flex-grow: 3"></div>
+    </div>
+    <div style="display: flex;
+    justify-content: flex-start;
+    gap: 3px;">
+        <button type="submit" mat-raised-button color="primary">Save</button>
+        <button type="reset" mat-stroked-button color="primary">Cancel</button>
+    </div>
+</form>

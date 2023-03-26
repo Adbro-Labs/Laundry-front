@@ -1,0 +1,30 @@
+<div class="container">
+    <div class="heading">
+        <h3>Daily Report</h3>
+    </div>
+</div>
+
+<mat-form-field appearance="fill">
+    <mat-label>Date</mat-label>
+    <input matInput [matDatepicker]="dp3">
+    <mat-hint>MM/DD/YYYY</mat-hint>
+    <mat-datepicker-toggle matIconSuffix [for]="dp3"></mat-datepicker-toggle>
+    <mat-datepicker #dp3 disabled="false"></mat-datepicker>
+  </mat-form-field>
+  <br>
+<button mat-stroked-button>Search</button>
+<div class="table">
+    <table>
+        <thead>
+            <tr>
+                <th>DATE</th>
+                <th>BILL AMOUNT</th>
+                <th>DISCOUNT</th>
+                <th>NET TOTAL</th> 
+            </tr>
+        </thead>
+        <tbody>
+                
+        </tbody>
+    </table>
+</div>

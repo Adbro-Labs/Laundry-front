@@ -1,0 +1,27 @@
+<div class="container">
+    <div class="heading">
+        <h3>Customers</h3>
+        <button mat-raised-button color="primary" (click)="showCustomerDialog()">Add Customer</button>
+    </div>
+</div>
+<mat-form-field>
+    <input matInput type="text"  placeholder="Search"/>
+</mat-form-field>
+<div class="table">
+    <table>
+        <thead>
+            <th>NO</th>
+            <th>NAME</th>
+            <th>MOBILE NUMBER</th>
+            <th>ADDRESS</th>
+        </thead>
+        <tbody>
+                <tr *ngFor="let item of customerDetails; index as i">
+                    <td>{{i+1}}</td>
+                    <td>{{item.customerName}}</td>
+                    <td>{{item.mobile}}</td>
+                    <td>{{item.address}}</td>
+                </tr>
+        </tbody>
+    </table>
+</div>

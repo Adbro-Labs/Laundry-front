@@ -1,0 +1,23 @@
+<mat-toolbar color="primary" class="fix-nav">
+    <!-- <button type="button" mat-icon-button  (click)="goback()">
+        <mat-icon aria-label="Side nav toggle icon">arrow_back</mat-icon>
+    </button>
+    <button type="button" mat-icon-button  (click)="goforward()">
+        <mat-icon aria-label="Side nav toggle icon">arrow_forward</mat-icon>
+    </button> -->
+    <div class="nav-brand" routerLink="/" style="cursor: pointer;">
+        Royal Touch
+    </div>
+    <form class="hidden-sm" style="margin-left: 20px; margin-top: 5px">
+        <mat-form-field>
+            <input [formControl]="orderNumber" autocomplete="off" autofocus matInput [placeholder]="'Order number' | translate">
+        </mat-form-field>
+    </form>
+    <span class="nav-spacer"></span>
+    <button mat-icon-button (click)="requestFullscreen()"><mat-icon>fullscreen</mat-icon></button>
+    
+  
+    <button mat-icon-button (click)="onLoggedout()">
+        <mat-icon>exit_to_app</mat-icon>
+    </button>
+</mat-toolbar>

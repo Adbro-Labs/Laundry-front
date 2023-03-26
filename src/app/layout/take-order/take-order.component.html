@@ -1,0 +1,63 @@
+<div class="container">
+    <div class="heading">
+        <h3>Order Details - {{ orderNumber }}</h3>
+        <div>
+            <button (click)="printReciept()" mat-stroked-button color="primary">
+                Print
+            </button>
+            <button
+                (click)="saveOrder()"
+                mat-raised-button
+                color="primary"
+                style="margin-left: 5px"
+                [disabled]="disableUpdate"
+            >
+                Save
+            </button>
+        </div>
+    </div>
+    <div style="display: flex; justify-content: space-between; gap: 40px">
+        <div style="display: flex; flex-direction: column">
+            <mat-form-field>
+                <input
+                    matInput
+                    type="number"
+                    autocomplete="off"
+                    placeholder="Mobile Number"
+                    [formControl]="mobileNumber"
+                />
+            </mat-form-field>
+        </div>
+        <div>
+            <div *ngIf="customerDetails" style="display: flex; gap: 10px">
+                <div style="display: flex; flex-direction: column">
+                    <label>Customer Name</label>
+                    <p>{{ customerDetails?.customerName }}</p>
+                </div>
+                <div style="display: flex; flex-direction: column">
+                    <label>Address</label>
+                    <p>{{ customerDetails?.address }}</p>
+                </div>
+                
+            </div>
+            <ng-container *ngIf="showNoCustomer">
+                <div style="display: flex; flex-direction: column">
+                    <label>Customer not found.</label>
+                    <button
+                        mat-stroked-button
+                        color="accent"
+                        (click)="showCustomerForm()"
+                    >
+                        Create One
+                    </button>
+                </div>
+            </ng-container>
+        </div>
+        <div></div>
+        <div></div>
+    </div>
+    <div class="heading">
+        <h4>Items</h4>
+    </div>
+    <app-item-details [customerId]="customerDetails?._id"></app-item-details>
+</div>

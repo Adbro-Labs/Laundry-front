@@ -1,0 +1,16 @@
+<div id="sidebar">
+    <mat-nav-list>
+        <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/dashboard']">
+            <mat-icon class="sidenav-icon">dashboard</mat-icon> {{ 'Dashboard' | translate }}
+        </a>
+        <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/orders']">
+            <mat-icon class="sidenav-icon">build</mat-icon> {{ 'Orders' | translate }}
+        </a>
+        <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/customers']">
+            <mat-icon class="sidenav-icon">people</mat-icon> {{ 'Customers' | translate }}
+        </a>
+        <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/reports']">
+            <mat-icon class="sidenav-icon">list</mat-icon> {{ 'Reports' | translate }}
+        </a>
+    </mat-nav-list>
+</div>

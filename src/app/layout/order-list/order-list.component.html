@@ -1,0 +1,23 @@
+<mat-form-field>
+    <input matInput type="text"  placeholder="Search"/>
+</mat-form-field>
+<div class="table">
+    <table>
+        <thead>
+            <th>DATE</th>
+            <th>ORDER NUMBER</th>
+            <th>MOBILE NUMBER</th>
+            <th>CUSTOMER</th>
+            <th>STATUS</th>
+        </thead>
+        <tbody>
+                <tr *ngFor="let item of orderDetails">
+                    <td>{{item.orderDate | date: 'dd-MM-yyyy'}}</td>
+                    <td><a [routerLink]="['/takeOrder', item.orderNumber]">{{item.orderNumber}}</a></td>
+                    <td>{{item.customer?.mobile}}</td>
+                    <td>{{item.customer?.customerName}}</td>
+                    <td>{{item.status}}</td>
+                </tr>
+        </tbody>
+    </table>
+</div>

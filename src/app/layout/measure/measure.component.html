@@ -1,0 +1,37 @@
+<div class="heading">
+    <h5>Measures</h5>
+    <div style="display: flex; justify-content: flex-end; gap: 20px;">
+        <button *ngIf="customerId" mat-stroked-button color="accent" (click)="openMeasure('SHIRT')">
+            Shirt
+        </button>
+        <button *ngIf="customerId" mat-stroked-button color="accent" (click)="openMeasure('TROUSER')">
+            Trouser
+        </button>
+    </div>
+</div>
+<div class="table">
+        <table>
+            <thead>
+                <th>Code</th>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Date</th>
+                <th>Action</th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of measureList; index as i">
+                    <td>
+                        <button (click)="setMeasureId(item._id)" mat-icon-button color="primary"><mat-icon>add</mat-icon></button>
+                        {{item._id | slice: -6}}
+                    </td>
+                    <td>
+                        {{item.measureName}}</td>
+                    <td>{{item.measureType}}</td>
+                    <td>{{item?.updatedDate | date: 'dd-MM-yy hh:mm a'}}</td>
+                    <td>
+                        <mat-icon>edit</mat-icon>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</div>

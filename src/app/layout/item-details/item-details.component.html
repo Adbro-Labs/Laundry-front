@@ -1,0 +1,72 @@
+<div class="container">
+    <div class="table" style="width: 70%;">
+        <table>
+            <thead>
+                <th>ITEM</th>
+                <th>SERVICES</th>
+                <th>RATE</th>
+                <th>QTY</th>
+                <th>AMOUNT</th>
+            </thead>
+            <tbody>
+                <ng-container *ngIf="orderDetails?.value?.length > 0; else nodata">
+                    <tr *ngFor="let item of orderDetails.value; index as i">
+                        <td>
+                            {{item.itemName}}
+                        </td>
+                        <td>
+                            {{item.services}}
+                        </td>
+                        <td style="text-align: right;">{{item.rate}}</td>
+                        <td style="text-align: right;">{{item.quantity}}</td>
+                        <td style="text-align: right;">{{item.total}}</td>
+                    </tr>
+                    <tr *ngIf="netTotal">
+                        <td colspan="4" style="text-align: right;">
+                            <label>Discount</label>
+                        </td>
+                        <td>
+                            <div style="display: flex;justify-content: space-between;">
+                                <button mat-stroked-button (click)="showKeyPad()" [disabled]="disableUpdate">{{discount > 0 ? 'Update': 'Add'}} Discount</button>
+                                <span *ngIf="discount">{{discount}}</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr *ngIf="netTotal">
+                        <td colspan="4" style="text-align: right;">
+                            <label>Total Amount</label>
+                        </td>
+                        <td style="text-align: right;">
+                            {{netTotal}}
+                        </td>
+                    </tr>
+                </ng-container>
+                <ng-template #nodata>
+                    <tr>
+                        <td colspan="5" style="text-align: center;">
+                            add items to list here
+                        </td>
+                    </tr>
+                </ng-template>
+            </tbody>
+        </table>
+    </div>
+    <div class="items" style="width: 30%;">
+        <button class="btn" mat-stroked-button *ngFor="let item of items" (click)="addItem(item)" [disabled]="disableItemSelection || !customerId || disableUpdate">{{item.itemName}}</button>
+        <button class="btn" mat-stroked-button (click)="addNewItem()" [disabled]="disableItemSelection || !customerId || disableUpdate">Add Item</button>
+    </div>
+</div>
+<div class="container">
+    <div  style="width: 45%;">
+        <textarea [disabled]="disableUpdate" placeholder="Additional Instructions" style="width: 500px; height: 80px;" [(ngModel)]="additionalInstructions"></textarea>
+    </div>
+    <div style="width: 30%;">
+        <mat-form-field>
+            <label>Delivery Type</label>
+            <mat-select [(ngModel)]="deliveryType" [disabled]="disableUpdate">
+                <mat-option value="ON_PREMISE">On Premise</mat-option>
+                <mat-option value="PICKUP" [disabled]="!netTotal ||netTotal < 50">Pickup & Drop</mat-option>
+            </mat-select>
+        </mat-form-field>  
+    </div>
+</div>
