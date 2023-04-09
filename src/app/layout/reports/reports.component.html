@@ -3,6 +3,19 @@
         <h3>Report</h3>
     </div>
 </div>
+<mat-form-field>
+    <mat-select [(ngModel)]="year" placeholder="Year">
+        <mat-option *ngFor="let item of yearList;" [value]="item">{{item}}</mat-option>
+    </mat-select>
+</mat-form-field>
+&nbsp;
+<mat-form-field>
+    <mat-select [(ngModel)]="month" placeholder="Month">
+        <mat-option value="2023" *ngFor="let item of monthList; index as i" [value]="i+1">{{item}}</mat-option>
+    </mat-select>
+</mat-form-field>
+&nbsp;
+<button mat-raised-button (click)="getMonthlyReport()">Search</button>
 <div class="table">
     <table>
         <thead>
@@ -12,7 +25,18 @@
             <th>NET TOTAL</th>
         </thead>
         <tbody>
-                
+                <tr *ngFor="let item of orders">
+                    <td style="text-decoration: underline;cursor: pointer;" (click)="openDailyReport(item.date)">{{item.date | date: 'dd/MM/yyyy'}}</td>
+                    <td>{{item.total}}</td>
+                    <td>{{item.discount}}</td>
+                    <td>{{item.netTotal}}</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>{{total.amount}}</td>
+                    <td>{{total.discount}}</td>
+                    <td>{{total.netTotal}}</td>
+                </tr>
         </tbody>
     </table>
 </div>

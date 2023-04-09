@@ -10,7 +10,7 @@ const routes: Routes = [
     component: ReportsComponent
   },
   {
-    path: 'daily',
+    path: 'daily/:date',
     component: DailyReportComponent
   }
 ];

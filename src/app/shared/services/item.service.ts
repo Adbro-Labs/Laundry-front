@@ -9,16 +9,25 @@ export class ItemService {
 
   constructor(private http: HttpClient) { }
 
-  getItems() {
-    const url = environment.apiUrl + 'item';
+  getItems(customerId = null) {
+    let url = environment.apiUrl + 'item';
+    if (customerId) {
+      url = url + `?customerId=${customerId}`;
+    }
     return this.http.get(url);
   }
-  saveItem(body) {
-    const url = environment.apiUrl + 'item';
+  saveItem(body, customerId = null) {
+    let url = environment.apiUrl + 'item';
+    if (customerId) {
+      url = url + `?customerId=${customerId}`;
+    }
     return this.http.post(url, body);
   }
-  getAllItems() {
-    const url = environment.apiUrl + 'item';
+  getAllItems(customerId = null) {
+    let url = environment.apiUrl + 'item';
+    if (customerId) {
+      url = url + `?customerId=${customerId}`;
+    }
     return this.http.get(url);
   }
 }

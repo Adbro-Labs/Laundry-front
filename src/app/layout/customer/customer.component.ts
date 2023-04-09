@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { CustomerService } from 'src/app/shared/services/customer.service';
 import { AddCustomerComponent } from '../add-customer/add-customer.component';
+import { AddItemComponent } from '../add-item/add-item.component';
 
 @Component({
   selector: 'app-customer',
@@ -10,6 +11,8 @@ import { AddCustomerComponent } from '../add-customer/add-customer.component';
 })
 export class CustomerComponent implements OnInit {
   customerDetails;
+  tempCustomerList: any = [];
+  query = "";
   constructor(private dialog: MatDialog, private customer: CustomerService) { }
 
   ngOnInit(): void {
@@ -21,6 +24,16 @@ export class CustomerComponent implements OnInit {
   getAllCustomers() {
     this.customer.getAllCustomers().subscribe(data => {
       this.customerDetails = data;
+      this.tempCustomerList = data;
+    });
+  }
+  searchCustomer() {
+    console.log(this.customerDetails)
+    this.tempCustomerList = this.customerDetails.filter(x => x.customerName.includes(this.query) || x.mobile.toString().includes(this.query));
+  }
+  setPricing(customerId) {
+    this.dialog.open(AddItemComponent, { disableClose: true, width: '400px', data: customerId}).afterClosed().subscribe((response: any) => {
+      this.getAllCustomers();
     });
   }
 }

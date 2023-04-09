@@ -24,8 +24,9 @@ export class AddItemComponent implements OnInit {
   initForm() {
     this.customerForm = this.fb.group({
       _id: [''],
+      itemId: [''],
+      customerId: [null],
       itemName: ['', Validators.required],
-      itemNameArabic: ['', Validators.required],
       washingCharge: ['', Validators.required],
       dryCleanCharge: ['', [Validators.required]],
       pressingCharge: ['', [Validators.required]],
@@ -37,10 +38,10 @@ export class AddItemComponent implements OnInit {
   saveCustomer() {
     if (this.customerForm.valid) {
       const customerDetails = this.customerForm.value;
-      if(!customerDetails._id) {
+      if(!customerDetails._id || customerDetails.customerId) {
         delete customerDetails._id;
       }
-      this.item.saveItem(customerDetails).subscribe(data => {
+      this.item.saveItem(customerDetails, customerDetails.customerId).subscribe(data => {
         this.popup.close(data);
       });
     }

@@ -23,6 +23,7 @@ import { AddItemComponent } from './add-item/add-item.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ServiceCountComponent } from './service-count/service-count.component';
 import { NumberpadComponent } from './numberpad/numberpad.component';
+import { ItemListComponent } from './item-list/item-list.component';
 @NgModule({
     imports: [
         CommonModule,
@@ -51,7 +52,8 @@ import { NumberpadComponent } from './numberpad/numberpad.component';
         ItemsComponent,
         AddItemComponent,
         ServiceCountComponent,
-        NumberpadComponent
+        NumberpadComponent,
+        ItemListComponent
     ],
     providers: [DatePipe]
 

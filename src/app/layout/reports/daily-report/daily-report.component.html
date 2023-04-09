@@ -4,15 +4,16 @@
     </div>
 </div>
 
-<mat-form-field appearance="fill">
-    <mat-label>Date</mat-label>
-    <input matInput [matDatepicker]="dp3">
-    <mat-hint>MM/DD/YYYY</mat-hint>
-    <mat-datepicker-toggle matIconSuffix [for]="dp3"></mat-datepicker-toggle>
-    <mat-datepicker #dp3 disabled="false"></mat-datepicker>
-  </mat-form-field>
-  <br>
-<button mat-stroked-button>Search</button>
+<div>
+    <mat-form-field>
+        <mat-label>Date</mat-label>
+        <input matInput [matDatepicker]="dp3" [(ngModel)]="date">
+        <mat-datepicker-toggle matIconSuffix [for]="dp3"></mat-datepicker-toggle>
+        <mat-datepicker #dp3 ></mat-datepicker>
+      </mat-form-field>
+    <button mat-stroked-button (click)="getDailyReport()">Search</button>
+</div>
+
 <div class="table">
     <table>
         <thead>
@@ -21,10 +22,24 @@
                 <th>BILL AMOUNT</th>
                 <th>DISCOUNT</th>
                 <th>NET TOTAL</th> 
+                <th>STATUS</th>
             </tr>
         </thead>
         <tbody>
-                
+                <tr *ngFor="let item of report">
+                    <td>{{item.orderDate | date: 'dd-MM-yyyy hh:mm:ss a'}}</td>
+                    <td>{{item.total}}</td>
+                    <td>{{item.discount}}</td>
+                    <td>{{item.netTotal}}</td>
+                    <td>{{item.status}}</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>{{total.amount}}</td>
+                    <td>{{total.discount}}</td>
+                    <td>{{total.netTotal}}</td>
+                    <td></td>
+                </tr>
         </tbody>
     </table>
 </div>
