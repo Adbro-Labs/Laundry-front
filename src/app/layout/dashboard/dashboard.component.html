@@ -1,18 +1,17 @@
 <div class="mb-20" fxLayout="row" fxLayout.lt-md="column" fxFlex fxLayoutGap="20px">
     <div fxFlex>
         <app-stat (click)="order.generateNewOrder()" [bgClass]="'success'" 
-        [icon]="'add'" [count]="124" [label]="'New Order'"></app-stat>
+        [icon]="'add'" [label]="'New Order'"></app-stat>
     </div>
    
     <div fxFlex>
-        <app-stat routerLink="/orders" [bgClass]="'warn'" [icon]="'shopping_cart'" 
-        [count]="13" [label]="'Orders for today'"></app-stat>
+        <app-stat routerLink="/orders" [bgClass]="'warn'" [icon]="'shopping_cart'"  [label]="'Orders'"></app-stat>
     </div>
     <div fxFlex>
-        <app-stat routerLink="/items" [bgClass]="'danger'" [icon]="'view_list'" [count]="12" [label]="'Items'"></app-stat>
+        <app-stat routerLink="/items" [bgClass]="'danger'" [icon]="'view_list'" [label]="'Items'"></app-stat>
     </div>
     <div fxFlex>
-        <app-stat routerLink="/customers"  [bgClass]="'info'" [icon]="'person'" [count]="13" [label]="'Customers'"></app-stat>
+        <app-stat routerLink="/customers"  [bgClass]="'info'" [icon]="'person'" [label]="'Customers'"></app-stat>
     </div>
 </div>
 

@@ -9,11 +9,16 @@
         <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/customers']">
             <mat-icon class="sidenav-icon">people</mat-icon> {{ 'Customers' | translate }}
         </a>
-        <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/reports']">
-            <mat-icon class="sidenav-icon">list</mat-icon> {{ 'Reports' | translate }}
-        </a>
         <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/items']">
-            <mat-icon class="sidenav-icon">list</mat-icon> {{ 'Items' | translate }}
+            <mat-icon class="sidenav-icon">local_laundry_service</mat-icon> {{ 'Items' | translate }}
         </a>
+        <ng-container *ngIf="userType=='ADMIN'">
+            <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/branch']">
+                <mat-icon class="sidenav-icon">home</mat-icon> {{ 'Branches' | translate }}
+            </a>
+            <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/reports']">
+                <mat-icon class="sidenav-icon">list</mat-icon> {{ 'Reports' | translate }}
+            </a>
+        </ng-container>
     </mat-nav-list>
 </div>

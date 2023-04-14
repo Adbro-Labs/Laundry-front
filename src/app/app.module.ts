@@ -3,7 +3,7 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
@@ -11,6 +11,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { RefDirective } from './shared/directives/ref.directive';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RequestInterceptor } from './shared/interceptor/request.interceptor';
 // AoT requires an exported function for factories
 export const createTranslateLoader = (http: HttpClient) => {
     /* for development
@@ -41,7 +42,7 @@ export const createTranslateLoader = (http: HttpClient) => {
             }
         })
     ],
-    providers: [],
+    providers: [{ provide: HTTP_INTERCEPTORS, useClass: RequestInterceptor, multi: true }],
     bootstrap: [AppComponent]
 })
 export class AppModule {}

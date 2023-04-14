@@ -30,4 +30,8 @@ export class OrderapiService {
     const url = environment.apiUrl + 'order';
     return this.http.get(url);
   }
+  cancelOrder(orderId) {
+    const url = environment.apiUrl + 'order/cancelOrder?orderId=' + orderId;
+    return this.http.post(url, {});
+  }
 }

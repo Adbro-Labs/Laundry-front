@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { BranchComponent } from './branch/branch.component';
 import { CustomerComponent } from './customer/customer.component';
 import { ItemsComponent } from './items/items.component';
 import { LayoutComponent } from './layout.component';
@@ -42,6 +43,10 @@ const routes: Routes = [
             {
                 path: 'reports',
                 loadChildren: () => import('./reports/reports.module').then(m => m.ReportsModule)
+            },
+            {
+                path: 'branch',
+                component: BranchComponent
             }
         ]
     }

@@ -25,6 +25,7 @@ export class ItemDetailsComponent implements OnInit {
   deliveryType = "ON_PREMISE";
   additionalInstructions = "";
   disableUpdate = false;
+  deliveryTime = "";
   constructor(private item: ItemService, private fb: FormBuilder, private route: ActivatedRoute, private dialog: MatDialog) { }
 
   ngOnInit(): void {
@@ -32,7 +33,7 @@ export class ItemDetailsComponent implements OnInit {
     this.orderDetails = new FormArray([]);
   }
   getItems() {
-    this.item.getItems().subscribe(data => {
+    this.item.getItems(this.customerId).subscribe(data => {
       this.items = data as any;
     });
   }

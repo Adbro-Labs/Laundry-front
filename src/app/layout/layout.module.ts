@@ -13,9 +13,6 @@ import { CustomerCardComponent } from './customer-card/customer-card.component';
 import { OrderListComponent } from './order-list/order-list.component';
 import { OrderDetailsComponent } from './order-details/order-details.component';
 import { TakeOrderComponent } from './take-order/take-order.component';
-import { TopMeasureComponent } from './top-measure/top-measure.component';
-import { BottomMeasureComponent } from './bottom-measure/bottom-measure.component';
-import { MeasureComponent } from './measure/measure.component';
 import { AddCustomerComponent } from './add-customer/add-customer.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ItemsComponent } from './items/items.component';
@@ -24,6 +21,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { ServiceCountComponent } from './service-count/service-count.component';
 import { NumberpadComponent } from './numberpad/numberpad.component';
 import { ItemListComponent } from './item-list/item-list.component';
+import { BranchComponent } from './branch/branch.component';
+import { AddBranchComponent } from './add-branch/add-branch.component';
 @NgModule({
     imports: [
         CommonModule,
@@ -45,15 +44,14 @@ import { ItemListComponent } from './item-list/item-list.component';
         OrderListComponent,
         OrderDetailsComponent,
         TakeOrderComponent,
-        TopMeasureComponent,
-        BottomMeasureComponent,
-        MeasureComponent,
         AddCustomerComponent,
         ItemsComponent,
         AddItemComponent,
         ServiceCountComponent,
         NumberpadComponent,
-        ItemListComponent
+        ItemListComponent,
+        BranchComponent,
+        AddBranchComponent
     ],
     providers: [DatePipe]
 

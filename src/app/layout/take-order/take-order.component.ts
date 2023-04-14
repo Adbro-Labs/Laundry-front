@@ -22,6 +22,8 @@ export class TakeOrderComponent implements OnInit {
   orderDate;
   orderTime;
   disableUpdate = false;
+  orderMaster;
+  showCancelOrder = false;
   @ViewChild(ItemDetailsComponent) items: ItemDetailsComponent;
   mobileNumber = new FormControl('', [Validators.required, Validators.minLength(10), Validators.maxLength(10)]);
   constructor(private route: ActivatedRoute, private customer: CustomerService,
@@ -69,15 +71,17 @@ export class TakeOrderComponent implements OnInit {
     this.orderApi.getOrderDetailsByNumber(orderNumber).subscribe(data => {
       this.disableUpdate = true;
       const orderMaster = (data as any).orderMaster;
+      this.orderMaster = orderMaster;
       if (orderMaster) {
         this.orderDate = new Date(orderMaster.orderDate);
       }
-      this.orderNumber = orderMaster.orderNumber;
-      this.customerDetails = orderMaster.customer;
-      this.items.discount = orderMaster.discount;
-      this.items.additionalInstructions = orderMaster.additionalInstructions;
-      this.items.deliveryType = orderMaster.deliveryType;
-      this.items.netTotal = orderMaster.netTotal;
+      this.orderNumber = orderMaster?.orderNumber;
+      this.customerDetails = orderMaster?.customer;
+      this.items.discount = orderMaster?.discount;
+      this.items.additionalInstructions = orderMaster?.additionalInstructions;
+      this.items.deliveryType = orderMaster?.deliveryType;
+      this.items.deliveryTime = orderMaster?.deliveryTime;
+      this.items.netTotal = orderMaster?.netTotal;
       this.items.disableUpdate = true;
       this.mobileNumber.setValue(this.customerDetails.mobile);
       this.items.setItemDetail((data as any).orderDetails);
@@ -107,7 +111,8 @@ export class TakeOrderComponent implements OnInit {
           discount: Number(this.items.discount),
           netTotal: netTotal,
           additionalInstructions: this.items.additionalInstructions,
-          deliveryType: this.items.deliveryType
+          deliveryType: this.items.deliveryType,
+          deliveryTime: this.items.deliveryTime
         },
         orderDetails: this.items.orderDetails.value
       }
@@ -115,7 +120,6 @@ export class TakeOrderComponent implements OnInit {
         this.snack.open("Order placed successfully", "Ok", {duration: 1500});
       })
     } else {
-      console.log(this.items.orderDetails.value);
       this.snack.open("complete the item details", "Ok", {duration: 1500});
     }
   }
@@ -150,5 +154,15 @@ export class TakeOrderComponent implements OnInit {
        printWindow.print();
        // printWindow.close();
     });
+  }
+  cancelOrder() {
+    const orderId = this.orderMaster._id;
+    if (orderId) {
+      this.orderApi.cancelOrder(orderId).subscribe(data => {
+        this.snack.open("Order cancelled successfuly", "Ok", {duration: 1500});
+      }, error => {
+        this.snack.open("Something went wrong", "Ok", {duration: 1500});
+      });
+    }
   }
 }

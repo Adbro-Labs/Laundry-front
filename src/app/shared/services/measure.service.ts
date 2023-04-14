@@ -5,24 +5,24 @@ import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class MeasureService {
+export class BranchService {
 
   constructor(private http: HttpClient) { }
 
-  saveMeasure(body) {
-    const url = environment.apiUrl + 'measure';
+  saveBranch(body) {
+    const url = environment.apiUrl + 'branch';
     return this.http.post(url, body);
   }
-  getMeasureById(measureId) {
-    const url = environment.apiUrl + 'measure/getById/' + measureId;
+  getAllBranch() {
+    const url = environment.apiUrl + 'branch';
     return this.http.get(url);
   }
-  deleteMeasureById(measureId) {
-    const url = environment.apiUrl + 'measure/ById/' + measureId;
+  getBranchById(measureId) {
+    const url = environment.apiUrl + 'branch/getById/' + measureId;
+    return this.http.get(url);
+  }
+  deleteBranchById(measureId) {
+    const url = environment.apiUrl + 'branch/ById/' + measureId;
     return this.http.delete(url);
-  }
-  getMeasureListByCustomer(customerId) {
-    const url = environment.apiUrl + 'measure/ByCustomer/' + customerId;
-    return this.http.get(url);
   }
 }
