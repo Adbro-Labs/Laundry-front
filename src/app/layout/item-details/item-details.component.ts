@@ -22,7 +22,7 @@ export class ItemDetailsComponent implements OnInit {
   @Input() customerId:string;
   disableItemSelection = false;
   discount;
-  deliveryType = "ON_PREMISE";
+  deliveryType = "ON PREMISE";
   additionalInstructions = "";
   disableUpdate = false;
   deliveryTime = "";
@@ -167,5 +167,8 @@ export class ItemDetailsComponent implements OnInit {
       }
       this.calculateNetTotal();
     });
+  }
+  deleteItem(index) {
+    this.orderDetails.removeAt(index);
   }
 }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
+import { AuthService } from 'src/app/shared/services/auth.service';
 import { OrderService } from 'src/app/shared/services/order.service';
 
 export interface PeriodicElement {
@@ -23,6 +24,7 @@ export class DashboardComponent implements OnInit {
     displayedColumns = ['position', 'name', 'weight'];
     dataSource = new MatTableDataSource(ELEMENT_DATA);
     places: Array<any> = [];
+    userType = "";
 
     applyFilter(filterValue: string) {
         filterValue = filterValue.trim(); // Remove whitespace
@@ -30,9 +32,11 @@ export class DashboardComponent implements OnInit {
         this.dataSource.filter = filterValue;
     }
 
-    constructor(public order: OrderService) {
+    constructor(public auth: AuthService, public order: OrderService) {
        
     }
 
-    ngOnInit() {}
+    ngOnInit() {
+        this.userType = this.auth.getUserRole();
+    }
 }

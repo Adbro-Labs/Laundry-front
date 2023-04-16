@@ -7,6 +7,7 @@
                 <th>RATE</th>
                 <th>QTY</th>
                 <th>AMOUNT</th>
+                <th>ACTION</th>
             </thead>
             <tbody>
                 <ng-container *ngIf="orderDetails?.value?.length > 0; else nodata">
@@ -20,6 +21,11 @@
                         <td style="text-align: right;">{{item.rate}}</td>
                         <td style="text-align: right;">{{item.quantity}}</td>
                         <td style="text-align: right;">{{item.total}}</td>
+                        <td>
+                            <button [disabled]="disableUpdate" mat-icon-button (click)="deleteItem(i)">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </td>
                     </tr>
                     <tr *ngIf="netTotal">
                         <td colspan="4" style="text-align: right;">
@@ -31,6 +37,7 @@
                                 <span *ngIf="discount">{{discount}}</span>
                             </div>
                         </td>
+                        <td></td>
                     </tr>
                     <tr *ngIf="netTotal">
                         <td colspan="4" style="text-align: right;">
@@ -39,11 +46,12 @@
                         <td style="text-align: right;">
                             {{netTotal}}
                         </td>
+                        <td></td>
                     </tr>
                 </ng-container>
                 <ng-template #nodata>
                     <tr>
-                        <td colspan="5" style="text-align: center;">
+                        <td colspan="6" style="text-align: center;">
                             add items to list here
                         </td>
                     </tr>
@@ -64,7 +72,7 @@
         <mat-form-field>
             <label>Delivery Type</label>
             <mat-select [(ngModel)]="deliveryType" [disabled]="disableUpdate">
-                <mat-option value="ON_PREMISE">On Premise</mat-option>
+                <mat-option value="ON PREMISE">On Premise</mat-option>
                 <mat-option value="PICKUP" [disabled]="!netTotal ||netTotal < 50">Pickup & Drop</mat-option>
             </mat-select>
         </mat-form-field>  

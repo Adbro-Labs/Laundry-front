@@ -14,7 +14,7 @@ export class AuthService {
     const url = environment.apiUrl + "user/auth";
     return this.http.post(url, body);
   }
-  decodeJwt() {
+  decodeJwt(): any {
     try {
       const token = this.getToken();
       if (token) {

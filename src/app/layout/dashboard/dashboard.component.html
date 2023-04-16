@@ -1,7 +1,7 @@
 <div class="mb-20" fxLayout="row" fxLayout.lt-md="column" fxFlex fxLayoutGap="20px">
     <div fxFlex>
         <app-stat (click)="order.generateNewOrder()" [bgClass]="'success'" 
-        [icon]="'add'" [label]="'New Order'"></app-stat>
+        [icon]="'add'" [label]="'New Order'" *ngIf="userType!= 'ADMIN'"></app-stat>
     </div>
    
     <div fxFlex>

@@ -4,6 +4,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
+import { AuthService } from 'src/app/shared/services/auth.service';
 import { CustomerService } from 'src/app/shared/services/customer.service';
 import { OrderService } from 'src/app/shared/services/order.service';
 import { OrderapiService } from 'src/app/shared/services/orderapi.service';
@@ -24,9 +25,10 @@ export class TakeOrderComponent implements OnInit {
   disableUpdate = false;
   orderMaster;
   showCancelOrder = false;
+  branchDetails;
   @ViewChild(ItemDetailsComponent) items: ItemDetailsComponent;
   mobileNumber = new FormControl('', [Validators.required, Validators.minLength(10), Validators.maxLength(10)]);
-  constructor(private route: ActivatedRoute, private customer: CustomerService,
+  constructor(private route: ActivatedRoute, private customer: CustomerService, private auth: AuthService,
     private dialog: MatDialog, private order: OrderService, private orderApi: OrderapiService, private snack: MatSnackBar, private datePipe: DatePipe) { 
   }
 
@@ -71,6 +73,7 @@ export class TakeOrderComponent implements OnInit {
     this.orderApi.getOrderDetailsByNumber(orderNumber).subscribe(data => {
       this.disableUpdate = true;
       const orderMaster = (data as any).orderMaster;
+      this.branchDetails = (data as any).branchDetails;
       this.orderMaster = orderMaster;
       if (orderMaster) {
         this.orderDate = new Date(orderMaster.orderDate);
@@ -112,7 +115,8 @@ export class TakeOrderComponent implements OnInit {
           netTotal: netTotal,
           additionalInstructions: this.items.additionalInstructions,
           deliveryType: this.items.deliveryType,
-          deliveryTime: this.items.deliveryTime
+          deliveryTime: this.items.deliveryTime,
+          branchCode: this.auth.decodeJwt()?.branchCode
         },
         orderDetails: this.items.orderDetails.value
       }
@@ -130,29 +134,41 @@ export class TakeOrderComponent implements OnInit {
       //  htmlString = htmlString.replace('[customerAddress]', this.customerDetails?.address);
       htmlString = htmlString.replace('[CUSTOMER_MOBILE]', this.customerDetails?.mobile);
       htmlString = htmlString.replace('[DATE]', this.datePipe.transform(this.orderDate, "dd-MM-yyyy"));
-      htmlString = htmlString.replace('[TIME]', this.datePipe.transform(this.orderDate, "hh:mm:ss a"));
+      htmlString = htmlString.replace('[SHOPNAME]', this.branchDetails?.title);
+      htmlString = htmlString.replace('[TITLE]', this.branchDetails?.title);
+      htmlString = htmlString.replace('[SUBTITLE1]', this.branchDetails?.subtitle1);
+      htmlString = htmlString.replace('[SUBTITLE2]', this.branchDetails?.subtitle2);
+      // htmlString = htmlString.replace('[TIME]', this.datePipe.transform(this.orderDate, "hh:mm:ss a"));
        const itemDetails = this.items.orderDetails.value;
        let itemsString;
        let subTotal = 0;
        itemDetails.forEach(el => {
          const item = `<tr>
-         <td colspan="2">${el.itemName}</td>
+         <td style="text-align: left;">${el.itemName}</td>
          <td>${el.quantity}</td>
-         <td class="price">${el.total}</td>
+         <td>${el.rate}</td>
+         <td>${el.total}</td>
          </tr>`;
          itemsString += item;
          subTotal += Number(el.total);
        });
        htmlString = htmlString.replace('[itemDetails]', itemsString);
-       htmlString = htmlString.replace('[total]', subTotal.toFixed(2).toString());
+       htmlString = htmlString.replace('[DISCOUNT]', this.orderMaster?.discount);
+       htmlString = htmlString.replace('[NETTOTAL]', this.orderMaster?.netTotal);
+       htmlString = htmlString.replace('[NOTES]', this.orderMaster?.additionalInstructions);
+       htmlString = htmlString.replace('[DELIVREY_TYPE]', this.orderMaster?.deliveryType);
+       htmlString = htmlString.replace('[DELIVREY_TIME]', this.orderMaster?.deliveryTime);
+       htmlString = htmlString.replace('undefined', "");
        var printWindow = window.open('', '', 'height=600,width=900');  
-       printWindow.document.write('<html><head><title>Order Print</title>');  
+       printWindow.document.write(`<html><head><title>${this.branchDetails?.title}</title>`);  
        printWindow.document.write('</head><body>');  
        printWindow.document.write(htmlString);  
-       printWindow.document.write('</body></html>');  
-       printWindow.document.close();  
-       printWindow.print();
-       // printWindow.close();
+       printWindow.document.write('</body></html>');
+       printWindow.document.close();
+       setTimeout(() => {
+        printWindow.print();
+        printWindow.close();
+       }, 750);  
     });
   }
   cancelOrder() {
