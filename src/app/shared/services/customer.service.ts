@@ -25,4 +25,8 @@ export class CustomerService {
     const url = environment.apiUrl + 'customer';
     return this.http.get(url);
   }
+  getBranchByCode(code) {
+    const url = environment.apiUrl + 'branch/getByCode/' + code;
+    return this.http.get(url);
+  }
 }

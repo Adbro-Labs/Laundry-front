@@ -2,24 +2,37 @@
     <div class="heading">
         <h3>Order Details - {{ orderNumber }}</h3>
         <div>
-            <button (click)="printReciept()" mat-stroked-button color="primary">
-                Print
-            </button>
+            <mat-form-field>
+                <mat-select [(ngModel)]="orderStatus" placeholder="status">
+                    <mat-option value="PENDING">PENDING</mat-option>
+                    <mat-option value="PAID">PAID</mat-option>
+                    <mat-option value="DELIVERED">DELIVERED</mat-option>
+                </mat-select>
+            </mat-form-field>
             <button
                 (click)="saveOrder()"
                 mat-raised-button
                 color="primary"
                 style="margin-left: 5px"
-                [disabled]="disableUpdate"
             >
-                Save
+                Save & Print
             </button>
             &nbsp;
-            <button (click)="cancelOrder()" mat-stroked-button color="warn" *ngIf="showCancelOrder">
+            <button
+                (click)="printReciept()"
+                mat-stroked-button
+                color="primary"
+                style="margin-left: 5px"
+                [disabled]="!enablePrint"
+            >
+                Print
+            </button>
+            &nbsp;
+            <button [disabled]="!enablePrint" (click)="cancelOrder()" mat-stroked-button color="warn" *ngIf="showCancelOrder">
                 Confirm Cancel order
             </button>
             &nbsp;
-            <button (click)="showCancelOrder = !showCancelOrder" mat-stroked-button color="warn" *ngIf="!showCancelOrder">
+            <button [disabled]="!enablePrint" (click)="showCancelOrder = !showCancelOrder" mat-stroked-button color="warn">
                 {{showCancelOrder ? 'Cancel' : 'Cancel order'}}
             </button>
         </div>

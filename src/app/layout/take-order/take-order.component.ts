@@ -20,12 +20,14 @@ export class TakeOrderComponent implements OnInit {
   orderNumber;
   customerDetails;
   showNoCustomer;
-  orderDate;
+  orderDate = new Date();
   orderTime;
   disableUpdate = false;
   orderMaster;
   showCancelOrder = false;
   branchDetails;
+  orderStatus = "PENDING";
+  enablePrint = false;
   @ViewChild(ItemDetailsComponent) items: ItemDetailsComponent;
   mobileNumber = new FormControl('', [Validators.required, Validators.minLength(10), Validators.maxLength(10)]);
   constructor(private route: ActivatedRoute, private customer: CustomerService, private auth: AuthService,
@@ -35,7 +37,9 @@ export class TakeOrderComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe(data => {
       this.orderNumber = data.id;
-      this.getOrderDetailsByOrderNumber(this.orderNumber);
+      if (this.orderNumber) {
+        this.getOrderDetailsByOrderNumber(this.orderNumber);
+      }
     });
     
     this.mobileNumber.valueChanges.subscribe(data => {
@@ -50,6 +54,7 @@ export class TakeOrderComponent implements OnInit {
       this.showNoCustomer = false;
       this.customerDetails = data;
       this.order.setCustomerId((data as any)._id);
+      this.getBranchDetails();
     }, error => {
       this.showNoCustomer = true;
       if (error.status == 404) {
@@ -88,9 +93,10 @@ export class TakeOrderComponent implements OnInit {
       this.items.disableUpdate = true;
       this.mobileNumber.setValue(this.customerDetails.mobile);
       this.items.setItemDetail((data as any).orderDetails);
+      this.enablePrint = true;
     });
   }
-  saveOrder() {
+  saveOrder(status = null) {
     if (this.items.orderDetails.valid) {
       const items = this.items.orderDetails.value;
       let total = 0;
@@ -116,11 +122,18 @@ export class TakeOrderComponent implements OnInit {
           additionalInstructions: this.items.additionalInstructions,
           deliveryType: this.items.deliveryType,
           deliveryTime: this.items.deliveryTime,
-          branchCode: this.auth.decodeJwt()?.branchCode
+          branchCode: this.auth.decodeJwt()?.branchCode,
+          status: this.orderStatus
         },
         orderDetails: this.items.orderDetails.value
       }
       this.orderApi.saveOrdere(orderDetails).subscribe(data=> {
+        const OrderMaster = (data as any)?.masterResponse;
+        if (OrderMaster) {
+          this.orderMaster = OrderMaster;
+        }
+        this.printReciept();
+        this.enablePrint = true;
         this.snack.open("Order placed successfully", "Ok", {duration: 1500});
       })
     } else {
@@ -128,6 +141,7 @@ export class TakeOrderComponent implements OnInit {
     }
   }
   printReciept() {
+    const elementIdsToHide = [];
     this.orderApi.getInvoiceTemplate().subscribe(htmlString => {
       htmlString = htmlString.replace('[ORDER_NO]', this.orderNumber);
       htmlString = htmlString.replace('[CUSTOMER_NAME]', this.customerDetails?.customerName);
@@ -153,16 +167,31 @@ export class TakeOrderComponent implements OnInit {
          subTotal += Number(el.total);
        });
        htmlString = htmlString.replace('[itemDetails]', itemsString);
-       htmlString = htmlString.replace('[DISCOUNT]', this.orderMaster?.discount);
+       if (this.orderMaster?.discount) {
+         htmlString = htmlString.replace('[DISCOUNT]', this.orderMaster?.discount);
+       } else {
+         elementIdsToHide.push('discountLabel');
+       }
        htmlString = htmlString.replace('[NETTOTAL]', this.orderMaster?.netTotal);
-       htmlString = htmlString.replace('[NOTES]', this.orderMaster?.additionalInstructions);
+       if (this.orderMaster?.additionalInstructions) {
+          htmlString = htmlString.replace('[NOTES]', this.orderMaster?.additionalInstructions);
+       } else {
+          elementIdsToHide.push('notelabel');
+       }
        htmlString = htmlString.replace('[DELIVREY_TYPE]', this.orderMaster?.deliveryType);
-       htmlString = htmlString.replace('[DELIVREY_TIME]', this.orderMaster?.deliveryTime);
+       if (this.orderMaster?.deliveryTime) {
+         htmlString = htmlString.replace('[DELIVREY_TIME]', this.orderMaster?.deliveryTime);
+       } else {
+         elementIdsToHide.push('deliveryTimeLabel');
+       }
        htmlString = htmlString.replace('undefined', "");
        var printWindow = window.open('', '', 'height=600,width=900');  
        printWindow.document.write(`<html><head><title>${this.branchDetails?.title}</title>`);  
        printWindow.document.write('</head><body>');  
-       printWindow.document.write(htmlString);  
+       printWindow.document.write(htmlString);
+       elementIdsToHide.forEach(data => {
+         printWindow.document.getElementById(data).style.display = "none";
+       })
        printWindow.document.write('</body></html>');
        printWindow.document.close();
        setTimeout(() => {
@@ -180,5 +209,10 @@ export class TakeOrderComponent implements OnInit {
         this.snack.open("Something went wrong", "Ok", {duration: 1500});
       });
     }
+  }
+  getBranchDetails() {
+    this.customer.getBranchByCode(this.auth.decodeJwt()?.branchCode).subscribe(data =>{
+      this.branchDetails = data as any;
+    })
   }
 }
