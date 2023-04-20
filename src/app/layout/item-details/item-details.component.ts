@@ -1,9 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, Output } from '@angular/core';
 import { FormArray, FormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { ItemService } from 'src/app/shared/services/item.service';
-import { OrderService } from 'src/app/shared/services/order.service';
 import { AddItemComponent } from '../add-item/add-item.component';
 import { NumberpadComponent } from '../numberpad/numberpad.component';
 import { ServiceCountComponent } from '../service-count/service-count.component';
@@ -20,6 +20,7 @@ export class ItemDetailsComponent implements OnInit {
   today = new Date();
   netTotal;
   @Input() customerId:string;
+  @Output() disableNumberChange = new EventEmitter();
   disableItemSelection = false;
   discount;
   deliveryType = "ON PREMISE";
@@ -88,13 +89,13 @@ export class ItemDetailsComponent implements OnInit {
         });
         let services = "";
         let total = 0;
-        let rate = 0;
+        let rate = response?.updatedCharge;
         if (response?.washRequired) {
-          rate = response?.itemDetails?.washingCharge;
+          // rate = response?.itemDetails?.washingCharge;
           services = "Wash&Press";
           if (response?.expressOrder) {
             services = "Wash&Press(Express)";
-            rate = response?.itemDetails?.expressWashingCharge;
+            // rate = response?.itemDetails?.expressWashingCharge;
           }
           form.patchValue({
             rate
@@ -102,11 +103,11 @@ export class ItemDetailsComponent implements OnInit {
           total += rate;
         }
         if (response?.dryCleanRequired) {
-          rate = response?.itemDetails?.dryCleanCharge;
+          // rate = response?.itemDetails?.dryCleanCharge;
           services = "Dry Cleaning";
           if (response?.expressOrder) {
             services = "Dry Cleaning(Express)";
-            rate = response?.itemDetails?.ExpressDryCleanCharge;
+            // rate = response?.itemDetails?.ExpressDryCleanCharge;
           }
           form.patchValue({
             rate
@@ -114,11 +115,11 @@ export class ItemDetailsComponent implements OnInit {
           total += response?.itemDetails?.dryCleanCharge
         }
         if (response?.pressRequired) {
-          rate = response?.itemDetails?.pressingCharge;
+          // rate = response?.itemDetails?.pressingCharge;
           services = "Press";
           if (response?.expressOrder) {
             services = "Press(Express)";
-            rate = response?.itemDetails?.expressPressingCharge;
+            // rate = response?.itemDetails?.expressPressingCharge;
           }
           form.patchValue({
             rate
@@ -131,6 +132,7 @@ export class ItemDetailsComponent implements OnInit {
           total: total.toFixed(2) 
         });
         this.orderDetails.push(form);
+        this.disableNumberChange.emit(true);
         this.calculateNetTotal(); 
       }
     });
@@ -170,5 +172,8 @@ export class ItemDetailsComponent implements OnInit {
   }
   deleteItem(index) {
     this.orderDetails.removeAt(index);
+    if (this.orderDetails.length < 1) {
+      this.disableNumberChange.emit(false);
+    }
   }
 }

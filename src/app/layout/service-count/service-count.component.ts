@@ -13,9 +13,11 @@ export class ServiceCountComponent implements OnInit {
   pressRequired = false;
   processType = "HANGER";
   isExpressRequired = false;
+  Charge = 0;
   constructor(private dialogRef: MatDialogRef<ServiceCountComponent>, @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit(): void {
+    this.calculateCharge();
   }
 
   updateQuantity(value) {
@@ -47,25 +49,55 @@ export class ServiceCountComponent implements OnInit {
         quantity: this.quantity,
         itemDetails: this.data,
         processType: this.processType,
-        expressOrder: this.isExpressRequired
+        expressOrder: this.isExpressRequired,
+        updatedCharge: this.Charge
       });
+      this.Charge = 0;
     }
   }
   
   updateSelection(item) {
-    this.washRequired = false;
-    this.dryCleanRequired = false;
-    this.pressRequired = false;
     switch(item) {
-      case 'washRequired':
-        this.washRequired = true;
+      case 'washRequired':   
+        this.dryCleanRequired = false;
+        this.pressRequired = false;
         break;
       case 'dryCleanRequired':
-        this.dryCleanRequired = true;
+        this.washRequired = false;
+        this.pressRequired = false;
         break;
       case 'pressRequired':
-        this.pressRequired = true;
+        this.dryCleanRequired = false;
+        this.washRequired = false;
         break;
+    }
+    this.calculateCharge();
+  }
+  calculateCharge() {
+    this.Charge = 0;
+    if (this.washRequired) {
+        this.Charge = this.data.washingCharge;
+        if (this.isExpressRequired) {
+          this.Charge = this.data.expressWashingCharge;
+        }
+    }
+    if (this.dryCleanRequired) {
+      this.Charge = this.data.dryCleanCharge;
+      if (this.isExpressRequired) {
+        this.Charge = this.data.expressDryCleanCharge;
+      }
+    }
+    if (this.pressRequired) {
+      this.Charge = this.data.pressingCharge;
+        if (this.isExpressRequired) {
+          this.Charge = this.data.expressPressingCharge;
+        }
+    }
+  }
+  updateCharge(value) {
+    const check = this.Charge + value;
+    if(check > 0) {
+      this.Charge = check;
     }
   }
 }

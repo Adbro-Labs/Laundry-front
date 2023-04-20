@@ -28,8 +28,9 @@ export class TakeOrderComponent implements OnInit {
   branchDetails;
   orderStatus = "PENDING";
   enablePrint = false;
+  disableNumberChange = false;
   @ViewChild(ItemDetailsComponent) items: ItemDetailsComponent;
-  mobileNumber = new FormControl('', [Validators.required, Validators.minLength(10), Validators.maxLength(10)]);
+  mobileNumber = new FormControl({value: '', disabled: this.disableNumberChange}, [Validators.required, Validators.minLength(10), Validators.maxLength(10)]);
   constructor(private route: ActivatedRoute, private customer: CustomerService, private auth: AuthService,
     private dialog: MatDialog, private order: OrderService, private orderApi: OrderapiService, private snack: MatSnackBar, private datePipe: DatePipe) { 
   }
@@ -49,11 +50,22 @@ export class TakeOrderComponent implements OnInit {
     });
   }
 
+  updateNumberChange(value) {
+    this.disableNumberChange = value;
+    if (value) {
+      this.mobileNumber.disable();
+    } else {
+      this.mobileNumber.enable();
+    }
+  }
+
   searchCustomer(number) {
     this.customer.searchCustomerByMobile(number).subscribe(data => {
       this.showNoCustomer = false;
       this.customerDetails = data;
       this.order.setCustomerId((data as any)._id);
+      this.items.customerId = (data as any)._id;
+      this.items.getItems();
       this.getBranchDetails();
     }, error => {
       this.showNoCustomer = true;
@@ -96,7 +108,7 @@ export class TakeOrderComponent implements OnInit {
       this.enablePrint = true;
     });
   }
-  saveOrder(status = null) {
+  saveOrder() {
     if (this.items.orderDetails.valid) {
       const items = this.items.orderDetails.value;
       let total = 0;
@@ -134,6 +146,7 @@ export class TakeOrderComponent implements OnInit {
         }
         this.printReciept();
         this.enablePrint = true;
+        this.disableUpdate = true;
         this.snack.open("Order placed successfully", "Ok", {duration: 1500});
       })
     } else {
@@ -214,5 +227,8 @@ export class TakeOrderComponent implements OnInit {
     this.customer.getBranchByCode(this.auth.decodeJwt()?.branchCode).subscribe(data =>{
       this.branchDetails = data as any;
     })
+  }
+  guestLogin() {
+    this.mobileNumber.setValue('9988776655');
   }
 }

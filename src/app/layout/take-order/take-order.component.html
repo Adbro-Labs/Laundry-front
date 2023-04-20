@@ -47,7 +47,9 @@
                     placeholder="Mobile Number"
                     [formControl]="mobileNumber"
                 />
+                
             </mat-form-field>
+            <button mat-stroked-button (click)="guestLogin()" [disabled]="disableUpdate|| disableNumberChange">Guest User</button>
         </div>
         <div>
             <div *ngIf="customerDetails" style="display: flex; gap: 10px">
@@ -82,5 +84,5 @@
     <div class="heading">
         <h4>Items</h4>
     </div>
-    <app-item-details [customerId]="customerDetails?._id"></app-item-details>
+    <app-item-details [customerId]="customerDetails?._id" (disableNumberChange)="updateNumberChange($event)"></app-item-details>
 </div>
