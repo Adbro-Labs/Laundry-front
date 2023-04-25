@@ -25,6 +25,7 @@ searchText = "";
       }
     }, errro => {
       this.orderDetails = [];
+      this.disableNext = true;
     })
   }
   updateIndexAndGetOrderList(value) {

@@ -29,7 +29,9 @@ export class TakeOrderComponent implements OnInit {
   orderStatus = "PENDING";
   enablePrint = false;
   disableNumberChange = false;
-  orderStatusList = ['PENDING', 'PAID', 'DELIVERED']
+  orderStatusList = ['PENDING', 'PAID', 'CANCELLED', 'DELIVERED'];
+  statusCode = 0;
+  userRole = this.auth.getUserRole();
   @ViewChild(ItemDetailsComponent) items: ItemDetailsComponent;
   mobileNumber = new FormControl({value: '', disabled: this.disableNumberChange}, [Validators.required, Validators.minLength(10), Validators.maxLength(10)]);
   constructor(private route: ActivatedRoute, private customer: CustomerService, private auth: AuthService,
@@ -107,6 +109,9 @@ export class TakeOrderComponent implements OnInit {
       this.mobileNumber.setValue(this.customerDetails.mobile);
       this.items.setItemDetail((data as any).orderDetails);
       this.enablePrint = true;
+      this.orderStatus = this.orderMaster.status;
+      this.mobileNumber.disable();
+      this.statusCode = this.orderStatusList.findIndex(x => x == this.orderMaster.status);
     });
   }
   saveOrder() {
@@ -145,9 +150,9 @@ export class TakeOrderComponent implements OnInit {
         if (OrderMaster) {
           this.orderMaster = OrderMaster;
         }
-        this.printReciept();
         this.enablePrint = true;
         this.disableUpdate = true;
+        this.printReciept();
         this.snack.open("Order placed successfully", "Ok", {duration: 1500});
       })
     } else {
@@ -182,11 +187,11 @@ export class TakeOrderComponent implements OnInit {
        });
        htmlString = htmlString.replace('[itemDetails]', itemsString);
        if (this.orderMaster?.discount) {
-         htmlString = htmlString.replace('[DISCOUNT]', this.orderMaster?.discount);
+         htmlString = htmlString.replace('[DISCOUNT]', Number(this.orderMaster?.discount).toFixed(2));
        } else {
          elementIdsToHide.push('discountLabel');
        }
-       htmlString = htmlString.replace('[NETTOTAL]', this.orderMaster?.netTotal);
+       htmlString = htmlString.replace('[NETTOTAL]', Number(this.orderMaster?.netTotal).toFixed(2));
        if (this.orderMaster?.additionalInstructions) {
           htmlString = htmlString.replace('[NOTES]', this.orderMaster?.additionalInstructions);
        } else {
@@ -206,22 +211,27 @@ export class TakeOrderComponent implements OnInit {
        elementIdsToHide.forEach(data => {
          printWindow.document.getElementById(data).style.display = "none";
        });
-       if (this.orderMaster.status == "CANCELLED") {
+       if (this.orderMaster.status) {
+         const div = printWindow.document.createElement('h4');
          const node = printWindow.document.createElement('h4');
-         const text = printWindow.document.createTextNode("CANCELLED BILL");
+         const text = printWindow.document.createTextNode(this.orderMaster.status);
          node.style.position = "absolute";
          node.style.top = "240px";
          node.style.zIndex = "-1";
-         node.style.transform = 'rotate(300deg)';
+         node.style.transform = 'rotate(320deg)';
          node.style.color = '#c6afaf';
+         node.style.fontSize = "25px";
+         div.style.display = "flex";
+         div.style.justifyContent = "center";
          node.appendChild(text);
-         printWindow.document.getElementById("invoice-box").appendChild(node);
+         div.appendChild(node);
+         printWindow.document.getElementById("invoice-box").appendChild(div);
        }
        printWindow.document.write('</body></html>');
        printWindow.document.close();
        setTimeout(() => {
         printWindow.print();
-        printWindow.close();
+        // printWindow.close();
        }, 750);  
     });
   }

@@ -3,8 +3,9 @@
         <h3>Order Details - {{ orderNumber }}</h3>
         <div>
             <mat-form-field>
-                <mat-select [(ngModel)]="orderStatus" placeholder="status">
-                    <mat-option *ngFor="let item of orderStatusList" [value]="item">{{item}}</mat-option>
+                <mat-select [(ngModel)]="orderStatus" placeholder="status" [disabled]="userRole == 'ADMIN'">
+                    <mat-option *ngFor="let item of orderStatusList;index as i" 
+                    [value]="item" [disabled]="i <= statusCode || item == 'CANCELLED'">{{item}}</mat-option>
                 </mat-select>
             </mat-form-field>
             <button
@@ -12,9 +13,10 @@
                 mat-raised-button
                 color="primary"
                 style="margin-left: 5px"
+                *ngIf="userRole!='ADMIN'"
             >
                 Save & Print
-            </button>
+         </button>
             &nbsp;
             <button
                 (click)="printReciept()"
@@ -30,7 +32,7 @@
                 Confirm Cancel order
             </button>
             &nbsp;
-            <button [disabled]="!enablePrint" (click)="showCancelOrder = !showCancelOrder" mat-stroked-button color="warn">
+            <button [disabled]="!enablePrint || orderStatus == 'DELIVERED' || userRole == 'ADMIN'" (click)="showCancelOrder = !showCancelOrder" mat-stroked-button color="warn">
                 {{showCancelOrder ? 'Cancel' : 'Cancel order'}}
             </button>
         </div>
