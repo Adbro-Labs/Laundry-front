@@ -8,14 +8,30 @@ import { OrderapiService } from 'src/app/shared/services/orderapi.service';
 })
 export class OrderListComponent implements OnInit {
 orderDetails;
+index = 0;
+limit = 15;
+disableNext = false;
+searchText = "";
   constructor(private order: OrderapiService) { }
 
   ngOnInit(): void {
     this.getOrders();
   }
   getOrders() {
-    this.order.getAllOrders().subscribe(data => {
+    this.order.getAllOrders(this.index, this.limit, this.searchText).subscribe(data => {
       this.orderDetails = data;
+      if (this.orderDetails && this.orderDetails.length < 1) {
+        this.disableNext = true;
+      }
+    }, errro => {
+      this.orderDetails = [];
     })
+  }
+  updateIndexAndGetOrderList(value) {
+    const check = this.index + value;
+    if (check >= 0) {
+      this.index = check;
+      this.getOrders();
+    }
   }
 }

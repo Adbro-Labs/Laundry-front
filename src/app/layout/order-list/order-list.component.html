@@ -1,6 +1,8 @@
 <mat-form-field>
-    <input matInput type="text"  placeholder="Search"/>
-</mat-form-field>
+    <input matInput type="text"  placeholder="Search" [(ngModel)]="searchText" (keyup.enter)="getOrders()"/>
+    
+</mat-form-field>&nbsp;
+<button mat-raised-button (click)="getOrders()">Search</button>
 <div class="table">
     <table>
         <thead>
@@ -20,4 +22,9 @@
                 </tr>
         </tbody>
     </table>
+</div>
+<div style="text-align: right;
+margin-top: 5px;">
+    <button mat-stroked-button [disabled]="index < 1" (click)="updateIndexAndGetOrderList(-1)">Previous</button> &nbsp; 
+    <button mat-stroked-button [disabled]="disableNext"  (click)="updateIndexAndGetOrderList(1)">Next</button>
 </div>

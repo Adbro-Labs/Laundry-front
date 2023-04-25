@@ -4,9 +4,7 @@
         <div>
             <mat-form-field>
                 <mat-select [(ngModel)]="orderStatus" placeholder="status">
-                    <mat-option value="PENDING">PENDING</mat-option>
-                    <mat-option value="PAID">PAID</mat-option>
-                    <mat-option value="DELIVERED">DELIVERED</mat-option>
+                    <mat-option *ngFor="let item of orderStatusList" [value]="item">{{item}}</mat-option>
                 </mat-select>
             </mat-form-field>
             <button

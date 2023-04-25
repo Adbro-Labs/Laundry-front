@@ -29,6 +29,7 @@ export class TakeOrderComponent implements OnInit {
   orderStatus = "PENDING";
   enablePrint = false;
   disableNumberChange = false;
+  orderStatusList = ['PENDING', 'PAID', 'DELIVERED']
   @ViewChild(ItemDetailsComponent) items: ItemDetailsComponent;
   mobileNumber = new FormControl({value: '', disabled: this.disableNumberChange}, [Validators.required, Validators.minLength(10), Validators.maxLength(10)]);
   constructor(private route: ActivatedRoute, private customer: CustomerService, private auth: AuthService,
@@ -204,7 +205,18 @@ export class TakeOrderComponent implements OnInit {
        printWindow.document.write(htmlString);
        elementIdsToHide.forEach(data => {
          printWindow.document.getElementById(data).style.display = "none";
-       })
+       });
+       if (this.orderMaster.status == "CANCELLED") {
+         const node = printWindow.document.createElement('h4');
+         const text = printWindow.document.createTextNode("CANCELLED BILL");
+         node.style.position = "absolute";
+         node.style.top = "240px";
+         node.style.zIndex = "-1";
+         node.style.transform = 'rotate(300deg)';
+         node.style.color = '#c6afaf';
+         node.appendChild(text);
+         printWindow.document.getElementById("invoice-box").appendChild(node);
+       }
        printWindow.document.write('</body></html>');
        printWindow.document.close();
        setTimeout(() => {

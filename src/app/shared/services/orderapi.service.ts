@@ -26,8 +26,8 @@ export class OrderapiService {
     const url = environment.apiUrl + 'order/ByOrderNumber/' + orderNumber;
     return this.http.get(url);
   }
-  getAllOrders(){
-    const url = environment.apiUrl + 'order';
+  getAllOrders(index, limit, searchText){
+    const url = environment.apiUrl + `order?limit=${limit}&index=${index}&query=${searchText}`;
     return this.http.get(url);
   }
   cancelOrder(orderId) {
