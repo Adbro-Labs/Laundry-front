@@ -133,6 +133,7 @@ export class ItemDetailsComponent implements OnInit {
           total += rate;
         }
         total = Number(total) * response?.quantity;
+        services = services + `(${response?.processType?.charAt(0)})`
         form.patchValue({
           services,
           total: total.toFixed(2) 
