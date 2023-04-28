@@ -3,6 +3,7 @@ import { Component, Input, OnInit, Output } from '@angular/core';
 import { FormArray, FormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
+import { AuthService } from 'src/app/shared/services/auth.service';
 import { ItemService } from 'src/app/shared/services/item.service';
 import { AddItemComponent } from '../add-item/add-item.component';
 import { NumberpadComponent } from '../numberpad/numberpad.component';
@@ -27,7 +28,9 @@ export class ItemDetailsComponent implements OnInit {
   additionalInstructions = "";
   disableUpdate = false;
   deliveryTime = "";
-  constructor(private item: ItemService, private fb: FormBuilder, private route: ActivatedRoute, private dialog: MatDialog) { }
+  constructor(private item: ItemService, private fb: FormBuilder,
+    private route: ActivatedRoute, private dialog: MatDialog,
+    private auth: AuthService) { }
 
   ngOnInit(): void {
     this.getItems();
@@ -43,7 +46,8 @@ export class ItemDetailsComponent implements OnInit {
   initOrderDetails() {
     const orderDetails = this.fb.group({
       _id: [null],
-      orderNumber: [null, Validators.required], 
+      orderNumber: [null, Validators.required],
+      branchCode: [null], 
       itemName: [null, Validators.required],
       itemId: [null, Validators.required],
       quantity: [null, Validators.required],
@@ -62,6 +66,8 @@ export class ItemDetailsComponent implements OnInit {
     const orderNumber = this.route.snapshot.params.id;
     orderDetails.get('orderNumber').setValue(orderNumber);
     orderDetails.get('customerId').setValue(this.customerId);
+    const branchCode = this.auth.decodeJwt()?.branchCode;
+    orderDetails.get('branchCode').setValue(branchCode);
     return orderDetails;
   }
   setItemDetail(items: any[]) {

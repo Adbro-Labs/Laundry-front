@@ -14,7 +14,6 @@
             <th>NAME</th>
             <th>MOBILE NUMBER</th>
             <th>ADDRESS</th>
-            <th>PRICING</th>
         </thead>
         <tbody>
                 <tr *ngFor="let item of tempCustomerList; index as i">
@@ -22,7 +21,6 @@
                     <td>{{item.customerName}}</td>
                     <td>{{item.mobile}}</td>
                     <td>{{item.address}}</td>
-                    <td><button mat-stroked-button (click)="setPricing(item._id)">{{item.customPricing ? "View": "Add"}}</button></td>
                 </tr>
         </tbody>
     </table>

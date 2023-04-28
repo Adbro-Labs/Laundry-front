@@ -9,6 +9,7 @@ import { ReportService } from '../shared/report.service';
 })
 export class DailyReportComponent implements OnInit {
   date;
+  branchCode = "";
   report = [];
   total = {
     amount: 0,
@@ -18,7 +19,8 @@ export class DailyReportComponent implements OnInit {
   constructor(private route: ActivatedRoute, private service: ReportService) { }
 
   ngOnInit(): void {
-    const date = this.route.snapshot.params["date"];
+    const date = this.route.snapshot.queryParams.date;
+    this.branchCode = this.route.snapshot.queryParams.branchCode;
     if (date) {
       this.date = new Date(date);
     }
@@ -26,7 +28,7 @@ export class DailyReportComponent implements OnInit {
   }
   getDailyReport() {
     if (this.date) {
-      this.service.getDailyReport(this.date).subscribe(data => {
+      this.service.getDailyReport(this.date, this.branchCode).subscribe(data => {
         this.report = (data as any);
         this.total = {
           amount: 0,
@@ -34,9 +36,9 @@ export class DailyReportComponent implements OnInit {
           netTotal: 0
         }
         if (this.report.length > 0) {
-          this.total.amount = this.getSumofItems(this.report.map(x => x.total));
-          this.total.discount = this.getSumofItems(this.report.map(x => x.discount));
-          this.total.netTotal = this.getSumofItems(this.report.map(x => x.netTotal));
+          this.total.amount = this.getSumofItems(this.report.filter(x => x.status != 'CANCELLED').map(x => x.total));
+          this.total.discount = this.getSumofItems(this.report.filter(x => x.status != 'CANCELLED').map(x => x.discount));
+          this.total.netTotal = this.getSumofItems(this.report.filter(x => x.status != 'CANCELLED').map(x => x.netTotal));
         }
       });
     }

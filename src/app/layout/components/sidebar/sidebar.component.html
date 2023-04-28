@@ -3,9 +3,11 @@
         <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/dashboard']">
             <mat-icon class="sidenav-icon">dashboard</mat-icon> {{ 'Dashboard' | translate }}
         </a>
-        <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/orders']">
-            <mat-icon class="sidenav-icon">build</mat-icon> {{ 'Orders' | translate }}
-        </a>
+        <ng-container *ngIf="userType!='ADMIN'">
+            <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/orders']">
+                <mat-icon class="sidenav-icon">build</mat-icon> {{ 'Orders' | translate }}
+            </a>
+        </ng-container>
         <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/customers']">
             <mat-icon class="sidenav-icon">people</mat-icon> {{ 'Customers' | translate }}
         </a>

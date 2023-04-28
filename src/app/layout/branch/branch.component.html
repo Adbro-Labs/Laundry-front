@@ -12,6 +12,7 @@
             <th>Invoice Title</th>
             <th>Invoice SubTitle 1</th>
             <th>Invoice SubTitle 2</th>
+            <th>Action</th>
         </thead>
         <tbody>
                 <tr *ngFor="let item of tempCustomerList; index as i">
@@ -20,6 +21,7 @@
                     <td>{{item.title}}</td>
                     <td>{{item.subtitle1}}</td>
                     <td>{{item.subtitle2}}</td>
+                    <td><button mat-icon-button (click)="editBranch(item)"><mat-icon>edit</mat-icon></button></td>
                 </tr>
         </tbody>
     </table>

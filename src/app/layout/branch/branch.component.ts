@@ -31,5 +31,10 @@ export class BranchComponent implements OnInit {
   searchCustomer() {
     this.tempCustomerList = this.customerDetails.filter(x => x.customerName.includes(this.query) || x.mobile.toString().includes(this.query));
   }
+  editBranch(branchDetails) {
+    this.dialog.open(AddBranchComponent, { disableClose: true, width: '400px', data: branchDetails}).afterClosed().subscribe(data => {
+      this.getAllCustomers();
+    });
+  }
   
 }

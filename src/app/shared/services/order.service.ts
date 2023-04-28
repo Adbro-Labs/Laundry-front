@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { AuthService } from './auth.service';
 import { OrderapiService } from './orderapi.service';
 
 @Injectable({
@@ -13,7 +14,7 @@ export class OrderService {
   public customerIdAgent = this.customerId.asObservable();
   public itemDetailsAgent = this.itemDetails.asObservable();
   orderForm: FormGroup;
-  constructor(private fb: FormBuilder, private orderapi: OrderapiService,
+  constructor(private fb: FormBuilder, private orderapi: OrderapiService, private auth: AuthService,
     private router: Router) { 
     this.initForm();
   }
@@ -59,8 +60,11 @@ export class OrderService {
     })
   }
   generateNewOrder() {
-    this.orderapi.getLatestOrderNumber().subscribe(data => {
-      this.router.navigate(['/takeOrder', (data as any).orderNumber]);
-    });
+    const branchCode = this.auth.decodeJwt()?.branchCode;
+    if (branchCode) {
+      this.orderapi.getLatestOrderNumber(branchCode).subscribe(data => {
+        this.router.navigate(['/takeOrder', (data as any).orderNumber]);
+      });
+    }
   }
 }

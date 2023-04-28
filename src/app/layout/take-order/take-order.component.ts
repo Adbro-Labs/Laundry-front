@@ -3,7 +3,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { CustomerService } from 'src/app/shared/services/customer.service';
 import { OrderService } from 'src/app/shared/services/order.service';
@@ -34,7 +34,7 @@ export class TakeOrderComponent implements OnInit {
   userRole = this.auth.getUserRole();
   @ViewChild(ItemDetailsComponent) items: ItemDetailsComponent;
   mobileNumber = new FormControl({value: '', disabled: this.disableNumberChange}, [Validators.required, Validators.minLength(10), Validators.maxLength(10)]);
-  constructor(private route: ActivatedRoute, private customer: CustomerService, private auth: AuthService,
+  constructor(private route: ActivatedRoute, private customer: CustomerService, private auth: AuthService, private router: Router,
     private dialog: MatDialog, private order: OrderService, private orderApi: OrderapiService, private snack: MatSnackBar, private datePipe: DatePipe) { 
   }
 
@@ -90,7 +90,7 @@ export class TakeOrderComponent implements OnInit {
     });
   }
   getOrderDetailsByOrderNumber(orderNumber) {
-    this.orderApi.getOrderDetailsByNumber(orderNumber).subscribe(data => {
+    this.orderApi.getOrderDetailsByNumber(orderNumber, this.auth.decodeJwt()?.branchCode).subscribe(data => {
       this.disableUpdate = true;
       const orderMaster = (data as any).orderMaster;
       this.branchDetails = (data as any).branchDetails;
@@ -154,6 +154,7 @@ export class TakeOrderComponent implements OnInit {
         this.disableUpdate = true;
         this.printReciept();
         this.snack.open("Order placed successfully", "Ok", {duration: 1500});
+        this.router.navigate(['/orders']);
       })
     } else {
       this.snack.open("complete the item details", "Ok", {duration: 1500});
@@ -171,6 +172,7 @@ export class TakeOrderComponent implements OnInit {
       htmlString = htmlString.replace('[TITLE]', this.branchDetails?.title);
       htmlString = htmlString.replace('[SUBTITLE1]', this.branchDetails?.subtitle1);
       htmlString = htmlString.replace('[SUBTITLE2]', this.branchDetails?.subtitle2);
+      htmlString = htmlString.replace('[IMAGE_URL]', this.branchDetails?.imageUrl);
       // htmlString = htmlString.replace('[TIME]', this.datePipe.transform(this.orderDate, "hh:mm:ss a"));
        const itemDetails = this.items.orderDetails.value;
        let itemsString;
@@ -240,6 +242,7 @@ export class TakeOrderComponent implements OnInit {
     if (orderId) {
       this.orderApi.cancelOrder(orderId).subscribe(data => {
         this.snack.open("Order cancelled successfuly", "Ok", {duration: 1500});
+        this.router.navigate(['/orders']);
       }, error => {
         this.snack.open("Something went wrong", "Ok", {duration: 1500});
       });

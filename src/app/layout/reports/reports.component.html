@@ -15,6 +15,15 @@
     </mat-select>
 </mat-form-field>
 &nbsp;
+<ng-container *ngIf="userRole == 'ADMIN'">
+    <mat-form-field>
+        <mat-select [(ngModel)]="branchCode" placeholder="Branch">
+            <mat-option value="">All</mat-option>
+            <mat-option [value]="item.branchCode" *ngFor="let item of branches; index as i">{{item.branchName}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+    &nbsp;
+</ng-container>
 <button mat-raised-button (click)="getMonthlyReport()">Search</button>
 <div class="table">
     <table>

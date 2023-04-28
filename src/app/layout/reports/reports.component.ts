@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/shared/services/auth.service';
+import { BranchService } from 'src/app/shared/services/measure.service';
 import { ReportService } from './shared/report.service';
 
 @Component({
@@ -19,15 +21,27 @@ export class ReportsComponent implements OnInit {
   monthList = ["January","February","March","April","May","June","July",
             "August","September","October","November","December"];
   yearList = [2023, 2024, 2025];
-  constructor(private service: ReportService, private router: Router) { }
+  branches = [];
+  branchCode = "";
+  userRole = "";
+  selectedBranchCode = "";
+  constructor(private service: ReportService, private router: Router, private branch: BranchService, private auth: AuthService) { }
 
   ngOnInit(): void {
     this.year = (new Date().getFullYear());
     this.month = (new Date().getMonth() + 1);
     this.getMonthlyReport();
+    this.userRole = this.auth.getUserRole();
+    this.getBranches();
   }
+  getBranches() {
+    this.branch.getAllBranch().subscribe(data => {
+      this.branches = (data as any);
+    })
+  }
+  
   getMonthlyReport() {
-    this.service.getMonthlyReport(this.month, this.year).subscribe(data => {
+    this.service.getMonthlyReport(this.month, this.year, this.branchCode).subscribe(data => {
       this.orders = (data as any);
       this.total = {
         amount: 0,
@@ -39,6 +53,7 @@ export class ReportsComponent implements OnInit {
         this.total.discount = this.getSumofItems(this.orders.map(x => x.discount));
         this.total.netTotal = this.getSumofItems(this.orders.map(x => x.netTotal));
       }
+      this.selectedBranchCode = this.branchCode;
     });
   }
   getSumofItems = (list) => {
@@ -46,6 +61,6 @@ export class ReportsComponent implements OnInit {
     return sum;
   }
   openDailyReport(date) {
-    this.router.navigate(["/reports/daily", date]);
+    this.router.navigate(['/reports/daily'], {queryParams: {date, branchCode: this.selectedBranchCode}});
   }
 }

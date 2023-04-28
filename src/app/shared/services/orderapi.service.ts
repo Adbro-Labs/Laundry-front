@@ -10,8 +10,8 @@ export class OrderapiService {
 
   constructor(private http: HttpClient) { }
 
-  getLatestOrderNumber() {
-    const url = environment.apiUrl + 'order/getOrderNumber';
+  getLatestOrderNumber(branchCode) {
+    const url = environment.apiUrl + 'order/getOrderNumber?branchCode=' + branchCode;
     return this.http.get(url);
   }
   saveOrdere(body) {
@@ -22,12 +22,12 @@ export class OrderapiService {
     const url = "/assets/html/invoice.html";
     return this.http.get(url, {responseType: "text"});
   }
-  getOrderDetailsByNumber(orderNumber) {
-    const url = environment.apiUrl + 'order/ByOrderNumber/' + orderNumber;
+  getOrderDetailsByNumber(orderNumber, branchCode) {
+    const url = environment.apiUrl + `order/ByOrderNumber?orderNumber=${orderNumber}&branchCode=${branchCode}`;
     return this.http.get(url);
   }
-  getAllOrders(index, limit, searchText){
-    const url = environment.apiUrl + `order?limit=${limit}&index=${index}&query=${searchText}`;
+  getAllOrders(index, limit, searchText, branchCode){
+    const url = environment.apiUrl + `order?limit=${limit}&index=${index}&query=${searchText}&branchCode=${branchCode}`;
     return this.http.get(url);
   }
   cancelOrder(orderId) {

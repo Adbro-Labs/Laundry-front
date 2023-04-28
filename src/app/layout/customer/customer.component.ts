@@ -28,8 +28,7 @@ export class CustomerComponent implements OnInit {
     });
   }
   searchCustomer() {
-    console.log(this.customerDetails)
-    this.tempCustomerList = this.customerDetails.filter(x => x.customerName.includes(this.query) || x.mobile.toString().includes(this.query));
+    this.tempCustomerList = this.customerDetails.filter(x => x.customerName?.toLowerCase().includes(this.query?.toLowerCase()) || x.mobile.toString().includes(this.query));
   }
   setPricing(customerId) {
     this.dialog.open(AddItemComponent, { disableClose: true, width: '400px', data: customerId}).afterClosed().subscribe((response: any) => {
