@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://royaltouchapi.adbro.in/'
+  apiUrl: 'https://laundry-api.onrender.com/'
 };
