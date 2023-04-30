@@ -19,7 +19,9 @@ export class CustomerComponent implements OnInit {
     this.getAllCustomers();
   }
   showCustomerDialog() {
-    this.dialog.open(AddCustomerComponent, { disableClose: true, width: '400px'});
+    this.dialog.open(AddCustomerComponent, { disableClose: true, width: '400px'}).afterClosed().subscribe(data => {
+      this.getAllCustomers();
+    });
   }
   getAllCustomers() {
     this.customer.getAllCustomers().subscribe(data => {
