@@ -59,7 +59,7 @@
             </tbody>
         </table>
     </div>
-    <div class="items" style="width: 30%;">
+    <div class="items" style="width: 40%;">
         <button class="btn" mat-stroked-button *ngFor="let item of items" (click)="addItem(item)" [disabled]="disableItemSelection || !customerId || disableUpdate">{{item.itemName}}</button>
         <button class="btn" mat-stroked-button (click)="addNewItem()" [disabled]="disableItemSelection || !customerId || disableUpdate">Add Item</button>
     </div>
