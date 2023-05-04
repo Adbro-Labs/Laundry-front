@@ -28,6 +28,10 @@
     text-overflow: ellipsis;
 }
 
+* {
+    box-sizing: border-box;
+}
+
 
 
 
@@ -39,4 +43,12 @@
             }
         }
     }
+}
+
+.action-box {
+    padding: 0 10px;
+}
+
+.action-box-container {
+    margin: 0 -10px;
 }
