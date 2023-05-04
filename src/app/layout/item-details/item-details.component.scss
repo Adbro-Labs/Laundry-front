@@ -1,8 +1,54 @@
 .container {
     display: flex;
+    .table{
+        width: auto;
+        flex-grow: 1;
+    }
+    .items{
+        display: flex;
+        flex-wrap: wrap;
+        .btn{
+            width: calc(50% - 6px);
+            word-break: break-all;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            white-space: pre-wrap;
+            line-height: 21px;
+        }
+    }
 }
 .btn {
     height: 70px;
     margin: 3px;
     width: 100px;
+    // prevent overflow
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+
+
+
+@media(max-width: 1020px){
+    .container{
+        .items{
+            .btn {
+                width: 100%;
+            }
+        }
+    }
+}
+
+.action-box {
+    padding: 0 10px;
+}
+
+.action-box-container {
+    margin: 0 -10px;
 }
