@@ -1,5 +1,5 @@
 <div class="container">
-    <div class="table" style="width: 70%;">
+    <div class="table">
         <table>
             <thead>
                 <th>ITEM</th>
@@ -60,8 +60,8 @@
         </table>
     </div>
     <div class="items" style="width: 30%;">
-        <button style="white-space: normal;" class="btn" mat-stroked-button *ngFor="let item of items" (click)="addItem(item)" [disabled]="disableItemSelection || !customerId || disableUpdate">{{item.itemName}}</button>
-        <button style="white-space: normal;" class="btn" mat-stroked-button (click)="addNewItem()" [disabled]="disableItemSelection || !customerId || disableUpdate">Add Item</button>
+        <button class="btn" mat-stroked-button *ngFor="let item of items" (click)="addItem(item)" [disabled]="disableItemSelection || !customerId || disableUpdate">{{item.itemName}}</button>
+        <button class="btn" mat-stroked-button (click)="addNewItem()" [disabled]="disableItemSelection || !customerId || disableUpdate">Add Item</button>
     </div>
 </div>
 <div class="container">
@@ -75,7 +75,7 @@
                 <mat-option value="ON PREMISE">On Premise</mat-option>
                 <mat-option value="PICKUP" [disabled]="!netTotal ||netTotal < 50">Pickup & Drop</mat-option>
             </mat-select>
-        </mat-form-field>  
+        </mat-form-field>
     </div>
     <div style="width: 30%;">
         <mat-form-field>
@@ -87,6 +87,6 @@
                     placeholder="Delivery Time"
                     [(ngModel)]="deliveryTime"
                 />
-        </mat-form-field>  
+        </mat-form-field>
     </div>
 </div>
