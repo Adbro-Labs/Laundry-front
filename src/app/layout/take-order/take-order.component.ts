@@ -33,6 +33,8 @@ export class TakeOrderComponent implements OnInit {
   orderStatusList = ['PENDING', 'PAID', 'CANCELLED', 'DELIVERED'];
   statusCode = 0;
   userRole = this.auth.getUserRole();
+  customerList = [];
+  tempCustomerList = [];
   @ViewChild(ItemDetailsComponent) items: ItemDetailsComponent;
   mobileNumber = new FormControl({value: '', disabled: this.disableNumberChange}, [Validators.required, Validators.minLength(10), Validators.maxLength(10)]);
   constructor(private route: ActivatedRoute, private customer: CustomerService, private auth: AuthService, private router: Router,
@@ -46,12 +48,40 @@ export class TakeOrderComponent implements OnInit {
         this.getOrderDetailsByOrderNumber(this.orderNumber);
       }
     });
-    
+    this.getAllCustomers();
     this.mobileNumber.valueChanges.subscribe(data => {
-      if (this.mobileNumber.valid) {
-        this.searchCustomer(data);
-      }
+      this.filterCustomers(data);
     });
+  }
+
+  filterCustomers(query) {
+    this.showNoCustomer = false;
+    this.tempCustomerList = this.customerList.filter(x => x?.customerName?.toLowerCase()?.includes(query) || x?.mobile?.toString()?.includes(query));
+    if ((!this.tempCustomerList || this.tempCustomerList.length < 1) && (query && query.length >= 10)) {
+      this.customerDetails = null;
+      this.showNoCustomer = true;
+    }
+  }
+
+  getAllCustomers() {
+    this.customer.getAllCustomers().subscribe(data => {
+      this.customerList = (data as any);
+      this.tempCustomerList = (data as any);
+    });
+  }
+  displayFn(user): string {
+    const cusomerMobile =  user && user.mobile ? user.mobile : '';
+    return cusomerMobile;
+  }
+  setCustomerDetails() {
+    const user = this.mobileNumber.value;
+    if (user) {
+      this.customerDetails = user;
+      this.order.setCustomerId((user as any)._id);
+      this.items.customerId = (user as any)._id;
+      this.items.getItems();
+      this.getBranchDetails();
+    }
   }
 
   updateNumberChange(value) {
@@ -63,8 +93,8 @@ export class TakeOrderComponent implements OnInit {
     }
   }
 
-  searchCustomer(number) {
-    this.customer.searchCustomerByMobile(number).subscribe(data => {
+  searchCustomer(query) {
+    this.customer.searchCustomerByMobile(query).subscribe(data => {
       this.showNoCustomer = false;
       this.customerDetails = data;
       this.order.setCustomerId((data as any)._id);
@@ -79,14 +109,23 @@ export class TakeOrderComponent implements OnInit {
     });
   }
   showCustomerForm() {
+    let formData;
+    if (isNaN(this.mobileNumber.value)) {
+      const valueType = typeof this.mobileNumber.value;
+      if (valueType == 'string') {
+        formData = {customerName: this.mobileNumber.value};
+      }
+    } else {
+      formData = {mobile: this.mobileNumber.value};
+    }
     this.dialog.open(AddCustomerComponent, {
-      disableClose: true, width: '400px', data: {mobile: this.mobileNumber.value}
+      disableClose: true, width: '400px', data: formData
     }).afterClosed().subscribe(data => {
       if (data) {
-        const mobileNumber = data.mobile;
-        if (mobileNumber) {
-          this.mobileNumber.setValue(mobileNumber);
-        }
+        this.customerList.push(data);
+        this.tempCustomerList = this.customerList;
+        this.mobileNumber.setValue(data);
+        this.setCustomerDetails();
       }
     });
   }
@@ -255,7 +294,11 @@ export class TakeOrderComponent implements OnInit {
     })
   }
   guestLogin() {
-    this.mobileNumber.setValue('9988776655');
+    const guestLogin = this.customerList.find(x => x.mobile == '9988776655');
+    if (guestLogin) {
+      this.mobileNumber.setValue(guestLogin);
+      this.setCustomerDetails();
+    }
   }
   showPreviousBill() {
     const branchCode = this.auth.decodeJwt()?.branchCode;

@@ -39,16 +39,23 @@
     </div>
     <div style="display: flex; justify-content: space-between; gap: 40px">
         <div style="display: flex; flex-direction: column">
-            <mat-form-field>
-                <input
-                    matInput
-                    type="number"
-                    autocomplete="off"
-                    placeholder="Mobile Number"
-                    [formControl]="mobileNumber"
-                />
-                
-            </mat-form-field>
+            <mat-form-field class="example-full-width" appearance="fill">
+                <mat-label>Customer</mat-label>
+                <input type="text"
+                       placeholder="type here"
+                       aria-label="customer"
+                       matInput
+                       [formControl]="mobileNumber"
+                       [matAutocomplete]="auto">
+                <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" 
+                (optionSelected)="setCustomerDetails()"
+                [displayWith]="displayFn" [autoActiveFirstOption]="true">
+                  <mat-option *ngFor="let option of tempCustomerList" [value]="option">
+                    <span>{{option.customerName}} <br/>
+                    <small>{{option.mobile}}</small></span>
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
         </div>
         <div>
             <button mat-stroked-button (click)="guestLogin()" [disabled]="disableUpdate|| disableNumberChange">Guest User</button>
