@@ -9,12 +9,13 @@ import { AuthService } from '../shared/services/auth.service';
 })
 export class LoginComponent implements OnInit {
     password = "";
+    message = "";
     constructor(private router: Router, private auth: AuthService) { }
 
     ngOnInit() { }
 
     onLogin() {
-        console.log(this.password);
+        this.message = "";
         const body = {
             password: this.password
         }
@@ -23,6 +24,7 @@ export class LoginComponent implements OnInit {
             localStorage.setItem('token', data.token);
             this.router.navigate(['/dashboard']);
         }, error => {
+            this.message = "Invalid Credentials";
             console.log(error);
         });
     }
