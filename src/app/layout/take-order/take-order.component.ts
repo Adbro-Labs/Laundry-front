@@ -56,7 +56,9 @@ export class TakeOrderComponent implements OnInit {
 
   filterCustomers(query) {
     this.showNoCustomer = false;
-    this.tempCustomerList = this.customerList.filter(x => x?.customerName?.toLowerCase()?.includes(query) || x?.mobile?.toString()?.includes(query));
+    this.tempCustomerList = this.customerList
+    .filter(x => x?.customerName?.toLowerCase()?.includes(query) || x?.mobile?.toString()?.includes(query))
+    ?.slice(0, 3);
     if ((!this.tempCustomerList || this.tempCustomerList.length < 1) && (query && query.length >= 10)) {
       this.customerDetails = null;
       this.showNoCustomer = true;
@@ -66,7 +68,6 @@ export class TakeOrderComponent implements OnInit {
   getAllCustomers() {
     this.customer.getAllCustomers().subscribe(data => {
       this.customerList = (data as any);
-      this.tempCustomerList = (data as any);
     });
   }
   displayFn(user): string {
@@ -123,7 +124,7 @@ export class TakeOrderComponent implements OnInit {
     }).afterClosed().subscribe(data => {
       if (data) {
         this.customerList.push(data);
-        this.tempCustomerList = this.customerList;
+        this.tempCustomerList = [data];
         this.mobileNumber.setValue(data);
         this.setCustomerDetails();
       }
