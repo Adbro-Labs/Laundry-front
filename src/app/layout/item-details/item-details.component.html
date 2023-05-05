@@ -11,7 +11,7 @@
             </thead>
             <tbody>
                 <ng-container *ngIf="orderDetails?.value?.length > 0; else nodata">
-                    <tr *ngFor="let item of orderDetails.value; index as i">
+                    <tr *ngFor="let item of orderDetails.value; index as i" style="height: 50px;">
                         <td>
                             {{item.itemName}}
                         </td>
@@ -27,7 +27,7 @@
                             </button>
                         </td>
                     </tr>
-                    <tr *ngIf="netTotal">
+                    <tr *ngIf="netTotal" style="height: 50px;">
                         <td colspan="4" style="text-align: right;">
                             <label>Discount</label>
                         </td>
@@ -39,7 +39,7 @@
                         </td>
                         <td></td>
                     </tr>
-                    <tr *ngIf="netTotal">
+                    <tr *ngIf="netTotal" style="height: 50px;">
                         <td colspan="4" style="text-align: right;">
                             <label>Total Amount</label>
                         </td>
@@ -50,7 +50,7 @@
                     </tr>
                 </ng-container>
                 <ng-template #nodata>
-                    <tr>
+                    <tr style="height: 50px;">
                         <td colspan="6" style="text-align: center;">
                             add items to list here
                         </td>

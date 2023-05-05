@@ -7,6 +7,8 @@
     .items{
         display: flex;
         flex-wrap: wrap;
+        max-height: 300px;
+        overflow-y: scroll;
         .btn{
             width: calc(50% - 6px);
             word-break: break-all;

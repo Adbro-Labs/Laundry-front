@@ -49,6 +49,8 @@
                 />
                 
             </mat-form-field>
+        </div>
+        <div>
             <button mat-stroked-button (click)="guestLogin()" [disabled]="disableUpdate|| disableNumberChange">Guest User</button>
         </div>
         <div>
@@ -75,14 +77,12 @@
                     </button>
                 </div>
             </ng-container>
+            
         </div>
         <div>
-            <!-- <button mat-stroked-button>Set Custom Price</button> -->
+            <button *ngIf="customerDetails" mat-stroked-button (click)="showPreviousBill()">Previous bill</button>
         </div>
         <div></div>
-    </div>
-    <div class="heading">
-        <h4>Items</h4>
     </div>
     <app-item-details [customerId]="customerDetails?._id" (disableNumberChange)="updateNumberChange($event)"></app-item-details>
 </div>

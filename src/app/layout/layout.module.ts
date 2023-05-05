@@ -23,6 +23,7 @@ import { NumberpadComponent } from './numberpad/numberpad.component';
 import { ItemListComponent } from './item-list/item-list.component';
 import { BranchComponent } from './branch/branch.component';
 import { AddBranchComponent } from './add-branch/add-branch.component';
+import { BillViewComponent } from './bill-view/bill-view.component';
 @NgModule({
     imports: [
         CommonModule,
@@ -51,7 +52,8 @@ import { AddBranchComponent } from './add-branch/add-branch.component';
         NumberpadComponent,
         ItemListComponent,
         BranchComponent,
-        AddBranchComponent
+        AddBranchComponent,
+        BillViewComponent
     ],
     providers: [DatePipe]
 

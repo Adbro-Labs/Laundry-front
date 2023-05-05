@@ -9,6 +9,7 @@ import { CustomerService } from 'src/app/shared/services/customer.service';
 import { OrderService } from 'src/app/shared/services/order.service';
 import { OrderapiService } from 'src/app/shared/services/orderapi.service';
 import { AddCustomerComponent } from '../add-customer/add-customer.component';
+import { BillViewComponent } from '../bill-view/bill-view.component';
 import { ItemDetailsComponent } from '../item-details/item-details.component';
 
 @Component({
@@ -233,7 +234,7 @@ export class TakeOrderComponent implements OnInit {
        printWindow.document.close();
        setTimeout(() => {
         printWindow.print();
-        // printWindow.close();
+        printWindow.close();
        }, 750);  
     });
   }
@@ -255,5 +256,15 @@ export class TakeOrderComponent implements OnInit {
   }
   guestLogin() {
     this.mobileNumber.setValue('9988776655');
+  }
+  showPreviousBill() {
+    const branchCode = this.auth.decodeJwt()?.branchCode;
+    if (branchCode) {
+      this.orderApi.getOrderDetailsByCustomer(this.customerDetails._id).subscribe(data => {
+        this.dialog.open(BillViewComponent, {width: '300px', data});
+      }, error => {
+        this.snack.open("Couldn't find Previous Bill", "", {duration: 1500});
+      });
+    }
   }
 }
