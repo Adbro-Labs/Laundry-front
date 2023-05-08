@@ -57,7 +57,7 @@ export class TakeOrderComponent implements OnInit {
   filterCustomers(query) {
     this.showNoCustomer = false;
     this.tempCustomerList = this.customerList
-    .filter(x => x?.customerName?.toLowerCase()?.includes(query) || x?.mobile?.toString()?.includes(query))
+    .filter(x => x?.customerName?.toLowerCase()?.includes(query?.toLowerCase()) || x?.mobile?.toString()?.includes(query))
     ?.slice(0, 3);
     if ((!this.tempCustomerList || this.tempCustomerList.length < 1) && (query && query.length >= 10)) {
       this.customerDetails = null;
