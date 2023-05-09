@@ -215,7 +215,8 @@ export class TakeOrderComponent implements OnInit {
       htmlString = htmlString.replace('[SUBTITLE2]', this.branchDetails?.subtitle2);
       htmlString = htmlString.replace('[IMAGE_URL]', this.branchDetails?.imageUrl);
       // htmlString = htmlString.replace('[TIME]', this.datePipe.transform(this.orderDate, "hh:mm:ss a"));
-       const itemDetails = this.items.orderDetails.value;
+      const itemDetails = this.items.orderDetails.value;
+      htmlString = htmlString.replace('[TOTAL_ITEMS]', itemDetails.length);
        let itemsString;
        let subTotal = 0;
        itemDetails.forEach(el => {
