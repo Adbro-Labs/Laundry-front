@@ -11,8 +11,10 @@ import { OrderapiService } from './orderapi.service';
 export class OrderService {
   private customerId = new BehaviorSubject(null);
   private itemDetails = new BehaviorSubject(null);
+  private showSidebar = new BehaviorSubject(true);
   public customerIdAgent = this.customerId.asObservable();
   public itemDetailsAgent = this.itemDetails.asObservable();
+  public showSidebarAgent = this.showSidebar.asObservable();
   orderForm: FormGroup;
   constructor(private fb: FormBuilder, private orderapi: OrderapiService, private auth: AuthService,
     private router: Router) { 
@@ -66,5 +68,14 @@ export class OrderService {
         this.router.navigate(['/takeOrder', (data as any).orderNumber]);
       });
     }
+  }
+  showSidebars() {
+    this.showSidebar.next(true);
+  }
+  hideSidebars() {
+    this.showSidebar.next(false);
+  }
+  toggleSidebars() {
+    this.showSidebar.next(!this.showSidebar.getValue());
   }
 }

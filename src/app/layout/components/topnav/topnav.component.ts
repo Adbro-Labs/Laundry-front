@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router, NavigationEnd } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { OrderService } from 'src/app/shared/services/order.service';
 
 @Component({
     selector: 'app-topnav',
@@ -11,7 +12,7 @@ import { TranslateService } from '@ngx-translate/core';
 export class TopnavComponent implements OnInit {
     public pushRightClass: string;
     orderNumber = new FormControl('');
-    constructor(public router: Router, private translate: TranslateService) {
+    constructor(public router: Router, private translate: TranslateService, private order: OrderService) {
         this.router.events.subscribe(val => {
             if (val instanceof NavigationEnd && window.innerWidth <= 992 && this.isToggled()) {
                 this.toggleSidebar();
@@ -36,8 +37,9 @@ export class TopnavComponent implements OnInit {
     }
 
     toggleSidebar() {
-        const dom: any = document.querySelector('body');
-        dom.classList.toggle(this.pushRightClass);
+        // const dom: any = document.querySelector('body');
+        // dom.classList.toggle(this.pushRightClass);
+        this.order.toggleSidebars();
     }
 
     onLoggedout() {

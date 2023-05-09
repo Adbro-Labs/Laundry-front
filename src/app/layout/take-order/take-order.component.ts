@@ -52,6 +52,7 @@ export class TakeOrderComponent implements OnInit {
     this.mobileNumber.valueChanges.subscribe(data => {
       this.filterCustomers(data);
     });
+    this.order.hideSidebars();
   }
 
   filterCustomers(query) {
