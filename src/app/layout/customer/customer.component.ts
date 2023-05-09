@@ -37,4 +37,9 @@ export class CustomerComponent implements OnInit {
       this.getAllCustomers();
     });
   }
+  editCustomer(customer) {
+    this.dialog.open(AddCustomerComponent, { disableClose: true, width: '400px', data: customer}).afterClosed().subscribe(data => {
+      this.getAllCustomers();
+    });
+  }
 }
