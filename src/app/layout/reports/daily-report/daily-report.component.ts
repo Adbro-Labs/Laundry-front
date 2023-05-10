@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { AuthService } from 'src/app/shared/services/auth.service';
 import { ReportService } from '../shared/report.service';
 
 @Component({
@@ -16,7 +17,7 @@ export class DailyReportComponent implements OnInit {
     discount: 0,
     netTotal: 0
   }
-  constructor(private route: ActivatedRoute, private service: ReportService) { }
+  constructor(private route: ActivatedRoute, private service: ReportService, private auth: AuthService) { }
 
   ngOnInit(): void {
     const date = this.route.snapshot.queryParams.date;
@@ -28,6 +29,10 @@ export class DailyReportComponent implements OnInit {
   }
   getDailyReport() {
     if (this.date) {
+      const userType = this.auth.getUserRole();
+      if (userType !== 'ADMIN' && !this.branchCode) {
+        return;
+      }
       this.service.getDailyReport(this.date, this.branchCode).subscribe(data => {
         this.report = (data as any);
         this.total = {

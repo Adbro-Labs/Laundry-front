@@ -30,8 +30,11 @@ export class ReportsComponent implements OnInit {
   ngOnInit(): void {
     this.year = (new Date().getFullYear());
     this.month = (new Date().getMonth() + 1);
-    this.getMonthlyReport();
     this.userRole = this.auth.getUserRole();
+    if (this.userRole != 'ADMIN') {
+      this.branchCode = this.auth.decodeJwt()?.branchCode;
+    }
+    this.getMonthlyReport();
     this.getBranches();
   }
   getBranches() {
