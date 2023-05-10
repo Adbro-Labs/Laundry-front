@@ -7,10 +7,19 @@
 <div>
     <mat-form-field>
         <mat-label>Date</mat-label>
-        <input matInput [matDatepicker]="dp3" [(ngModel)]="date">
-        <mat-datepicker-toggle matIconSuffix [for]="dp3"></mat-datepicker-toggle>
-        <mat-datepicker #dp3 ></mat-datepicker>
+        <input matInput [matDatepicker]="dp3" [(ngModel)]="date" disabled>
+        <mat-datepicker #dp3 [disabled]="false"></mat-datepicker>
       </mat-form-field>
+      <mat-datepicker-toggle matIconSuffix [for]="dp3"></mat-datepicker-toggle>
+      <ng-container *ngIf="userType == 'ADMIN'">
+        <mat-form-field>
+            <mat-select [(ngModel)]="branchCode" placeholder="Branch">
+                <mat-option value="">All</mat-option>
+                <mat-option [value]="item.branchCode" *ngFor="let item of branches; index as i">{{item.branchName}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        &nbsp;
+    </ng-container>
     <button mat-stroked-button (click)="getDailyReport()">Search</button>
 </div>
 

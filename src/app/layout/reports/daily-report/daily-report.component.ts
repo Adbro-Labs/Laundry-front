@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { BranchService } from 'src/app/shared/services/measure.service';
 import { ReportService } from '../shared/report.service';
 
 @Component({
@@ -9,7 +10,7 @@ import { ReportService } from '../shared/report.service';
   styleUrls: ['./daily-report.component.scss']
 })
 export class DailyReportComponent implements OnInit {
-  date;
+  date: Date;
   branchCode = "";
   report = [];
   total = {
@@ -17,20 +18,24 @@ export class DailyReportComponent implements OnInit {
     discount: 0,
     netTotal: 0
   }
-  constructor(private route: ActivatedRoute, private service: ReportService, private auth: AuthService) { }
+  branches = [];
+  userType = "";
+  constructor(private route: ActivatedRoute, private service: ReportService, private auth: AuthService, private branch: BranchService) { }
 
   ngOnInit(): void {
     const date = this.route.snapshot.queryParams.date;
     this.branchCode = this.route.snapshot.queryParams.branchCode;
     if (date) {
-      this.date = new Date(date);
+      const dateWithoutHour = (new Date(date)).setHours(0, 0, 0, 0);
+      this.date = new Date(dateWithoutHour);
     }
     this.getDailyReport();
+    this.getBranches();
   }
   getDailyReport() {
     if (this.date) {
-      const userType = this.auth.getUserRole();
-      if (userType !== 'ADMIN' && !this.branchCode) {
+      this.userType = this.auth.getUserRole();
+      if (this.userType !== 'ADMIN' && !this.branchCode) {
         return;
       }
       this.service.getDailyReport(this.date, this.branchCode).subscribe(data => {
@@ -51,5 +56,10 @@ export class DailyReportComponent implements OnInit {
   getSumofItems = (list) => {
     const sum = list.reduce((partialSum, a) => Number(partialSum) + Number(a), 0);
     return sum;
+  }
+  getBranches() {
+    this.branch.getAllBranch().subscribe(data => {
+      this.branches = (data as any);
+    })
   }
 }
