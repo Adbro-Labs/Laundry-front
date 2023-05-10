@@ -217,9 +217,9 @@ export class TakeOrderComponent implements OnInit {
       htmlString = htmlString.replace('[IMAGE_URL]', this.branchDetails?.imageUrl);
       // htmlString = htmlString.replace('[TIME]', this.datePipe.transform(this.orderDate, "hh:mm:ss a"));
       const itemDetails = this.items.orderDetails.value;
-      htmlString = htmlString.replace('[TOTAL_ITEMS]', itemDetails.length);
        let itemsString;
        let subTotal = 0;
+       let totalQty = 0;
        itemDetails.forEach(el => {
          const item = `<tr>
          <td style="text-align: left;">${el.itemName}</td>
@@ -229,7 +229,11 @@ export class TakeOrderComponent implements OnInit {
          </tr>`;
          itemsString += item;
          subTotal += Number(el.total);
+         if (Number(el.quantity)) {
+           totalQty += Number(el.quantity);
+         }
        });
+       htmlString = htmlString.replace('[TOTAL_ITEMS]', totalQty.toString());
        htmlString = htmlString.replace('[itemDetails]', itemsString);
        if (this.orderMaster?.discount) {
          htmlString = htmlString.replace('[DISCOUNT]', Number(this.orderMaster?.discount).toFixed(2));
