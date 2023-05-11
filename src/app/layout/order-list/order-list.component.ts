@@ -36,4 +36,8 @@ searchText = "";
       this.getOrders();
     }
   }
+  quickFilter(status) {
+    this.searchText = status;
+    this.getOrders();
+  }
 }

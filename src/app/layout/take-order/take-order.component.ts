@@ -209,7 +209,7 @@ export class TakeOrderComponent implements OnInit {
       htmlString = htmlString.replace('[CUSTOMER_NAME]', this.customerDetails?.customerName);
       //  htmlString = htmlString.replace('[customerAddress]', this.customerDetails?.address);
       htmlString = htmlString.replace('[CUSTOMER_MOBILE]', this.customerDetails?.mobile);
-      htmlString = htmlString.replace('[DATE]', this.datePipe.transform(this.orderDate, "dd-MM-yyyy"));
+      htmlString = htmlString.replace('[DATE]', this.datePipe.transform(this.orderDate, "dd-MM-yyyy", "+4000"));
       htmlString = htmlString.replace('[SHOPNAME]', this.branchDetails?.title);
       htmlString = htmlString.replace('[TITLE]', this.branchDetails?.title);
       htmlString = htmlString.replace('[SUBTITLE1]', this.branchDetails?.subtitle1);

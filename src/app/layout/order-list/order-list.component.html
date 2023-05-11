@@ -3,6 +3,11 @@
     
 </mat-form-field>&nbsp;
 <button mat-raised-button (click)="getOrders()">Search</button>
+&nbsp;
+<button mat-button color="accent" (click)="quickFilter('PENDING')">Pending Orders</button>
+<button mat-button color="primary" (click)="quickFilter('PAID')">Paid Orders</button>
+<button mat-button color="primary" (click)="quickFilter('DELIVERED')">Delivered Orders</button>
+<button mat-button color="warn" (click)="quickFilter('CANCELLED')">Cancelled Orders</button>
 <div class="table">
     <table>
         <thead>
