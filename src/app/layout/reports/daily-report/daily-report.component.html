@@ -27,6 +27,7 @@
     <table>
         <thead>
             <tr>
+                <th>No</th>
                 <th>DATE</th>
                 <th>BILL NO</th>
                 <th>BILL AMOUNT</th>
@@ -36,7 +37,8 @@
             </tr>
         </thead>
         <tbody>
-                <tr *ngFor="let item of report">
+                <tr *ngFor="let item of report; index as i">
+                    <td>{{i+1}}</td>
                     <td>{{item.orderDate | date: 'dd-MM-yyyy hh:mm:ss a':'+0400'}}</td>
                     <td>{{item?.orderNumber}}</td>
                     <td>{{item.total}}</td>
