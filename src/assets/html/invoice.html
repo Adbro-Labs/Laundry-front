@@ -52,6 +52,7 @@
         padding-bottom: 0;
         font-size: 12px;
         line-height: 17px;
+        padding-top: 6px;
     }
     
     .invoice-box table tr.heading td {
@@ -129,12 +130,10 @@ tr.heading td:first-child {
     <div class="invoice-box" id="invoice-box">
         <table cellpadding="0" cellspacing="0" >
           <!-- INVOICE HEAD  -->
-          <thead >
+          <tbody class="Invoice-items">
             <tr class="top" >
                 <td colspan="4">
-                    <table>
-                        <tr >
-                            <td class="title" style="text-align: center !important;">
+                            <div class="title" style="text-align: center !important;">
                                 <img src="[IMAGE_URL]" width="50px"> 
                                
                                 <h5 style="padding: 0; margin:0; margin: 0;
@@ -148,12 +147,9 @@ tr.heading td:first-child {
                                 <p style="padding: 5px 0 0; margin:0; font-size: 12px; line-height:16px;text-align:center;"> 
                                   [SUBTITLE1]<br>
                                   [SUBTITLE2]</p>
-                            </td>
-                        </tr>
-                    </table>
+                                </div>
                 </td>
             </tr>
-          </thead>
             <tr class="information" >
                 <td colspan="4">
                     <table >
@@ -171,7 +167,7 @@ tr.heading td:first-child {
                     </table>
                 </td>
             </tr>            
-            <tbody class="Invoice-items">
+            
             <tr class="heading" >
                 <td>
                     Item
