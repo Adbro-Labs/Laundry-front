@@ -34,6 +34,7 @@
                 <th>DISCOUNT</th>
                 <th>NET TOTAL</th> 
                 <th>STATUS</th>
+                <th *ngIf="userType=='ADMIN'">BRANCH</th>
             </tr>
         </thead>
         <tbody>
@@ -42,11 +43,13 @@
                     <td>{{item.orderDate | date: 'dd-MM-yyyy hh:mm:ss a':'+0400'}}</td>
                     <td>{{item?.orderNumber}}</td>
                     <td>{{item.total}}</td>
-                    <td>{{item.discount}}</td>
+                    <td>{{item.discount || 0}}</td>
                     <td>{{item.netTotal}}</td>
-                    <td>{{item.status}}</td>
+                    <td [class]="item.status">{{item.status}}</td>
+                    <td *ngIf="userType=='ADMIN'">{{(findBranch(item.branchCode))}}</td>
                 </tr>
                 <tr>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td>{{total.amount}}</td>

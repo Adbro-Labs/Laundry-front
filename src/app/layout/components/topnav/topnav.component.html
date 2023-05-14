@@ -17,6 +17,9 @@
             <input [formControl]="orderNumber" autocomplete="off" autofocus matInput [placeholder]="'Order number' | translate">
         </mat-form-field>
     </form> -->
+    <div style="position: absolute;right: 120px;">
+        <h4>{{userDetails?.branchName}}</h4>
+    </div>
     <span class="nav-spacer"></span>
     <button mat-icon-button (click)="requestFullscreen()"><mat-icon>fullscreen</mat-icon></button>
     

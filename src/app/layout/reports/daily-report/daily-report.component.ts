@@ -62,4 +62,12 @@ export class DailyReportComponent implements OnInit {
       this.branches = (data as any);
     })
   }
+  findBranch(branchCode) {
+    if (this.branches && this.branches.length > 0) {
+      const branch = this.branches.find(x => x.branchCode == branchCode);
+      if(branch) {
+        return branch.branchName;
+      }
+    }
+  }
 }
