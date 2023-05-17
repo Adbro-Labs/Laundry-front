@@ -19,12 +19,14 @@ export class AddItemComponent implements OnInit {
     this.initForm();
     if (this.data) {
       this.customerForm.patchValue(this.data);
+      if (this.data.customerId) {
+        this.customerForm.get('itemName').disable();
+      }
     }
   }
   initForm() {
     this.customerForm = this.fb.group({
       _id: [''],
-      itemId: [''],
       customerId: [null],
       itemName: ['', Validators.required],
       washingCharge: ['', Validators.required],
@@ -38,7 +40,7 @@ export class AddItemComponent implements OnInit {
   saveCustomer() {
     if (this.customerForm.valid) {
       const customerDetails = this.customerForm.value;
-      if(!customerDetails._id || customerDetails.customerId) {
+      if(!customerDetails._id) {
         delete customerDetails._id;
       }
       this.item.saveItem(customerDetails, customerDetails.customerId).subscribe(data => {

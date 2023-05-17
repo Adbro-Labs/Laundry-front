@@ -46,7 +46,6 @@ export class ItemsComponent implements OnInit {
     const customerId = this.myControl?.value?._id;
     if (customerId) {
       item.customerId = customerId;
-      item.itemId = item._id;
     }
     this.dialog.open(AddItemComponent, { disableClose: true, width: '400px', data: item}).afterClosed().subscribe((response: any) => {
       this.getAllCustomers();
