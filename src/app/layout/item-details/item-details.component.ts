@@ -118,7 +118,7 @@ export class ItemDetailsComponent implements OnInit {
           form.patchValue({
             rate
           });
-          total += response?.itemDetails?.dryCleanCharge
+          total += rate;
         }
         if (response?.pressRequired) {
           // rate = response?.itemDetails?.pressingCharge;
