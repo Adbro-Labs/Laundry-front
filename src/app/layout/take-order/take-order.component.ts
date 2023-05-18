@@ -126,6 +126,7 @@ export class TakeOrderComponent implements OnInit {
       disableClose: true, width: '400px', data: formData
     }).afterClosed().subscribe(data => {
       if (data) {
+        this.showNoCustomer = false;
         this.customerList.push(data);
         this.tempCustomerList = [data];
         this.mobileNumber.setValue(data);
