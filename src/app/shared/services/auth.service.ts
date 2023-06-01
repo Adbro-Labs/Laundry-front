@@ -35,4 +35,10 @@ export class AuthService {
     const token = localStorage.getItem("token");
     return token;
   }
+  getBranchCode() {
+    const data: any = this.decodeJwt();
+    if (data && data.branchCode) {
+      return data.branchCode;
+    }
+  }
 }

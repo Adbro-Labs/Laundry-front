@@ -7,14 +7,14 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 import { CustomerService } from 'src/app/shared/services/customer.service';
 import { BranchService } from 'src/app/shared/services/measure.service';
 import { OrderapiService } from 'src/app/shared/services/orderapi.service';
-import { ReportService } from './shared/report.service';
+import { ReportService } from '../shared/report.service';
 
 @Component({
-  selector: 'app-reports',
-  templateUrl: './reports.component.html',
-  styleUrls: ['./reports.component.scss']
+  selector: 'app-customer-statement',
+  templateUrl: './customer-statement.component.html',
+  styleUrls: ['./customer-statement.component.scss']
 })
-export class ReportsComponent implements OnInit {
+export class CustomerStatementComponent implements OnInit {
   orders = [];
   year;
   month;
@@ -47,7 +47,7 @@ export class ReportsComponent implements OnInit {
     }
     this.getBranches();
     this.mobileNumber.valueChanges
-    .pipe(debounceTime(500))
+    .pipe(debounceTime(300))
     .subscribe(data => {
       if(typeof data == 'string') {
         if (data.length < 1) {
@@ -71,7 +71,7 @@ export class ReportsComponent implements OnInit {
   }
   
   getMonthlyReport() {
-    this.service.getMonthlyReport(this.month, this.year, this.branchCode, this.customerId).subscribe(data => {
+    this.service.getCustomerMonthlyReport(this.month, this.year, this.branchCode, this.customerId).subscribe(data => {
       this.orders = (data as any);
       if (this.customerId) {
         this.customerDetails = this.mobileNumber.value;
@@ -147,8 +147,8 @@ export class ReportsComponent implements OnInit {
        let totalQty = 0;
        this.orders.forEach(el => {
          const item = `<tr>
-         <td style="text-align: left;">${this.datePipe.transform(el.date, "dd-MM-yyyy", "+0400")}</td>
-         <td></td>
+         <td style="text-align: left;">${this.datePipe.transform(el.orderDate, "dd-MM-yyyy", "+0400")}</td>
+         <td>${el.orderNumber}</td>
          <td></td>
          <td>${Number(el.netTotal).toFixed(2)}</td>
          </tr>`;
@@ -170,7 +170,7 @@ export class ReportsComponent implements OnInit {
        printWindow.document.write(`<html><head><title>${this.branchDetails?.title}</title>`);  
        printWindow.document.write('</head><body>');  
        printWindow.document.write(htmlString);
-       printWindow.document.getElementById("qtylabel").innerText = "";
+       printWindow.document.getElementById("qtylabel").innerText = "Bill No";
        printWindow.document.getElementById("pricelabel").innerText = "";
        printWindow.document.getElementById("itemLabel").innerText = "Date";
        elementIdsToHide.push("totalItems");

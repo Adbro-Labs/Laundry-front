@@ -10,10 +10,13 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatIconModule } from '@angular/material/icon';
+import { CustomerStatementComponent } from './customer-statement/customer-statement.component';
 
 @NgModule({
-  declarations: [ReportsComponent, DailyReportComponent],
+  declarations: [ReportsComponent, DailyReportComponent, CustomerStatementComponent],
   imports: [
     CommonModule,
     ReportsRoutingModule,
@@ -23,7 +26,11 @@ import { FormsModule } from '@angular/forms';
     MatInputModule,
     MatSelectModule,
     MatOptionModule,
-    FormsModule
+    FormsModule,
+    MatAutocompleteModule,
+    MatInputModule,
+    ReactiveFormsModule,
+    MatIconModule
   ]
 })
 export class ReportsModule { }

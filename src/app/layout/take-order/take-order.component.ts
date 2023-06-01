@@ -6,6 +6,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { CustomerService } from 'src/app/shared/services/customer.service';
+import { BranchService } from 'src/app/shared/services/measure.service';
 import { OrderService } from 'src/app/shared/services/order.service';
 import { OrderapiService } from 'src/app/shared/services/orderapi.service';
 import { AddCustomerComponent } from '../add-customer/add-customer.component';
@@ -37,7 +38,7 @@ export class TakeOrderComponent implements OnInit {
   tempCustomerList = [];
   @ViewChild(ItemDetailsComponent) items: ItemDetailsComponent;
   mobileNumber = new FormControl({value: '', disabled: this.disableNumberChange}, [Validators.required, Validators.minLength(10), Validators.maxLength(10)]);
-  constructor(private route: ActivatedRoute, private customer: CustomerService, private auth: AuthService, private router: Router,
+  constructor(private route: ActivatedRoute, private customer: CustomerService, private auth: AuthService, private router: Router, private branch: BranchService,
     private dialog: MatDialog, private order: OrderService, private orderApi: OrderapiService, private snack: MatSnackBar, private datePipe: DatePipe) { 
   }
 

@@ -155,12 +155,12 @@ tr.heading td:first-child {
                     <table >
                         <tr>
                             <td style="display: flex;justify-content: space-between;width: 100%;">
-                                <div style="text-align: left"><strong>No: [ORDER_NO]</strong></div>
+                                <div id="billno" style="text-align: left"><strong>No: [ORDER_NO]</strong></div>
                                 <div style="text-align: right"><strong>Date: [DATE]</strong></div>
                             </td>
                         </tr>
                         <tr>
-                            <td style="width: 100%;">
+                            <td style="width: 100%;" id="customerDetails">
                                 <strong>Name: [CUSTOMER_NAME], [CUSTOMER_MOBILE]</strong><br>
                             </td>
                         </tr>
@@ -168,15 +168,15 @@ tr.heading td:first-child {
                 </td>
             </tr>            
             
-            <tr class="heading" >
-                <td>
+            <tr class="heading">
+                <td id="itemLabel">
                     Item
                 </td>
                 
-                <td>
+                <td id="qtylabel">
                     Qty
                 </td>
-                <td>
+                <td id="pricelabel">
                   Price
               </td>
               <td>
@@ -198,7 +198,7 @@ tr.heading td:first-child {
             </tr>
             <tr> 
                 <td colspan="4" style="text-align:left">
-                <span style="font-size: 12px;"> Total Number of Items: [TOTAL_ITEMS]</span> 
+                <span style="font-size: 12px;" id="totalItems"> Total Number of Items: [TOTAL_ITEMS]</span> 
                 </td>
             </tr>
             <tr class="notes"> 
@@ -208,7 +208,7 @@ tr.heading td:first-child {
           </tr>
           <tr>
             <td colspan="4" style="text-align:left">
-                Delivery Type: [DELIVREY_TYPE]<br>
+                <span id="deliveryTypeLabel">Delivery Type: [DELIVREY_TYPE]</span><br>
                 <span id="deliveryTimeLabel">Delivery Time : [DELIVREY_TIME]</span><br>
             </td>
           </tr>

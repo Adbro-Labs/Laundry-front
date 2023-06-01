@@ -9,8 +9,18 @@ export class ReportService {
 
   constructor(private http: HttpClient) { }
 
-  getMonthlyReport(month, year, branch = "") {
-    const url = environment.apiUrl + `order/getReportSummaryByMonth?month=${month}&year=${year}&branchCode=${branch}`;
+  getMonthlyReport(month, year, branch = "", customerId = null) {
+    let url = environment.apiUrl + `order/getReportSummaryByMonth?month=${month}&year=${year}&branchCode=${branch}`;
+    if (customerId) {
+      url += `&customerId=${customerId}`
+    }
+    return this.http.get(url);
+  }
+  getCustomerMonthlyReport(month, year, branch = "", customerId = null) {
+    let url = environment.apiUrl + `order/getCustomerSummaryByMonth?month=${month}&year=${year}&branchCode=${branch}`;
+    if (customerId) {
+      url += `&customerId=${customerId}`
+    }
     return this.http.get(url);
   }
   getDailyReport(date, branch = "") {

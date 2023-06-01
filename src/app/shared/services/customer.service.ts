@@ -29,4 +29,8 @@ export class CustomerService {
     const url = environment.apiUrl + 'branch/getByCode/' + code;
     return this.http.get(url);
   }
+  findCustomer(query) {
+    const url = environment.apiUrl + 'customer/findCustomer?query='+ query;
+    return this.http.get(url);
+  }
 }

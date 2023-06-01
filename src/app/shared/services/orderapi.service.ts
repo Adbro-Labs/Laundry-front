@@ -22,6 +22,10 @@ export class OrderapiService {
     const url = "/assets/html/invoice.html";
     return this.http.get(url, {responseType: "text"});
   }
+  getInvoiceReportTemplate() {
+    const url = "/assets/html/invoice-report.html";
+    return this.http.get(url, {responseType: "text"});
+  }
   getOrderDetailsByNumber(orderNumber, branchCode) {
     const url = environment.apiUrl + `order/ByOrderNumber?orderNumber=${orderNumber}&branchCode=${branchCode}`;
     return this.http.get(url);

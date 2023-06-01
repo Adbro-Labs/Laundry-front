@@ -13,7 +13,7 @@ export class NavComponent implements OnInit {
     isHandset: Observable<BreakpointState> = this.breakpointObserver.observe(
         Breakpoints.Handset
     );
-    showSidebar =  true;
+    showSidebar =  false;
     constructor(private breakpointObserver: BreakpointObserver, private order: OrderService) {}
     ngOnInit() {
         this.order.showSidebarAgent.subscribe((data: boolean) => {

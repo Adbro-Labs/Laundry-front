@@ -1,10 +1,10 @@
 <div class="mb-20" fxLayout="row" fxLayout.lt-md="column" fxFlex fxLayoutGap="20px">
-    <div fxFlex>
+    <div fxFlex *ngIf="userType!= 'ADMIN'">
         <app-stat (click)="order.generateNewOrder()" [bgClass]="'success'" 
-        [icon]="'add'" [label]="'New Order'" *ngIf="userType!= 'ADMIN'"></app-stat>
+        [icon]="'add'" [label]="'New Order'"></app-stat>
     </div>
    
-    <div fxFlex>
+    <div fxFlex *ngIf="userType!= 'ADMIN'">
         <app-stat routerLink="/orders" [bgClass]="'warn'" [icon]="'shopping_cart'"  [label]="'Orders'"></app-stat>
     </div>
     <div fxFlex>
@@ -12,6 +12,9 @@
     </div>
     <div fxFlex>
         <app-stat routerLink="/customers"  [bgClass]="'info'" [icon]="'person'" [label]="'Customers'"></app-stat>
+    </div>
+    <div fxFlex>
+        <app-stat routerLink="/reports"  [bgClass]="'success'" [icon]="'list'" [label]="'Reports'"></app-stat>
     </div>
 </div>
 

@@ -1,6 +1,6 @@
 <div class="container">
     <div class="heading">
-        <h3>Report</h3>
+        <h3>Customer Report</h3>
     </div>
     <div style="text-align:right">
         <button mat-stroked-button (click)="printReciept()" [disabled]="orders?.length < 1">Print</button>
@@ -21,13 +21,12 @@
 <ng-container *ngIf="userRole == 'ADMIN'">
     <mat-form-field>
         <mat-select [(ngModel)]="branchCode" placeholder="Branch">
-            <mat-option value="">All</mat-option>
             <mat-option [value]="item.branchCode" *ngFor="let item of branches; index as i">{{item.branchName}}</mat-option>
         </mat-select>
     </mat-form-field>
 </ng-container>
 &nbsp;
-<mat-form-field class="example-full-width" appearance="fill" *ngIf="userRole != 'ADMIN'">
+<mat-form-field class="example-full-width" appearance="fill">
     <mat-label>Customer</mat-label>
     <input
         type="text"
@@ -58,21 +57,18 @@
     <table>
         <thead>
             <th>DATE</th>
-            <th>BILL AMOUNT</th>
-            <th>DISCOUNT</th>
+            <th>BILL NO</th>
             <th>NET TOTAL</th>
         </thead>
         <tbody>
                 <tr *ngFor="let item of orders">
-                    <td style="text-decoration: underline;cursor: pointer;" (click)="openDailyReport(item.date)">{{item.date | date: 'dd/MM/yyyy':'+0400'}}</td>
-                    <td>{{item.total}}</td>
-                    <td>{{item.discount}}</td>
+                    <td>{{item.orderDate | date: 'dd/MM/yyyy':'+0400'}}</td>
+                    <td>{{item.orderNumber}}</td>
                     <td>{{item.netTotal}}</td>
                 </tr>
                 <tr>
                     <td></td>
-                    <td>{{total.amount}}</td>
-                    <td>{{total.discount}}</td>
+                    <td></td>
                     <td>{{total.netTotal}}</td>
                 </tr>
         </tbody>
