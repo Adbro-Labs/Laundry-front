@@ -59,17 +59,20 @@
             <th>DATE</th>
             <th>BILL NO</th>
             <th>NET TOTAL</th>
+            <th>STATUS</th>
         </thead>
         <tbody>
                 <tr *ngFor="let item of orders">
                     <td>{{item.orderDate | date: 'dd/MM/yyyy':'+0400'}}</td>
                     <td>{{item.orderNumber}}</td>
                     <td>{{item.netTotal}}</td>
+                    <td>{{item.status}}}</td>
                 </tr>
                 <tr>
                     <td></td>
                     <td></td>
                     <td>{{total.netTotal}}</td>
+                    <td></td>
                 </tr>
         </tbody>
     </table>
