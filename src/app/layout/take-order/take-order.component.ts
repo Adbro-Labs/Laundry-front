@@ -218,7 +218,11 @@ export class TakeOrderComponent implements OnInit {
       htmlString = htmlString.replace('[TITLE]', this.branchDetails?.title);
       htmlString = htmlString.replace('[SUBTITLE1]', this.branchDetails?.subtitle1);
       htmlString = htmlString.replace('[SUBTITLE2]', this.branchDetails?.subtitle2);
-      htmlString = htmlString.replace('[IMAGE_URL]', this.branchDetails?.imageUrl);
+      if (this.branchDetails?.imageUrl) {
+        htmlString = htmlString.replace('[IMAGE_URL]', this.branchDetails?.imageUrl);
+      } else {
+        elementIdsToHide.push("shoplogo");
+      }
       // htmlString = htmlString.replace('[TIME]', this.datePipe.transform(this.orderDate, "hh:mm:ss a"));
       const itemDetails = this.items.orderDetails.value;
        let itemsString;
