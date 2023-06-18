@@ -27,7 +27,7 @@ export class ItemsComponent implements OnInit {
     );
   }
   getCustomers() {
-    this.customer.getAllCustomers().subscribe(data => {
+    this.customer.getAllCustomers(0).subscribe(data => {
       this.options = (data as any);
     });
   }

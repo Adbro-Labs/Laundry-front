@@ -44,7 +44,9 @@
                 <input type="text"
                        placeholder="Search Customer"
                        aria-label="customer"
+                       name="customerName"
                        matInput
+                       autocomplete="off"
                        [formControl]="mobileNumber"
                        [matAutocomplete]="auto">
                 <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" 

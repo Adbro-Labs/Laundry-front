@@ -21,8 +21,11 @@ export class CustomerService {
     const url = environment.apiUrl + 'customer';
     return this.http.post(url, body);
   }
-  getAllCustomers() {
-    const url = environment.apiUrl + 'customer';
+  getAllCustomers(index, query = "") {
+    let url = environment.apiUrl + 'customer?index=' + index;
+    if (query) {
+      url = url + '&text='+query;
+    }
     return this.http.get(url);
   }
   getBranchByCode(code) {

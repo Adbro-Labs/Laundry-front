@@ -4,6 +4,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
+import { debounceTime } from 'rxjs/operators';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { CustomerService } from 'src/app/shared/services/customer.service';
 import { BranchService } from 'src/app/shared/services/measure.service';
@@ -49,9 +50,10 @@ export class TakeOrderComponent implements OnInit {
         this.getOrderDetailsByOrderNumber(this.orderNumber);
       }
     });
-    this.getAllCustomers();
-    this.mobileNumber.valueChanges.subscribe(data => {
-      this.filterCustomers(data);
+    this.mobileNumber.valueChanges
+    .pipe(debounceTime(500))
+    .subscribe(data => {
+      this.getAllCustomers(data);
     });
     this.order.hideSidebars();
   }
@@ -69,10 +71,18 @@ export class TakeOrderComponent implements OnInit {
     }
   }
 
-  getAllCustomers() {
-    this.customer.getAllCustomers().subscribe(data => {
-      this.customerList = (data as any);
-    });
+  getAllCustomers(query) {
+    if (typeof query == 'string') {
+      this.showNoCustomer = false;
+      this.customer.getAllCustomers(0, query).subscribe(data => {
+        this.customerList = (data as any);
+        this.tempCustomerList = (data as any);
+        if ((!this.tempCustomerList || this.tempCustomerList.length < 1) && (query && query.length >= 10)) {
+          this.customerDetails = null;
+          this.showNoCustomer = true;
+        }
+      });
+    }
   }
   displayFn(user): string {
     const cusomerMobile =  user && user.mobile ? user.mobile : '';
