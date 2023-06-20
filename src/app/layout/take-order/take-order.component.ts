@@ -50,6 +50,7 @@ export class TakeOrderComponent implements OnInit {
         this.getOrderDetailsByOrderNumber(this.orderNumber);
       }
     });
+    this.getAllCustomers("");
     this.mobileNumber.valueChanges
     .pipe(debounceTime(500))
     .subscribe(data => {

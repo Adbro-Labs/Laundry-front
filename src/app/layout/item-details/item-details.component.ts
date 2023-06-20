@@ -8,6 +8,7 @@ import { ItemService } from 'src/app/shared/services/item.service';
 import { AddItemComponent } from '../add-item/add-item.component';
 import { NumberpadComponent } from '../numberpad/numberpad.component';
 import { ServiceCountComponent } from '../service-count/service-count.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-item-details',
@@ -30,7 +31,8 @@ export class ItemDetailsComponent implements OnInit {
   deliveryTime = "";
   constructor(private item: ItemService, private fb: FormBuilder,
     private route: ActivatedRoute, private dialog: MatDialog,
-    private auth: AuthService) { }
+    private auth: AuthService,
+    private snack: MatSnackBar) { }
 
   ngOnInit(): void {
     this.getItems();
@@ -51,7 +53,7 @@ export class ItemDetailsComponent implements OnInit {
       itemName: [null, Validators.required],
       itemId: [null, Validators.required],
       quantity: [null, Validators.required],
-      total: [null, Validators.required],
+      total: [null, [Validators.required, Validators.min(1)]],
       customerId: [null, Validators.required],
       washRequired: [null, Validators.required],
       dryCleanRequired: [null, Validators.required],
@@ -138,9 +140,17 @@ export class ItemDetailsComponent implements OnInit {
           services,
           total: total.toFixed(2) 
         });
-        this.orderDetails.push(form);
-        this.disableNumberChange.emit(true);
-        this.calculateNetTotal(); 
+        if (form.valid) {
+          this.orderDetails.push(form);
+          this.disableNumberChange.emit(true);
+          this.calculateNetTotal();
+        } else {
+          if(form.get('total').invalid) {
+            this.snack.open("total should be greater than 0", "Ok", {duration: 1500});
+          } else {
+            this.snack.open("something wrong with item details", "Ok", {duration: 1500});
+          }
+        }
       }
     });
   }
