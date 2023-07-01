@@ -16,8 +16,8 @@ export class ReportService {
     }
     return this.http.get(url);
   }
-  getCustomerMonthlyReport(month, year, branch = "", customerId = null) {
-    let url = environment.apiUrl + `order/getCustomerSummaryByMonth?month=${month}&year=${year}&branchCode=${branch}`;
+  getCustomerMonthlyReport(month, year, branch = "", customerId = null, status = null) {
+    let url = environment.apiUrl + `order/getCustomerSummaryByMonth?month=${month}&year=${year}&branchCode=${branch}&status=${status}`;
     if (customerId) {
       url += `&customerId=${customerId}`
     }

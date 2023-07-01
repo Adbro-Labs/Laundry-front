@@ -35,6 +35,8 @@ export class CustomerStatementComponent implements OnInit {
   tempCustomerList = [];
   branchDetails;
   customerDetails;
+  statusList = ["PENDING", "PAID", "DELIVERED"];
+  status;
   constructor(private service: ReportService, private router: Router, private branch: BranchService, private auth: AuthService, private customer: CustomerService,
     private orderApi: OrderapiService, private datePipe: DatePipe) { }
 
@@ -71,7 +73,7 @@ export class CustomerStatementComponent implements OnInit {
   }
   
   getMonthlyReport() {
-    this.service.getCustomerMonthlyReport(this.month, this.year, this.branchCode, this.customerId).subscribe(data => {
+    this.service.getCustomerMonthlyReport(this.month, this.year, this.branchCode, this.customerId, this.status).subscribe(data => {
       this.orders = (data as any);
       if (this.customerId) {
         this.customerDetails = this.mobileNumber.value;

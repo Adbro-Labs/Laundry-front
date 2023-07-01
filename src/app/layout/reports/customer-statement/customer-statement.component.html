@@ -52,6 +52,14 @@
     </mat-autocomplete>
     <mat-icon style="cursor: pointer;" matSuffix class="my-icon" (click)="clearCustomerId($event)">close</mat-icon>
 </mat-form-field>
+&nbsp;
+<mat-form-field>
+    <mat-select [(ngModel)]="status" placeholder="Status">
+        <mat-option>All</mat-option>
+        <mat-option *ngFor="let item of statusList; index as i" [value]="item">{{item}}</mat-option>
+    </mat-select>
+</mat-form-field>
+&nbsp;
 <button mat-raised-button (click)="getMonthlyReport()">Search</button>
 <div class="table">
     <table>

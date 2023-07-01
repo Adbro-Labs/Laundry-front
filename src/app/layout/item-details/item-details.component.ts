@@ -36,7 +36,7 @@ export class ItemDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.getItems();
-    this.orderDetails = new FormArray([]);
+    this.orderDetails = new FormArray([], [Validators.required, Validators.minLength(1)]);
   }
   getItems() {
     this.item.getItems(this.customerId).subscribe(data => {

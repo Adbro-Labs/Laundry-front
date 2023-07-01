@@ -37,6 +37,7 @@ export class TakeOrderComponent implements OnInit {
   userRole = this.auth.getUserRole();
   customerList = [];
   tempCustomerList = [];
+  disableSave = false;
   @ViewChild(ItemDetailsComponent) items: ItemDetailsComponent;
   mobileNumber = new FormControl({value: '', disabled: this.disableNumberChange}, [Validators.required, Validators.minLength(10), Validators.maxLength(10)]);
   constructor(private route: ActivatedRoute, private customer: CustomerService, private auth: AuthService, private router: Router, private branch: BranchService,
@@ -172,6 +173,7 @@ export class TakeOrderComponent implements OnInit {
     });
   }
   saveOrder() {
+    this.disableSave = true;
     if (this.items.orderDetails.valid) {
       const items = this.items.orderDetails.value;
       let total = 0;
@@ -209,12 +211,14 @@ export class TakeOrderComponent implements OnInit {
         }
         this.enablePrint = true;
         this.disableUpdate = true;
+        this.disableSave = false;
         this.printReciept();
         this.snack.open("Order placed successfully", "Ok", {duration: 1500});
         this.router.navigate(['/orders']);
       })
     } else {
       this.snack.open("complete the item details", "Ok", {duration: 1500});
+      this.disableSave = false;
     }
   }
   printReciept() {
