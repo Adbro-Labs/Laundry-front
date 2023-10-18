@@ -34,7 +34,8 @@ export class AddItemComponent implements OnInit {
       pressingCharge: ['', [Validators.required]],
       expressWashingCharge: ['', Validators.required],
       expressDryCleanCharge: ['', [Validators.required]],
-      expressPressingCharge: ['', [Validators.required]]
+      expressPressingCharge: ['', [Validators.required]],
+      sortOrder: [null]
     });
   }
   saveCustomer() {
