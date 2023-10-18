@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { ItemService } from 'src/app/shared/services/item.service';
 import { AddItemComponent } from '../add-item/add-item.component';
-import { startWith,map } from 'rxjs/operators';
+import { startWith,map, debounceTime } from 'rxjs/operators';
 import { CustomerService } from 'src/app/shared/services/customer.service';
 @Component({
   selector: 'app-customer',
@@ -15,21 +15,24 @@ export class ItemsComponent implements OnInit {
   customerDetails;
   myControl = new FormControl();
   options: any[] = [];
-  filteredOptions: Observable<any[]>;
+  filteredOptions:any[];
   constructor(private dialog: MatDialog, private item: ItemService, private customer: CustomerService) { }
 
   ngOnInit(): void {
     this.getAllCustomers();
-    this.getCustomers();
-    this.filteredOptions = this.myControl.valueChanges.pipe(
-      startWith(''),
-      map(value => this._filter(value))
-    );
-  }
-  getCustomers() {
-    this.customer.getAllCustomers(0).subscribe(data => {
-      this.options = (data as any);
+    this.getCustomers("");
+    this.myControl.valueChanges.pipe(debounceTime(500))
+    .subscribe(data => {
+      this.getCustomers(data);
     });
+  }
+  getCustomers(query) {
+    if (typeof query == 'string') {
+      this.customer.getAllCustomers(0, query).subscribe(data => {
+        this.options = (data as any);
+        this.filteredOptions = (data as any);
+      });
+    }
   }
   showCustomerDialog() {
     this.dialog.open(AddItemComponent, { disableClose: true, width: '400px'}).afterClosed().subscribe((response: any) => {

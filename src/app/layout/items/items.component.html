@@ -13,7 +13,7 @@
                [formControl]="myControl"
                [matAutocomplete]="auto">
         <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [autoActiveFirstOption]="true" [displayWith]="displayFn" (optionSelected)="getCustomerPricing()">
-          <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+          <mat-option *ngFor="let option of filteredOptions" [value]="option">
             {{option.customerName}} - {{option.mobile}}
           </mat-option>
         </mat-autocomplete>
