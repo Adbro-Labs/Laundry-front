@@ -24,6 +24,8 @@ import { ItemListComponent } from './item-list/item-list.component';
 import { BranchComponent } from './branch/branch.component';
 import { AddBranchComponent } from './add-branch/add-branch.component';
 import { BillViewComponent } from './bill-view/bill-view.component';
+import { AddcategoryComponent } from './addcategory/addcategory.component';
+import { CategoryComponent } from './category/category.component';
 @NgModule({
     imports: [
         CommonModule,
@@ -53,7 +55,9 @@ import { BillViewComponent } from './bill-view/bill-view.component';
         ItemListComponent,
         BranchComponent,
         AddBranchComponent,
-        BillViewComponent
+        BillViewComponent,
+        AddcategoryComponent,
+        CategoryComponent
     ],
     providers: [DatePipe]
 
