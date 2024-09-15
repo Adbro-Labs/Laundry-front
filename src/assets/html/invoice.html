@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <title>[TITLE]</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
   <style>
     .invoice-box {
         max-width: 300px;
@@ -12,7 +15,7 @@
         /* box-shadow: 0 0 10px rgba(0, 0, 0, .15); */
         font-size: 16px;
         line-height: 24px;
-        font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+        font-family: 'Poppins', 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
         color: #000;
     }
     .information table{
@@ -115,6 +118,17 @@ tr.heading td:first-child {
     border-top: 1px dashed #333;
     border-bottom: 1px solid #333;
    }
+   .terms {
+    padding-left: 20px;
+   }
+   .terms li {
+    font-size: 13px;
+    line-height: 1.3;
+   }
+   .terms-label {
+    font-size: 13px;
+    font-weight: 600;
+   }
    @media print {
        body {
             margin: 2px;
@@ -210,10 +224,21 @@ tr.heading td:first-child {
             <td colspan="4" style="text-align:left">
                 <span id="deliveryTypeLabel">Delivery Type: [DELIVREY_TYPE]</span><br>
                 <span id="deliveryTimeLabel">Delivery Time : [DELIVREY_TIME]</span><br>
+                <span id="deliveryTimeLabel">Payment Type : [PAYMENT_TYPE]</span><br>
             </td>
           </tr>
           </tbody>
         </table>
+        <p class="terms-label">
+            Terms and Conditions
+        </p>
+        <ul class="terms">
+            <li>We are not responsible for valuable left in pockets.</li>
+            <li>We do not hold and responsibility of clothes after one month.</li>
+            <li>Our liability for loss or damage will not exceed 10 times the price of item in question.</li>
+            <li>We shall not be responsible for any items not collected within a period of one month.</li>
+            <li>The purchase bill must be produced.</li>
+        </ul>
         <p style="text-align: center; font-size: 12px; margin: 0px;">T&C Apply. visit www.royaltouchlaundry.com</p>
     </div>
 </body>
