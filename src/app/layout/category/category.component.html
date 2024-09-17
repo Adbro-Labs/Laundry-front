@@ -1,0 +1,41 @@
+<div class="container">
+    <div class="heading">
+        <h3>Category</h3>
+        <button
+            (click)="showCategoryDialog()"
+            mat-raised-button
+            color="primary"
+        >
+            Add Category
+        </button>
+    </div>
+</div>
+
+
+
+
+<div class="table">
+    <table>
+        <thead>
+            <th>NO</th>
+            <th>CATEGORY NAME</th>
+            <th>STATUS</th>
+            <th>ACTION</th>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of tempCategoryList; index as i">
+                <td>{{ i + 1 }}</td>
+                <td>{{ item.categoryName }}</td>
+                <td>{{ item.isActive ? "Active" : "Non Active" }}</td>
+                <td>
+                    <button (click)="editCategory(item)" mat-icon-button>
+                        <mat-icon>edit</mat-icon></button
+                    ><button mat-icon-button>
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+

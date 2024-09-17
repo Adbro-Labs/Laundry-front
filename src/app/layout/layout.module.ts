@@ -25,6 +25,8 @@ import { BranchComponent } from './branch/branch.component';
 import { AddBranchComponent } from './add-branch/add-branch.component';
 import { BillViewComponent } from './bill-view/bill-view.component';
 import { SettlementComponent } from './settlement/settlement.component';
+import { AddcategoryComponent } from './addcategory/addcategory.component';
+import { CategoryComponent } from './category/category.component';
 @NgModule({
     imports: [
         CommonModule,
@@ -55,7 +57,9 @@ import { SettlementComponent } from './settlement/settlement.component';
         BranchComponent,
         AddBranchComponent,
         BillViewComponent,
-        SettlementComponent
+        SettlementComponent,
+        AddcategoryComponent,
+        CategoryComponent
     ],
     providers: [DatePipe]
 
