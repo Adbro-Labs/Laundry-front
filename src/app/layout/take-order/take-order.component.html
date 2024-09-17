@@ -9,16 +9,27 @@
                 </mat-select>
             </mat-form-field>
             <button
-                (click)="saveOrder()"
+                (click)="initiateSettlement()"
                 mat-raised-button
                 color="primary"
                 style="margin-left: 5px"
-                *ngIf="userRole!='ADMIN'"
+                *ngIf="userRole!='ADMIN' && !disableUpdate"
                 [disabled]="disableSave"
             >
-                Save & Print
+                Settle
          </button>
             &nbsp;
+            <button
+            (click)="updateOrderStatus()"
+            mat-raised-button
+            color="primary"
+            style="margin-left: 5px"
+            *ngIf="userRole!='ADMIN' && disableUpdate"
+            [disabled]="disableSave"
+        >
+            Update Status
+     </button>
+        &nbsp;
             <button
                 (click)="printReciept()"
                 mat-stroked-button
@@ -30,7 +41,7 @@
             </button>
             &nbsp;
             <button [disabled]="!enablePrint" (click)="cancelOrder()" mat-stroked-button color="warn" *ngIf="showCancelOrder">
-                Confirm Cancel order
+                Request Cancellation
             </button>
             &nbsp;
             <button [disabled]="!enablePrint || orderStatus == 'DELIVERED' || userRole == 'ADMIN'" (click)="showCancelOrder = !showCancelOrder" mat-stroked-button color="warn">

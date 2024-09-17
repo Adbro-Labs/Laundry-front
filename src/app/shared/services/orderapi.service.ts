@@ -42,4 +42,8 @@ export class OrderapiService {
     const url = environment.apiUrl + 'order/cancelOrder?orderId=' + orderId;
     return this.http.post(url, {});
   }
+  updateOrderStatus(orderId, status) {
+    const url = environment.apiUrl + 'order/updateStatus?orderId=' + orderId + '&status=' + status;
+    return this.http.post(url, {});
+  }
 }
