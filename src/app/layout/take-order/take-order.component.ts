@@ -467,8 +467,22 @@ export class TakeOrderComponent implements OnInit {
     }
 
     updateOrderStatus() {
-        this.orderApi
-            .updateOrderStatus(this.orderMaster?._id, this.orderStatus)
+        if (this.orderStatus == this.orderMaster?.status) {
+            return;
+        }
+        this.dialog.open(SettlementComponent, {
+            width: '500px',
+            data: {
+                orderNumber: this.orderNumber,
+                disablePayLater: true
+            },
+            position: {
+                top: "150px"
+            }
+        }).afterClosed().subscribe(paymentMethod => {
+            if (paymentMethod) {
+                this.orderApi
+            .updateOrderStatus(this.orderMaster?._id, this.orderStatus, paymentMethod)
             .subscribe(
                 (data) => {
                   this.getOrderDetailsByOrderNumber(this.orderNumber);
@@ -480,6 +494,8 @@ export class TakeOrderComponent implements OnInit {
                     console.error(error);
                 }
             );
+            }
+        });
     }
 
     processSaveOrder(data) {

@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { paymentMethod} from "../../shared/enums"
 @Component({
   selector: 'app-settlement',
@@ -9,7 +9,8 @@ import { paymentMethod} from "../../shared/enums"
 export class SettlementComponent implements OnInit {
 
   paymentMethod = paymentMethod;
-  constructor(private dialogRef: MatDialogRef<SettlementComponent>) { }
+  constructor(private dialogRef: MatDialogRef<SettlementComponent>, @Inject(MAT_DIALOG_DATA) public data: any) { 
+  }
 
   ngOnInit(): void {
   }
