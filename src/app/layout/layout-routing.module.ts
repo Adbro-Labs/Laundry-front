@@ -6,6 +6,7 @@ import { ItemsComponent } from './items/items.component';
 import { LayoutComponent } from './layout.component';
 import { OrderDetailsComponent } from './order-details/order-details.component';
 import { TakeOrderComponent } from './take-order/take-order.component';
+import { CategoryComponent } from './category/category.component';
 
 const routes: Routes = [
     {
@@ -47,6 +48,10 @@ const routes: Routes = [
             {
                 path: 'branch',
                 component: BranchComponent
+            },
+            {
+                path: 'category',
+                component: CategoryComponent
             }
         ]
     }
