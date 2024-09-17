@@ -8,7 +8,7 @@
 // };
 
 export const environment = {
-  production: true,
+  production: false,
   apiUrl: 'https://laundry-api.onrender.com/'
 };
 

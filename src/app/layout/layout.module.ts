@@ -24,6 +24,7 @@ import { ItemListComponent } from './item-list/item-list.component';
 import { BranchComponent } from './branch/branch.component';
 import { AddBranchComponent } from './add-branch/add-branch.component';
 import { BillViewComponent } from './bill-view/bill-view.component';
+import { SettlementComponent } from './settlement/settlement.component';
 import { AddcategoryComponent } from './addcategory/addcategory.component';
 import { CategoryComponent } from './category/category.component';
 @NgModule({
@@ -56,6 +57,7 @@ import { CategoryComponent } from './category/category.component';
         BranchComponent,
         AddBranchComponent,
         BillViewComponent,
+        SettlementComponent,
         AddcategoryComponent,
         CategoryComponent
     ],
