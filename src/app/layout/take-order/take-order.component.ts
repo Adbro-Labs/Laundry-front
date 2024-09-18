@@ -466,36 +466,44 @@ export class TakeOrderComponent implements OnInit {
         }
     }
 
-    updateOrderStatus() {
+    initiateOrderStatusUpdate() {
         if (this.orderStatus == this.orderMaster?.status) {
             return;
         }
-        this.dialog.open(SettlementComponent, {
-            width: '500px',
-            data: {
-                orderNumber: this.orderNumber,
-                disablePayLater: true
-            },
-            position: {
-                top: "150px"
-            }
-        }).afterClosed().subscribe(paymentMethod => {
-            if (paymentMethod) {
-                this.orderApi
-            .updateOrderStatus(this.orderMaster?._id, this.orderStatus, paymentMethod)
-            .subscribe(
-                (data) => {
-                  this.getOrderDetailsByOrderNumber(this.orderNumber);
-                  this.snack.open("Order updated successfuly", "Ok", {
-                    duration: 1500,
-                });
+        if (this.orderMaster?.status == "PAID" && this.orderStatus == "DELIVERED") {
+            this.updateOrderStatus(this.orderMaster?.paymentMethod);
+        } else {
+            this.dialog.open(SettlementComponent, {
+                width: '500px',
+                data: {
+                    orderNumber: this.orderNumber,
+                    disablePayLater: true
                 },
-                (error) => {
-                    console.error(error);
+                position: {
+                    top: "150px"
                 }
-            );
+            }).afterClosed().subscribe(paymentMethod => {
+                this.updateOrderStatus(paymentMethod);
+            });
+        }
+    }
+
+    updateOrderStatus(paymentMethod) {
+        if (paymentMethod) {
+            this.orderApi
+        .updateOrderStatus(this.orderMaster?._id, this.orderStatus, paymentMethod)
+        .subscribe(
+            (data) => {
+              this.getOrderDetailsByOrderNumber(this.orderNumber);
+              this.snack.open("Order updated successfuly", "Ok", {
+                duration: 1500,
+            });
+            },
+            (error) => {
+                console.error(error);
             }
-        });
+        );
+        }
     }
 
     processSaveOrder(data) {

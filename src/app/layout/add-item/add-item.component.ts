@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit, Optional } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { CategoryService } from 'src/app/shared/services/category.service';
 import { ItemService } from 'src/app/shared/services/item.service';
 
 @Component({
@@ -10,7 +11,8 @@ import { ItemService } from 'src/app/shared/services/item.service';
 })
 export class AddItemComponent implements OnInit {
   customerForm: FormGroup;
-  constructor(private fb: FormBuilder, private item: ItemService,
+  categories = [];
+  constructor(private fb: FormBuilder, private item: ItemService, private category: CategoryService,
     private popup: MatDialogRef<AddItemComponent>, @Optional() @Inject(MAT_DIALOG_DATA) public data) { 
       
     }
@@ -23,6 +25,7 @@ export class AddItemComponent implements OnInit {
         this.customerForm.get('itemName').disable();
       }
     }
+    this.getActiveCategories();
   }
   initForm() {
     this.customerForm = this.fb.group({
@@ -35,6 +38,7 @@ export class AddItemComponent implements OnInit {
       expressWashingCharge: ['', Validators.required],
       expressDryCleanCharge: ['', [Validators.required]],
       expressPressingCharge: ['', [Validators.required]],
+      categories: [[]],
       sortOrder: [null]
     });
   }
@@ -51,5 +55,10 @@ export class AddItemComponent implements OnInit {
   }
   closePopup() {
     this.popup.close();
+  }
+  getActiveCategories() {
+    this.category.getActiveCategories().subscribe(data => {
+      this.categories = data;
+    })
   }
 }

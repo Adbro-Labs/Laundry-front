@@ -54,3 +54,8 @@
 .action-box-container {
     margin: 0 -10px;
 }
+
+::ng-deep .my-chip .mat-chip-selected {
+    background-color: #000 !important;
+    color: #b06464;
+  }

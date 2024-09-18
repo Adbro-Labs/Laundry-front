@@ -9,6 +9,7 @@ import { AddItemComponent } from '../add-item/add-item.component';
 import { NumberpadComponent } from '../numberpad/numberpad.component';
 import { ServiceCountComponent } from '../service-count/service-count.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { CategoryService } from 'src/app/shared/services/category.service';
 
 @Component({
   selector: 'app-item-details',
@@ -17,6 +18,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class ItemDetailsComponent implements OnInit {
   items = [];
+  tempItems = [];
   itemDetails = [];
   orderDetails: FormArray;
   today = new Date();
@@ -29,19 +31,35 @@ export class ItemDetailsComponent implements OnInit {
   additionalInstructions = "";
   disableUpdate = false;
   deliveryTime = "";
+  categories = [];
   constructor(private item: ItemService, private fb: FormBuilder,
     private route: ActivatedRoute, private dialog: MatDialog,
-    private auth: AuthService,
+    private auth: AuthService, private category: CategoryService,
     private snack: MatSnackBar) { }
 
   ngOnInit(): void {
     this.getItems();
+    this.getActiveCategories();
     this.orderDetails = new FormArray([], [Validators.required, Validators.minLength(1)]);
   }
   getItems() {
     this.item.getItems(this.customerId).subscribe(data => {
       this.items = data as any;
+      this.tempItems = data as any;
     });
+  }
+  getActiveCategories() {
+    this.category.getActiveCategories().subscribe(data => {
+      this.categories = data;
+    });
+  }
+
+  filterItems(categoryId) {
+    if (categoryId) {
+      this.tempItems = this.items.filter(x => x?.categories?.includes(categoryId));
+    } else {
+      this.tempItems = this.items;
+    }
   }
  
  

@@ -23,7 +23,10 @@ export class CategoryService {
       }
       return this.http.get<any>(url);
     }
-  
+    getActiveCategories() {
+      let url = `${environment.apiUrl}category?active=true`
+      return this.http.get<any>(url);
+    }
  
     
 }

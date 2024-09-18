@@ -20,7 +20,7 @@
          </button>
             &nbsp;
             <button
-            (click)="updateOrderStatus()"
+            (click)="initiateOrderStatusUpdate()"
             mat-raised-button
             color="primary"
             style="margin-left: 5px"
@@ -41,7 +41,7 @@
             </button>
             &nbsp;
             <button [disabled]="!enablePrint" (click)="cancelOrder()" mat-stroked-button color="warn" *ngIf="showCancelOrder">
-                Request Cancellation
+                Confirm Cancellation
             </button>
             &nbsp;
             <button [disabled]="!enablePrint || orderStatus == 'DELIVERED' || userRole == 'ADMIN'" (click)="showCancelOrder = !showCancelOrder" mat-stroked-button color="warn">

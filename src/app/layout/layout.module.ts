@@ -27,6 +27,7 @@ import { BillViewComponent } from './bill-view/bill-view.component';
 import { SettlementComponent } from './settlement/settlement.component';
 import { AddcategoryComponent } from './addcategory/addcategory.component';
 import { CategoryComponent } from './category/category.component';
+import { MatChipsModule } from '@angular/material/chips';
 @NgModule({
     imports: [
         CommonModule,
@@ -35,7 +36,8 @@ import { CategoryComponent } from './category/category.component';
         TranslateModule,
         FormsModule,
         ReactiveFormsModule,
-        MatFormFieldModule
+        MatFormFieldModule,
+        MatChipsModule
     ],
     declarations: [
         LayoutComponent,

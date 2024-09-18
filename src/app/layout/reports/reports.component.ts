@@ -170,15 +170,21 @@ export class ReportsComponent implements OnInit {
        printWindow.document.write(`<html><head><title>${this.branchDetails?.title}</title>`);  
        printWindow.document.write('</head><body>');  
        printWindow.document.write(htmlString);
-       printWindow.document.getElementById("qtylabel").innerText = "";
-       printWindow.document.getElementById("pricelabel").innerText = "";
-       printWindow.document.getElementById("itemLabel").innerText = "Date";
-       elementIdsToHide.push("totalItems");
-       elementIdsToHide.push("deliveryTypeLabel");
-       elementIdsToHide.push("billno");
-       elementIdsToHide.forEach(data => {
-         printWindow.document.getElementById(data).style.display = "none";
-       });
+       printWindow.document.addEventListener("DOMContentLoaded", () => {
+        printWindow.document.getElementById("qtylabel").innerText = "";
+        printWindow.document.getElementById("pricelabel").innerText = "";
+        printWindow.document.getElementById("itemLabel").innerText = "Date";
+        elementIdsToHide.push("totalItems");
+        elementIdsToHide.push("deliveryTypeLabel");
+        elementIdsToHide.push("billno");
+        elementIdsToHide.push("shoplogo");
+        elementIdsToHide.push("terms-label");
+        elementIdsToHide.push("terms-list");
+        elementIdsToHide.push("paymentTypeLabel");
+        elementIdsToHide.forEach(data => {
+          printWindow.document.getElementById(data).style.display = "none";
+        });
+       })
        printWindow.document.write('</body></html>');
        printWindow.document.close();
        setTimeout(() => {
