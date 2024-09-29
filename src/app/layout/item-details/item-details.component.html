@@ -63,10 +63,11 @@
         <mat-chip-list style="width: 98%;" color="primary" [disabled]="disableItemSelection || !customerId || disableUpdate">
             <mat-chip (click)="filterItems(item._id)" color="primary" *ngFor="let item of categories">{{item.categoryName}}</mat-chip>
             <mat-chip (click)="filterItems(null)" color="warn">All</mat-chip>
+            <mat-chip (click)="addNewItem()" [disabled]="disableItemSelection || !customerId || disableUpdate">Add Item</mat-chip>
         </mat-chip-list>
         <br/>
-        <button class="btn" mat-stroked-button *ngFor="let item of tempItems" (click)="addItem(item)" [disabled]="disableItemSelection || !customerId || disableUpdate">{{item.itemName}}</button>
-        <button class="btn" mat-stroked-button (click)="addNewItem()" [disabled]="disableItemSelection || !customerId || disableUpdate">Add Item</button>
+        <button class="btn" mat-stroked-button *ngFor="let item of tempItems" (click)="addItem(item)" 
+        [disabled]="disableItemSelection || !customerId || disableUpdate">{{item.itemName}}</button>
     </div>
 </div>
 <div class="container action-box-container">

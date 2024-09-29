@@ -193,6 +193,9 @@ export class ItemDetailsComponent implements OnInit {
     }
   }
   addNewItem() {
+    if (this.disableItemSelection || !this.customerId || this.disableUpdate) {
+      return;
+    }
     this.dialog.open(AddItemComponent, { disableClose: true, width: '400px'}).afterClosed().subscribe((response: any) => {
       this.getItems();
     });
