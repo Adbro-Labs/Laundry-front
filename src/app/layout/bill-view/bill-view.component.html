@@ -1,27 +1,60 @@
-<div>
-    <p>Branch: {{data.branchDetails?.branchName}}</p>
-</div>
-<div class="table">
-    <table>
-        <thead>
-            <th>Item</th>
-            <th>Rate</th>
-            <th>Qty</th>
-            <th>Amount</th>
-        </thead>
-        <tbody>
-            <tr *ngFor="let item of data.orderDetails">
-                <td>{{ item.itemName }}</td>
-                <td>{{ item.rate }}</td>
-                <td>{{ item.quantity }}</td>
-                <td>{{ item.total }}</td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-<div *ngIf="data.orderMaster?.discount">
-    <p>Discount: {{ data.orderMaster?.discount }}</p>
-</div>
-<div>
-    <p>Net Total: {{ data.orderMaster?.netTotal }}</p>
+<div class="container">
+    <div *ngIf="!data?.branchDetails">
+        <h3>No Data Found</h3>
+    </div>
+    <div *ngIf="data?.branchDetails" style="display: flex; justify-content: space-between">
+        <p>Branch: {{ data.branchDetails?.branchName }}</p>
+        <button (click)="closepopup()" mat-icon-button>
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+    <div class="table" *ngIf="data?.orderDetails && data?.orderDetails?.length > 0">
+        <table>
+            <thead>
+                <th>Item</th>
+                <th>Rate</th>
+                <th>Qty</th>
+                <th>Amount</th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of data.orderDetails">
+                    <td>{{ item.itemName }}</td>
+                    <td>{{ item.rate }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>{{ item.total }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="footer">
+        <div *ngIf="data.orderMaster[index]?.discount">
+            <p>Discount: {{ data.orderMaster[index]?.discount }}</p>
+        </div>
+        <div *ngIf="data.orderMaster[index]?.netTotal">
+            <p>Net Total: {{ data.orderMaster[index]?.netTotal }}</p>
+        </div>
+        <div
+            style="
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            "
+        >
+            <button
+                mat-raised-button
+                [disabled]="index < 1 || isDataLoading"
+                (click)="updateItemIndex(-1)"
+            >
+                Previous
+            </button>
+            <span>Page: {{ index + 1 }}</span>
+            <button
+                mat-raised-button
+                [disabled]="index > 8 || isDataLoading || !data?.branchDetails"
+                (click)="updateItemIndex(1)"
+            >
+                Next
+            </button>
+        </div>
+    </div>
 </div>

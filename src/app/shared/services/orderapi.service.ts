@@ -30,8 +30,8 @@ export class OrderapiService {
     const url = environment.apiUrl + `order/ByOrderNumber?orderNumber=${orderNumber}&branchCode=${branchCode}`;
     return this.http.get(url);
   }
-  getOrderDetailsByCustomer(customerId) {
-    const url = environment.apiUrl + `order/ByCustomerId?customerId=${customerId}`;
+  getOrderDetailsByCustomer(customerId, index = 0) {
+    const url = environment.apiUrl + `order/ByCustomerId?customerId=${customerId}&index=${index}`;
     return this.http.get(url);
   }
   getAllOrders(index, limit, searchText, branchCode){
