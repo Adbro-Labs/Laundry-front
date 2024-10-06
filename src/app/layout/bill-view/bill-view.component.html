@@ -1,14 +1,12 @@
 <div class="container">
-    <div *ngIf="!data?.branchDetails">
-        <h3>No Data Found</h3>
-    </div>
     <div style="display: flex; justify-content: space-between">
+        <h3 *ngIf="!data?.branchDetails">No Data Found</h3>
         <p *ngIf="data?.branchDetails">Branch: {{ data.branchDetails?.branchName }}</p>
         <button (click)="closepopup()" mat-icon-button>
             <mat-icon>close</mat-icon>
         </button>
     </div>
-    <div class="table" *ngIf="data?.orderDetails && data?.orderDetails?.length > 0">
+    <div class="table" *ngIf="data?.orderDetails && data?.orderDetails?.length > 0" style="max-height: 400px; overflow-y: scroll;">
         <table>
             <thead>
                 <th>Item</th>

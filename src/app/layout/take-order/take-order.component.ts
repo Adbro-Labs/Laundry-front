@@ -453,7 +453,7 @@ export class TakeOrderComponent implements OnInit {
                 .subscribe(
                     (data) => {
                         this.dialog.open(BillViewComponent, {
-                            width: "300px",
+                            width: "400px",
                             data,
                             disableClose: true
                         });
