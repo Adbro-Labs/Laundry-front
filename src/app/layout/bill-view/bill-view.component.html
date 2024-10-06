@@ -2,8 +2,8 @@
     <div *ngIf="!data?.branchDetails">
         <h3>No Data Found</h3>
     </div>
-    <div *ngIf="data?.branchDetails" style="display: flex; justify-content: space-between">
-        <p>Branch: {{ data.branchDetails?.branchName }}</p>
+    <div style="display: flex; justify-content: space-between">
+        <p *ngIf="data?.branchDetails">Branch: {{ data.branchDetails?.branchName }}</p>
         <button (click)="closepopup()" mat-icon-button>
             <mat-icon>close</mat-icon>
         </button>
