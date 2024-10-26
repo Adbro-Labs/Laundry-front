@@ -1,33 +1,33 @@
 <div id="sidebar">
     <mat-nav-list>
         <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/dashboard']">
-            <mat-icon class="sidenav-icon">dashboard</mat-icon> {{ 'Dashboard' | translate }}
+            <mat-icon class="sidenav-icon">dashboard</mat-icon> {{ 'Dashboard' }}
         </a>
         <ng-container *ngIf="userType!='ADMIN'">
             <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/orders']">
-                <mat-icon class="sidenav-icon">build</mat-icon> {{ 'Orders' | translate }}
+                <mat-icon class="sidenav-icon">build</mat-icon> {{ 'Orders' }}
             </a>
         </ng-container>
         <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/customers']">
-            <mat-icon class="sidenav-icon">people</mat-icon> {{ 'Customers' | translate }}
+            <mat-icon class="sidenav-icon">people</mat-icon> {{ 'Customers' }}
         </a>
         <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/items']">
-            <mat-icon class="sidenav-icon">local_laundry_service</mat-icon> {{ 'Items' | translate }}
+            <mat-icon class="sidenav-icon">local_laundry_service</mat-icon> {{ 'Items' }}
         </a>
         <ng-container *ngIf="userType=='ADMIN'">
             <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/branch']">
-                <mat-icon class="sidenav-icon">home</mat-icon> {{ 'Branches' | translate }}
+                <mat-icon class="sidenav-icon">home</mat-icon> {{ 'Branches' }}
             </a>
         </ng-container>
         <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/reports']">
-            <mat-icon class="sidenav-icon">list</mat-icon> {{ 'Reports' | translate }}
+            <mat-icon class="sidenav-icon">list</mat-icon> {{ 'Reports' }}
         </a>
         <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/reports/customer']">
-            <mat-icon class="sidenav-icon">list</mat-icon> {{ 'Customer Report' | translate }}
+            <mat-icon class="sidenav-icon">list</mat-icon> {{ 'Customer Report' }}
         </a>
 
         <a *ngIf="userType=='ADMIN'" mat-list-item [routerLinkActive]="'active'" [routerLink]="['/category']">
-            <mat-icon class="sidenav-icon">category</mat-icon> {{ 'Category ' | translate }} 
+            <mat-icon class="sidenav-icon">category</mat-icon> {{ 'Category ' }} 
         </a>
 
     </mat-nav-list>

@@ -1,11 +1,11 @@
 <div class="login-page">
     <div class="content">
-        <form class="login-form" fxFlex  >
+        <form class="login-form">
             <div class="text-center">
                 <h2 class="app-name">Royal Touch</h2>
             </div>
-            <div fxFlex  fxLayout="row" fxLayout.lt-md="column">
-                <div fxFlexFill>
+            <div>
+                <div>
                     <mat-form-field class="w-100">
                         <input matInput type="password" placeholder="Access Code" [(ngModel)]="password" [ngModelOptions]="{standalone: true}">
                     </mat-form-field>
@@ -14,8 +14,8 @@
             <div *ngIf="message" style="text-align: center;">
                 <p style="color: red">{{message}}</p>
             </div>
-            <div fxFlex  fxLayout="row" fxLayout.lt-md="column">
-                <div fxFlexFill>
+            <div>
+                <div>
                     <button mat-raised-button color="primary" class="w-100" (click)="onLogin()">Login</button>
                 </div>
             </div>

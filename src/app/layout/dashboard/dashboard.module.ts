@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { StatModule } from '../../shared/modules/stat/stat.module';
 import { DashboardRoutingModule } from './dashboard-routing.module';
@@ -12,8 +11,7 @@ import { MaterialModule } from 'src/app/shared/modules/material/material.module'
         CommonModule,
         DashboardRoutingModule,
         StatModule,
-        MaterialModule,
-        FlexLayoutModule.withConfig({ addFlexToParent: false })
+        MaterialModule
     ],
     declarations: [DashboardComponent]
 })

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router, NavigationEnd } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { OrderService } from 'src/app/shared/services/order.service';
 
@@ -14,7 +13,7 @@ export class TopnavComponent implements OnInit {
     public pushRightClass: string;
     orderNumber = new FormControl('');
     userDetails;
-    constructor(public router: Router, private translate: TranslateService, private order: OrderService, private auth: AuthService) {
+    constructor(public router: Router, private order: OrderService, private auth: AuthService) {
         this.router.events.subscribe(val => {
             if (val instanceof NavigationEnd && window.innerWidth <= 992 && this.isToggled()) {
                 this.toggleSidebar();
@@ -50,9 +49,6 @@ export class TopnavComponent implements OnInit {
         this.router.navigate(['/login']);
     }
 
-    changeLang(language: string) {
-        this.translate.use(language);
-    }
     requestFullscreen() {
         document.documentElement.requestFullscreen();
     }

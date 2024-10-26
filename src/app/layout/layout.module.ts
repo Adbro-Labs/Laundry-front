@@ -1,6 +1,5 @@
 import { CommonModule, DatePipe } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
 import { MaterialModule } from '../shared/modules/material/material.module';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { TopnavComponent } from './components/topnav/topnav.component';
@@ -33,7 +32,6 @@ import { MatChipsModule } from '@angular/material/chips';
         CommonModule,
         LayoutRoutingModule,
         MaterialModule,
-        TranslateModule,
         FormsModule,
         ReactiveFormsModule,
         MatFormFieldModule,

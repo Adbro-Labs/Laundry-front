@@ -16,3 +16,17 @@ table {
 .mb-20 {
     margin-bottom: 20px;
 }
+.card-item {
+    min-width: 200px;
+}
+.card-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 20px;
+}
+@media only screen and (max-width: 1200px) {
+    .card-container {
+        flex-direction: column;
+    }
+}
