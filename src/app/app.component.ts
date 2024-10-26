@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
 import { OrderService } from './shared/services/order.service';
 
 @Component({
@@ -8,8 +7,7 @@ import { OrderService } from './shared/services/order.service';
     styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-    constructor(private translate: TranslateService, private order: OrderService) {
-        translate.setDefaultLang('en');
+    constructor(private order: OrderService) {
     }
 
     ngOnInit() {
