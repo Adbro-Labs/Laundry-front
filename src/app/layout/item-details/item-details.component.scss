@@ -59,3 +59,7 @@
     background-color: #000 !important;
     color: #b06464;
   }
+
+::ng-deep .owl-dt-container-buttons {
+    height: 3em;
+  }

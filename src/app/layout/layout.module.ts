@@ -27,6 +27,7 @@ import { SettlementComponent } from './settlement/settlement.component';
 import { AddcategoryComponent } from './addcategory/addcategory.component';
 import { CategoryComponent } from './category/category.component';
 import { MatChipsModule } from '@angular/material/chips';
+import { OwlDateTimeModule, OwlNativeDateTimeModule } from '@danielmoncada/angular-datetime-picker';
 @NgModule({
     imports: [
         CommonModule,
@@ -35,7 +36,9 @@ import { MatChipsModule } from '@angular/material/chips';
         FormsModule,
         ReactiveFormsModule,
         MatFormFieldModule,
-        MatChipsModule
+        MatChipsModule,
+        OwlDateTimeModule,
+        OwlNativeDateTimeModule
     ],
     declarations: [
         LayoutComponent,

@@ -86,17 +86,17 @@
             </mat-select>
         </mat-form-field>
     </div>
-    <div style="width: 30%;" class="action-box">
+    <div style="width: 30%;" class="action-box" style="margin-top: 18px;">
         <mat-form-field>
-            <label>Delivery Time</label>
-            <input
-                    matInput
-                    type="text"
-                    autocomplete="off"
-                    placeholder="Delivery Time"
-                    [(ngModel)]="deliveryTime"
-                    [disabled]="disableUpdate"
-                />
+            <input matInput
+                type="text"
+                autocomplete="off"
+                [(ngModel)]="deliveryTime"
+                [disabled]="disableUpdate"
+                [owlDateTime]="dt1"
+                [owlDateTimeTrigger]="dt1"
+                placeholder="Delivery Time">
+            <owl-date-time [pickerMode]="'dialog'" [stepMinute]="10" #dt1></owl-date-time>
         </mat-form-field>
     </div>
 </div>

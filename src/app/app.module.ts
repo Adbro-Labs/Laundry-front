@@ -11,7 +11,7 @@ import { RefDirective } from './shared/directives/ref.directive';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RequestInterceptor } from './shared/interceptor/request.interceptor';
 
-
+import { OwlDateTimeModule, OwlNativeDateTimeModule } from '@danielmoncada/angular-datetime-picker';
 @NgModule({
     declarations: [AppComponent, RefDirective],
     imports: [
@@ -22,7 +22,9 @@ import { RequestInterceptor } from './shared/interceptor/request.interceptor';
         OverlayModule,
         HttpClientModule,
         FormsModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        OwlDateTimeModule,
+        OwlNativeDateTimeModule
     ],
     providers: [{ provide: HTTP_INTERCEPTORS, useClass: RequestInterceptor, multi: true }],
     bootstrap: [AppComponent]
