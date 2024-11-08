@@ -64,19 +64,22 @@
 <div class="table">
     <table>
         <thead>
+            <th>No</th>
             <th>DATE</th>
             <th>BILL NO</th>
             <th>NET TOTAL</th>
             <th>STATUS</th>
         </thead>
         <tbody>
-                <tr *ngFor="let item of orders">
+                <tr *ngFor="let item of orders; index as i">
+                    <td>{{i+1}}</td>
                     <td>{{item.orderDate | date: 'dd/MM/yyyy':'+0400'}}</td>
                     <td>{{item.orderNumber}}</td>
                     <td>{{item.netTotal}}</td>
                     <td>{{item.status}}</td>
                 </tr>
                 <tr>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td>{{total.netTotal}}</td>

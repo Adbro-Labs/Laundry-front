@@ -58,7 +58,7 @@ export class CustomerStatementComponent implements OnInit {
         this.searchCustomers(data);
       }
     });
-    this.getBranchDetails();
+    this.getBranchDetails(this.auth.decodeJwt()?.branchCode);
   }
   getBranches() {
     this.branch.getAllBranch().subscribe(data => {
@@ -89,6 +89,9 @@ export class CustomerStatementComponent implements OnInit {
         this.total.netTotal = this.getSumofItems(this.orders.map(x => x.netTotal));
       }
       this.selectedBranchCode = this.branchCode;
+      if (!this.branchDetails) {
+        this.getBranchDetails(this.selectedBranchCode);
+      }
     });
   }
   getSumofItems = (list) => {
@@ -124,16 +127,16 @@ export class CustomerStatementComponent implements OnInit {
       netTotal: 0
     }
   }
-  getBranchDetails() {
-    this.customer.getBranchByCode(this.auth.decodeJwt()?.branchCode).subscribe(data =>{
+  getBranchDetails(branchCode) {
+    this.customer.getBranchByCode(branchCode).subscribe(data =>{
       this.branchDetails = data as any;
     })
   }
   printReciept() {
     const elementIdsToHide = [];
-    this.orderApi.getInvoiceTemplate().subscribe(htmlString => {
+    this.orderApi.getInvoiceReportTemplate().subscribe(htmlString => {
       htmlString = htmlString.replace('[ORDER_NO]',"");
-      htmlString = htmlString.replace('[CUSTOMER_NAME]', this.customerDetails?.customerName);
+      htmlString = htmlString.replace('[CUSTOMER_NAME]', (this.customerDetails?.customerName || this.branchDetails.branchName));
       htmlString = htmlString.replace('[CUSTOMER_MOBILE]', this.customerDetails?.mobile);
       htmlString = htmlString.replace('[DATE]', this.datePipe.transform(new Date(), "dd-MM-yyyy", "+0400"));
       htmlString = htmlString.replace('[SHOPNAME]', this.branchDetails?.title);
@@ -151,7 +154,6 @@ export class CustomerStatementComponent implements OnInit {
          const item = `<tr>
          <td style="text-align: left;">${this.datePipe.transform(el.orderDate, "dd-MM-yyyy", "+0400")}</td>
          <td>${el.orderNumber}</td>
-         <td></td>
          <td>${Number(el.netTotal).toFixed(2)}</td>
          </tr>`;
          itemsString += item;
@@ -172,17 +174,19 @@ export class CustomerStatementComponent implements OnInit {
        printWindow.document.write(`<html><head><title>${this.branchDetails?.title}</title>`);  
        printWindow.document.write('</head><body>');  
        printWindow.document.write(htmlString);
-       printWindow.document.getElementById("qtylabel").innerText = "Bill No";
-       printWindow.document.getElementById("pricelabel").innerText = "";
-       printWindow.document.getElementById("itemLabel").innerText = "Date";
+      //  printWindow.document.getElementById("qtylabel").innerText = "Bill No";
+      //  printWindow.document.getElementById("pricelabel").innerText = "";
+      //  printWindow.document.getElementById("itemLabel").innerText = "Date";
        elementIdsToHide.push("totalItems");
        elementIdsToHide.push("deliveryTypeLabel");
        elementIdsToHide.push("billno");
        elementIdsToHide.forEach(data => {
-         printWindow.document.getElementById(data).style.display = "none";
+         const element = printWindow.document.getElementById(data);
+         if (element) {
+          element.style.display = "none";
+         }
        });
        printWindow.document.write('</body></html>');
-       printWindow.document.close();
        setTimeout(() => {
         printWindow.print();
         printWindow.close();

@@ -7,6 +7,7 @@ import { LayoutComponent } from './layout.component';
 import { OrderDetailsComponent } from './order-details/order-details.component';
 import { TakeOrderComponent } from './take-order/take-order.component';
 import { CategoryComponent } from './category/category.component';
+import { DeliveryScheduleComponent } from './delivery-schedule/delivery-schedule.component';
 
 const routes: Routes = [
     {
@@ -52,6 +53,10 @@ const routes: Routes = [
             {
                 path: 'category',
                 component: CategoryComponent
+            },
+            {
+                path: 'delivery-schedule',
+                component: DeliveryScheduleComponent
             }
         ]
     }

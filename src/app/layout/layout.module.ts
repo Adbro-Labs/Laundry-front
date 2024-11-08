@@ -28,6 +28,7 @@ import { AddcategoryComponent } from './addcategory/addcategory.component';
 import { CategoryComponent } from './category/category.component';
 import { MatChipsModule } from '@angular/material/chips';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from '@danielmoncada/angular-datetime-picker';
+import { DeliveryScheduleComponent } from './delivery-schedule/delivery-schedule.component';
 @NgModule({
     imports: [
         CommonModule,
@@ -62,7 +63,8 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule } from '@danielmoncada/angul
         BillViewComponent,
         SettlementComponent,
         AddcategoryComponent,
-        CategoryComponent
+        CategoryComponent,
+        DeliveryScheduleComponent
     ],
     providers: [DatePipe]
 
