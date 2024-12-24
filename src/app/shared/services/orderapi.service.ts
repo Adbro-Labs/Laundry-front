@@ -37,9 +37,9 @@ export class OrderapiService {
     const url = environment.apiUrl + `order?limit=${limit}&index=${index}&query=${searchText}&branchCode=${branchCode}`;
     return this.http.get(url);
   }
-  cancelOrder(orderId) {
-    const url = environment.apiUrl + 'order/cancelOrder?orderId=' + orderId;
-    return this.http.post(url, {});
+  cancelOrder(orderDetails) {
+    const url = environment.apiUrl + 'order/cancelOrder';
+    return this.http.post(url, orderDetails);
   }
   updateOrderStatus(orderId, status, paymentMethod) {
     const url = environment.apiUrl + 'order/updateStatus?orderId=' + orderId + '&status=' + status + '&paymentMethod=' + paymentMethod;

@@ -40,12 +40,9 @@
                 Print
             </button>
             &nbsp;
-            <button [disabled]="!enablePrint" (click)="cancelOrder()" mat-stroked-button color="warn" *ngIf="showCancelOrder">
-                Confirm Cancellation
-            </button>
-            &nbsp;
-            <button [disabled]="!enablePrint || orderStatus == 'DELIVERED' || userRole == 'ADMIN'" (click)="showCancelOrder = !showCancelOrder" mat-stroked-button color="warn">
-                {{showCancelOrder ? 'Cancel' : 'Cancel order'}}
+            <button [disabled]="!enablePrint || orderStatus == 'DELIVERED' || userRole == 'ADMIN'" 
+            (click)="showCancelOrderDialog()" mat-stroked-button color="warn">
+                Cancel Order
             </button>
         </div>
     </div>

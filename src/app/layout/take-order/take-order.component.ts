@@ -15,6 +15,7 @@ import { BillViewComponent } from "../bill-view/bill-view.component";
 import { ItemDetailsComponent } from "../item-details/item-details.component";
 import { SettlementComponent } from "../settlement/settlement.component";
 import { paymentMethod } from "src/app/shared/enums";
+import { ConfirmOrderCancelComponent } from "../confirm-order-cancel/confirm-order-cancel.component";
 
 @Component({
     selector: "app-take-order",
@@ -411,10 +412,25 @@ export class TakeOrderComponent implements OnInit {
             }, 500);
         });
     }
-    cancelOrder() {
+
+    showCancelOrderDialog() {
+        this.dialog.open(ConfirmOrderCancelComponent, {
+            width: '350px'
+        }).afterClosed().subscribe(response => {
+            if (response) {
+                this.cancelOrder(response);
+            }
+        });
+    }
+
+    cancelOrder(cancellationReason) {
         const orderId = this.orderMaster._id;
         if (orderId) {
-            this.orderApi.cancelOrder(orderId).subscribe(
+            const orderDetails = {
+                orderId,
+                cancellationReason
+            };
+            this.orderApi.cancelOrder(orderDetails).subscribe(
                 (data) => {
                     this.snack.open("Order cancelled successfuly", "Ok", {
                         duration: 1500,

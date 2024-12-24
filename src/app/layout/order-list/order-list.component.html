@@ -23,7 +23,7 @@
                     <td><a [routerLink]="['/takeOrder', item.orderNumber]">{{item.orderNumber}}</a></td>
                     <td>{{item.customer?.mobile}}</td>
                     <td>{{item.customer?.customerName}}</td>
-                    <td>{{item.status}}</td>
+                    <td>{{item.status}} {{item.cancellationReason && '(' + item.cancellationReason + ')'}}</td>
                 </tr>
         </tbody>
     </table>
