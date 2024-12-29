@@ -45,7 +45,7 @@
                     <td>{{item.total}}</td>
                     <td>{{item.discount || 0}}</td>
                     <td>{{item.netTotal}}</td>
-                    <td [class]="item.status">{{item.status}} {{item.cancellationReason && '(' + item.cancellationReason + ')'}}</td>
+                    <td [class]="item.status">{{item.status}} {{item.cancellationReason && '(' + item.cancellationReason + ')'}} {{item.cancellationTime && '(' + (item.cancellationTime | date: 'dd/MM hh:mm a') + ')'}}</td>
                     <td *ngIf="userType=='ADMIN'">{{(findBranch(item.branchCode))}}</td>
                 </tr>
                 <tr>
