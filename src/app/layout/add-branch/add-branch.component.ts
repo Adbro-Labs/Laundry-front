@@ -32,7 +32,9 @@ export class AddBranchComponent implements OnInit {
       subtitle1: ['', Validators.required],
       subtitle2: ['', [Validators.required]],
       accessCode: [''],
-      imageUrl: ['']
+      imageUrl: [''],
+      enableVat: [false],
+      taxNumber: ['']
     });
   }
   saveCustomer() {

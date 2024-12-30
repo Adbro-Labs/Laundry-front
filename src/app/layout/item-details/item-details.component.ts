@@ -23,6 +23,7 @@ export class ItemDetailsComponent implements OnInit {
   orderDetails: FormArray;
   today = new Date();
   netTotal;
+  subTotal;
   @Input() customerId:string;
   @Output() disableNumberChange = new EventEmitter();
   disableItemSelection = false;
@@ -32,6 +33,9 @@ export class ItemDetailsComponent implements OnInit {
   disableUpdate = false;
   deliveryTime = "";
   categories = [];
+  isVatEnabled;
+  vatAmount;
+  roundoffAmount;
   constructor(private item: ItemService, private fb: FormBuilder,
     private route: ActivatedRoute, private dialog: MatDialog,
     private auth: AuthService, private category: CategoryService,
@@ -41,6 +45,7 @@ export class ItemDetailsComponent implements OnInit {
     this.getItems();
     this.getActiveCategories();
     this.orderDetails = new FormArray([], [Validators.required, Validators.minLength(1)]);
+    this.isVatEnabled = this.auth.decodeJwt()?.vatEnabled
   }
   getItems() {
     this.item.getItems(this.customerId).subscribe(data => {
@@ -179,16 +184,27 @@ export class ItemDetailsComponent implements OnInit {
     amounts.forEach(element => {
       total += Number(element);
     });
-    this.netTotal = total;
+    this.subTotal = total;
     if (this.discount) {
       let discountCheck = Number(total.toFixed(2)) - Number(this.discount);
       if (discountCheck >= 1) {
-        this.netTotal = discountCheck;
+        this.subTotal = discountCheck;
       } else {
         this.discount = 0;
       }
     }
-    if (this.netTotal) {
+    if (this.subTotal) {
+      if (this.isVatEnabled) {
+        this.vatAmount = this.subTotal * 0.05;
+        this.netTotal = this.subTotal + this.vatAmount;
+      } else {
+        this.netTotal = this.subTotal;
+      }    
+      const roundedAmount = Math.floor(this.netTotal);
+      this.roundoffAmount = this.netTotal - roundedAmount;
+      if (this.roundoffAmount > 0) {
+        this.netTotal = roundedAmount;
+      }
       this.netTotal = this.netTotal.toFixed(2);
     }
   }

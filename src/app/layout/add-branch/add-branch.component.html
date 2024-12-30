@@ -19,6 +19,10 @@
         <mat-form-field>
             <input formControlName="imageUrl" autocomplete="off" matInput type="text" placeholder="Logo Url"/>
         </mat-form-field>
+        <mat-checkbox class="example-margin" formControlName="enableVat">Enable VAT(5%)</mat-checkbox><br>
+        <mat-form-field>
+            <input formControlName="taxNumber" autocomplete="off" matInput type="text" placeholder="Tax Registration Number"/>
+        </mat-form-field>
         <div class="btn-group">
             <button type="submit" mat-raised-button color="primary">Submit</button>
             <button (click)="closePopup()" type="reset" mat-raised-button color="accent">Cancel</button>

@@ -213,6 +213,7 @@ export class TakeOrderComponent implements OnInit {
                 this.items.deliveryTime = orderMaster?.deliveryTime;
                 this.items.netTotal = orderMaster?.netTotal;
                 this.items.disableUpdate = true;
+                this.items.isVatEnabled = orderMaster.vatEnabled;
                 this.mobileNumber.setValue(this.customerDetails.mobile);
                 this.items.setItemDetail((data as any).orderDetails);
                 this.enablePrint = true;
@@ -249,13 +250,17 @@ export class TakeOrderComponent implements OnInit {
                     customerId: this.customerDetails?._id,
                     total: total,
                     discount: Number(this.items.discount),
-                    netTotal: netTotal,
+                    netTotal: this.items.netTotal,
                     additionalInstructions: this.items.additionalInstructions,
                     deliveryType: this.items.deliveryType,
                     deliveryTime: this.items.deliveryTime,
                     branchCode: this.auth.decodeJwt()?.branchCode,
                     status: this.orderStatus,
                     paymentMethod,
+                    vatAmount: this.items.vatAmount,
+                    subTotal: this.items.subTotal,
+                    roundoffAmount: this.items.roundoffAmount,
+                    vatEnabled: this.items.isVatEnabled
                 },
                 orderDetails: this.items.orderDetails.value,
             };
@@ -344,6 +349,31 @@ export class TakeOrderComponent implements OnInit {
                 );
             } else {
                 elementIdsToHide.push("discountLabel");
+            }
+            if (this.orderMaster?.subTotal && 
+                (this.orderMaster?.roundoffAmount || this.orderMaster?.vatAmount)) {
+                htmlString = htmlString.replace(
+                    "[SUBTOTAL]",
+                    Number(this.orderMaster?.subTotal).toFixed(2)
+                );
+            } else {
+                elementIdsToHide.push("subTotalLabel");
+            }
+            if (this.orderMaster?.vatAmount) {
+                htmlString = htmlString.replace(
+                    "[VATAMOUNT]",
+                    Number(this.orderMaster?.vatAmount).toFixed(2)
+                );
+            } else {
+                elementIdsToHide.push("vatAmountLabel");
+            }
+            if (this.orderMaster?.roundoffAmount) {
+                htmlString = htmlString.replace(
+                    "[ROUNDOFF]",
+                    Number(this.orderMaster?.roundoffAmount).toFixed(2)
+                );
+            } else {
+                elementIdsToHide.push("roundoffLabel");
             }
             htmlString = htmlString.replace(
                 "[NETTOTAL]",

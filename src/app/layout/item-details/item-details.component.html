@@ -39,7 +39,34 @@
                         </td>
                         <td></td>
                     </tr>
-                    <tr *ngIf="netTotal" style="height: 50px;">
+                    <tr *ngIf="subTotal" style="height: 25px;">
+                        <td colspan="4" style="text-align: right;">
+                            <label>Sub Total</label>
+                        </td>
+                        <td style="text-align: right; margin-right: 10px;">
+                            <span>{{subTotal?.toFixed(2)}}</span>
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr *ngIf="netTotal && isVatEnabled" style="height: 25px;">
+                        <td colspan="4" style="text-align: right;">
+                            <label>VAT(5%)</label>
+                        </td>
+                        <td style="text-align: right; margin-right: 10px;">
+                            <span>{{vatAmount?.toFixed(2)}}</span>
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr *ngIf="roundoffAmount" style="height: 25px;">
+                        <td colspan="4" style="text-align: right;">
+                            <label>Round Off</label>
+                        </td>
+                        <td style="text-align: right; margin-right: 10px;">
+                            <span>-{{roundoffAmount?.toFixed(2)}}</span>
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr *ngIf="netTotal" style="height: 25px;">
                         <td colspan="4" style="text-align: right;">
                             <label>Total Amount</label>
                         </td>
