@@ -367,6 +367,12 @@ export class TakeOrderComponent implements OnInit {
             } else {
                 elementIdsToHide.push("vatAmountLabel");
             }
+            if (this.orderMaster?.vatEnabled && this.branchDetails && this.branchDetails.taxNumber) {
+                htmlString = htmlString.replace(
+                    "[TRN]", this.branchDetails?.taxNumber);
+            } else {
+                elementIdsToHide.push("taxDetails");
+            }
             if (this.orderMaster?.roundoffAmount) {
                 htmlString = htmlString.replace(
                     "[ROUNDOFF]",
