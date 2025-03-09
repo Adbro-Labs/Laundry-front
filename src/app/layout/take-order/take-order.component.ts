@@ -412,6 +412,7 @@ export class TakeOrderComponent implements OnInit {
             );
             printWindow.document.write("</head><body>");
             printWindow.document.write(htmlString);
+            printWindow.document.write("</body></html>");
 
             printWindow.document.addEventListener("DOMContentLoaded", () => {
                 for(let item of elementIdsToHide) {
@@ -438,14 +439,14 @@ export class TakeOrderComponent implements OnInit {
                         printDoc.appendChild(div);
                     }
                 }
+                setTimeout(() => {
+                    printWindow.print();
+                    printWindow.close();
+                }, 500);
             });
- 
-            printWindow.document.write("</body></html>");
+
             printWindow.document.close();
-            setTimeout(() => {
-                printWindow.print();
-                printWindow.close();
-            }, 500);
+            
         });
     }
 
