@@ -414,9 +414,13 @@ export class TakeOrderComponent implements OnInit {
             printWindow.document.write(htmlString);
             printWindow.document.write("</body></html>");
 
-            printWindow.document.addEventListener("DOMContentLoaded", () => {
+            printWindow.onload = () => {
+
                 for(let item of elementIdsToHide) {
-                    printWindow.document.getElementById(item).style.display = "none";
+                    let element = printWindow.document.getElementById(item);
+                    if (element) {
+                        element.style.setProperty("display", "none", "important");
+                    }
                 }
                 if (this.orderMaster.status) {
                     const div = printWindow.document.createElement("h4");
@@ -442,8 +446,9 @@ export class TakeOrderComponent implements OnInit {
                 setTimeout(() => {
                     printWindow.print();
                     printWindow.close();
-                }, 500);
-            });
+                }, 800);
+
+            };
 
             printWindow.document.close();
             
