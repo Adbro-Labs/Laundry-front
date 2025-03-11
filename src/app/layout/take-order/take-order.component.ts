@@ -443,10 +443,12 @@ export class TakeOrderComponent implements OnInit {
                         printDoc.appendChild(div);
                     }
                 }
-                setTimeout(() => {
-                    printWindow.print();
-                    printWindow.close();
-                }, 800);
+                requestAnimationFrame(() => {
+                    setTimeout(() => {
+                        printWindow.print();
+                        printWindow.close();
+                    }, 800);
+                });
 
             };
 
