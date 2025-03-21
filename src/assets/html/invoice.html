@@ -103,6 +103,10 @@ tr.heading td:first-child {
        text-align: left !important;
     }
 
+    tr.heading td {
+       padding:  0 2px !important;
+    }
+
     tr.item td:first-child {
        text-align: left !important;
     }
@@ -146,7 +150,7 @@ tr.heading td:first-child {
           <!-- INVOICE HEAD  -->
           <tbody class="Invoice-items">
             <tr class="top" >
-                <td colspan="4">
+                <td colspan="5">
                             <div class="title" style="text-align: center !important;">
                                 <img src="[IMAGE_URL]" width="60px" id="shoplogo"> 
                                
@@ -169,7 +173,7 @@ tr.heading td:first-child {
                 </td>
             </tr>
             <tr class="information" >
-                <td colspan="4">
+                <td colspan="5">
                     <table >
                         <tr>
                             <td style="display: flex;justify-content: space-between;width: 100%;">
@@ -197,6 +201,9 @@ tr.heading td:first-child {
                 <td id="pricelabel">
                   Price
               </td>
+              <td id="vatlabel">
+               Vat
+            </td>
               <td>
                 Total
             </td>
@@ -204,26 +211,26 @@ tr.heading td:first-child {
             [itemDetails]
 
             <tr>
-                <td colspan="4" style="border-top: 1px dashed #333;"></td>
+                <td colspan="5" style="border-top: 1px dashed #333;"></td>
             </tr>  
             <tr id="discountLabel">   
-                <td colspan="3" style="text-align:right;">
+                <td colspan="4" style="text-align:right;">
                     Discount :
                 </td>
                 <td style="text-align:right;">
                     -[DISCOUNT]
                 </td>
             </tr>
-            <tr id="subTotalLabel">   
-                <td colspan="3" style="text-align:right">
+            <!-- <tr id="subTotalLabel">   
+                <td colspan="4" style="text-align:right">
                     Sub Total :
                 </td>
                 <td style="text-align:right">
                     [SUBTOTAL]
                 </td>
-            </tr>
+            </tr> -->
             <tr id="vatAmountLabel">   
-                <td colspan="3" style="text-align:right">
+                <td colspan="4" style="text-align:right">
                     VAT(5%) :
                 </td>
                 <td style="text-align:right">
@@ -231,7 +238,7 @@ tr.heading td:first-child {
                 </td>
             </tr>
             <tr id="roundoffLabel">   
-                <td colspan="3" style="text-align:right">
+                <td colspan="4" style="text-align:right">
                     Roundoff :
                 </td>
                 <td style="text-align:right">
@@ -239,7 +246,7 @@ tr.heading td:first-child {
                 </td>
             </tr>
             <tr>   
-                <td colspan="3" style="text-align:right">
+                <td colspan="4" style="text-align:right">
                     <strong>Grand Total :</strong>
                 </td>
                 <td style="text-align:right">
@@ -247,17 +254,17 @@ tr.heading td:first-child {
                 </td>
             </tr>
             <tr> 
-                <td colspan="4" style="text-align:left">
+                <td colspan="5" style="text-align:left">
                 <span style="font-size: 12px;" id="totalItems"> Total Number of Items: [TOTAL_ITEMS]</span> 
                 </td>
             </tr>
             <tr class="notes"> 
-              <td colspan="4" style="text-align:left">
+              <td colspan="5" style="text-align:left">
               <span id="notelabel" style="font-size: 12px;"> Notes: [NOTES]</span> 
               </td>
           </tr>
           <tr>
-            <td colspan="4" style="text-align:left">
+            <td colspan="5" style="text-align:left">
                 <span id="deliveryTypeLabel">Delivery Type: [DELIVREY_TYPE]</span><br>
                 <span id="deliveryTimeLabel">Delivery Time : [DELIVREY_TIME]<br></span>
                 <span id="paymentTypeLabel">Payment : [PAYMENT_TYPE]</span>

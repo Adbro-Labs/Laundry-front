@@ -77,6 +77,7 @@ export class ItemDetailsComponent implements OnInit {
       itemId: [null, Validators.required],
       quantity: [null, Validators.required],
       total: [null, [Validators.required, Validators.min(1)]],
+      vat: [null],
       customerId: [null, Validators.required],
       washRequired: [null, Validators.required],
       dryCleanRequired: [null, Validators.required],
@@ -112,6 +113,7 @@ export class ItemDetailsComponent implements OnInit {
           itemName: response?.itemDetails?.itemName,
           itemId: response?.itemDetails?._id,
           quantity: response?.quantity,
+          vat:(response?.updatedCharge * 0.05).toFixed(2),
           washRequired: response?.washRequired,
           dryCleanRequired: response?.dryCleanRequired,
           pressRequired: response?.pressRequired,
@@ -157,7 +159,8 @@ export class ItemDetailsComponent implements OnInit {
           });
           total += rate;
         }
-        total = Number(total) * response?.quantity;
+        // total = Number(total) * response?.quantity;
+        total = (Number(total) * response?.quantity) * 1.05;
         services = services + `(${response?.processType?.charAt(0)})`
         form.patchValue({
           services,
@@ -195,16 +198,17 @@ export class ItemDetailsComponent implements OnInit {
     }
     if (this.subTotal) {
       if (this.isVatEnabled) {
-        this.vatAmount = this.subTotal * 0.05;
-        this.netTotal = this.subTotal + this.vatAmount;
+        const totalAmount = this.orderDetails.value.map(x => x.rate * x.quantity).reduce((a, b) => a + b, 0);
+        this.vatAmount = totalAmount * 0.05; 
+        this.netTotal = this.subTotal ;
       } else {
         this.netTotal = this.subTotal;
       }    
-      const roundedAmount = Math.floor(this.netTotal);
-      this.roundoffAmount = this.netTotal - roundedAmount;
-      if (this.roundoffAmount > 0) {
-        this.netTotal = roundedAmount;
-      }
+      // const roundedAmount = Math.floor(this.netTotal);
+      // this.roundoffAmount = this.netTotal - roundedAmount;
+      // if (this.roundoffAmount > 0) {
+      //   this.netTotal = roundedAmount;
+      // }
       this.netTotal = this.netTotal.toFixed(2);
     }
   }
