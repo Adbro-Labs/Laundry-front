@@ -21,7 +21,7 @@
                         </td>
                         <td style="text-align: right;">{{item.rate}}</td>
                         <td style="text-align: right;">{{item.quantity}}</td>
-                        <td style="text-align: right;">{{item.vat}}</td>
+                        <td *ngIf="isVatEnabled" style="text-align: right;">{{item.vat}}</td>
                         <td style="text-align: right;">{{item.total}}</td>
                         <td>
                             <button [disabled]="disableUpdate" mat-icon-button (click)="deleteItem(i)">
@@ -41,15 +41,15 @@
                         </td>
                         <td></td>
                     </tr>
-                    <!-- <tr *ngIf="subTotal" style="height: 25px;">
-                        <td colspan="4" style="text-align: right;">
+                    <tr *ngIf="subTotal" style="height: 25px;">
+                        <td colspan="5" style="text-align: right;">
                             <label>Sub Total</label>
                         </td>
                         <td style="text-align: right; margin-right: 10px;">
                             <span>{{subTotal?.toFixed(2)}}</span>
                         </td>
                         <td></td>
-                    </tr> -->
+                    </tr>
                     <tr *ngIf="netTotal && isVatEnabled" style="height: 25px;">
                         <td colspan="5" style="text-align: right;">
                             <label>VAT(5%)</label>

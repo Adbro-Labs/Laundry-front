@@ -159,8 +159,10 @@ export class ItemDetailsComponent implements OnInit {
           });
           total += rate;
         }
-        // total = Number(total) * response?.quantity;
-        total = (Number(total) * response?.quantity) * 1.05;
+
+        total = this.isVatEnabled ?  Number(total) * response?.quantity +form.value?.vat * form.value?.quantity  : Number(total) * response?.quantity
+
+        
         services = services + `(${response?.processType?.charAt(0)})`
         form.patchValue({
           services,
@@ -180,36 +182,31 @@ export class ItemDetailsComponent implements OnInit {
       }
     });
   }
+
+
   calculateNetTotal() {
-    const items =  this.orderDetails.value;
-    const amounts = items.map(x => x.total);
-    let total = 0;
-    amounts.forEach(element => {
-      total += Number(element);
-    });
-    this.subTotal = total;
+    const items = this.orderDetails.value;
+    
+    this.subTotal = items.map(x => x.rate * x.quantity).reduce((a, b) => a + b, 0);
+    
     if (this.discount) {
-      let discountCheck = Number(total.toFixed(2)) - Number(this.discount);
-      if (discountCheck >= 1) {
-        this.subTotal = discountCheck;
-      } else {
+      if (this.discount > this.subTotal) {
         this.discount = 0;
+      } else {
+        this.subTotal = this.subTotal - Number(this.discount);
       }
     }
+    
     if (this.subTotal) {
       if (this.isVatEnabled) {
         const totalAmount = this.orderDetails.value.map(x => x.rate * x.quantity).reduce((a, b) => a + b, 0);
-        this.vatAmount = totalAmount * 0.05; 
-        this.netTotal = this.subTotal ;
+        this.vatAmount = this.orderDetails.value.map(x => x.vat * x.quantity).reduce((a, b) => a + b, 0);
+        this.netTotal = this.subTotal + this.vatAmount;
       } else {
         this.netTotal = this.subTotal;
-      }    
-      // const roundedAmount = Math.floor(this.netTotal);
-      // this.roundoffAmount = this.netTotal - roundedAmount;
-      // if (this.roundoffAmount > 0) {
-      //   this.netTotal = roundedAmount;
-      // }
-      this.netTotal = this.netTotal.toFixed(2);
+      }
+      
+      this.netTotal = Number(this.netTotal).toFixed(2);
     }
   }
   addNewItem() {

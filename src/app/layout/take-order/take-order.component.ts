@@ -258,7 +258,7 @@ export class TakeOrderComponent implements OnInit {
                     status: this.orderStatus,
                     paymentMethod,
                     vatAmount: this.items.vatAmount,
-                    // subTotal: this.items.subTotal,
+                    subTotal: this.items.subTotal,
                     roundoffAmount: this.items.roundoffAmount,
                     vatEnabled: this.items.isVatEnabled
                 },
@@ -295,7 +295,7 @@ export class TakeOrderComponent implements OnInit {
 
         const itemDetails = this.items.orderDetails.value;
         let itemsString = '';
-        // let subTotal = 0;
+        let subTotal = 0;
 
         let totalQty = 0;
         itemDetails.forEach((el) => {
@@ -307,7 +307,7 @@ export class TakeOrderComponent implements OnInit {
                 <td>${el.total}</td>
             </tr>`;
             itemsString += item;
-            // subTotal += Number(el.total);
+            subTotal += Number(el.rate);
             if (Number(el.quantity)) {
                 totalQty += Number(el.quantity);
             }
@@ -322,12 +322,12 @@ export class TakeOrderComponent implements OnInit {
             elementIdsToHide.push("discountLabel");
         }
 
-        // if (this.orderMaster?.subTotal) {
-        //     htmlString = htmlString.replace("[SUBTOTAL]", Number(this.orderMaster?.subTotal).toFixed(2));
-        // } 
-        // else {
-        //     elementIdsToHide.push("subTotalLabel");
-        // }
+        if (this.orderMaster?.subTotal) {
+            htmlString = htmlString.replace("[SUBTOTAL]", Number(this.orderMaster?.subTotal).toFixed(2));
+        } 
+        else {
+            elementIdsToHide.push("subTotalLabel");
+        }
 
         if (this.orderMaster?.vatAmount) {
             htmlString = htmlString.replace("[VATAMOUNT]", Number(this.orderMaster?.vatAmount).toFixed(2));
