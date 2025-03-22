@@ -77,6 +77,7 @@ export class ItemDetailsComponent implements OnInit {
       itemId: [null, Validators.required],
       quantity: [null, Validators.required],
       total: [null, [Validators.required, Validators.min(1)]],
+      vat: [null],
       customerId: [null, Validators.required],
       washRequired: [null, Validators.required],
       dryCleanRequired: [null, Validators.required],
@@ -112,6 +113,7 @@ export class ItemDetailsComponent implements OnInit {
           itemName: response?.itemDetails?.itemName,
           itemId: response?.itemDetails?._id,
           quantity: response?.quantity,
+          vat:(response?.updatedCharge * 0.05).toFixed(2),
           washRequired: response?.washRequired,
           dryCleanRequired: response?.dryCleanRequired,
           pressRequired: response?.pressRequired,
@@ -157,7 +159,10 @@ export class ItemDetailsComponent implements OnInit {
           });
           total += rate;
         }
-        total = Number(total) * response?.quantity;
+
+        total = this.isVatEnabled ?  Number(total) * response?.quantity +form.value?.vat * form.value?.quantity  : Number(total) * response?.quantity
+
+        
         services = services + `(${response?.processType?.charAt(0)})`
         form.patchValue({
           services,
@@ -177,35 +182,31 @@ export class ItemDetailsComponent implements OnInit {
       }
     });
   }
+
+
   calculateNetTotal() {
-    const items =  this.orderDetails.value;
-    const amounts = items.map(x => x.total);
-    let total = 0;
-    amounts.forEach(element => {
-      total += Number(element);
-    });
-    this.subTotal = total;
+    const items = this.orderDetails.value;
+    
+    this.subTotal = items.map(x => x.rate * x.quantity).reduce((a, b) => a + b, 0);
+    
     if (this.discount) {
-      let discountCheck = Number(total.toFixed(2)) - Number(this.discount);
-      if (discountCheck >= 1) {
-        this.subTotal = discountCheck;
-      } else {
+      if (this.discount > this.subTotal) {
         this.discount = 0;
+      } else {
+        this.subTotal = this.subTotal - Number(this.discount);
       }
     }
+    
     if (this.subTotal) {
       if (this.isVatEnabled) {
-        this.vatAmount = this.subTotal * 0.05;
+        const totalAmount = this.orderDetails.value.map(x => x.rate * x.quantity).reduce((a, b) => a + b, 0);
+        this.vatAmount = this.orderDetails.value.map(x => x.vat * x.quantity).reduce((a, b) => a + b, 0);
         this.netTotal = this.subTotal + this.vatAmount;
       } else {
         this.netTotal = this.subTotal;
-      }    
-      const roundedAmount = Math.floor(this.netTotal);
-      this.roundoffAmount = this.netTotal - roundedAmount;
-      if (this.roundoffAmount > 0) {
-        this.netTotal = roundedAmount;
       }
-      this.netTotal = this.netTotal.toFixed(2);
+      
+      this.netTotal = Number(this.netTotal).toFixed(2);
     }
   }
   addNewItem() {

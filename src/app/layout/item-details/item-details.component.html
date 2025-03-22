@@ -6,6 +6,7 @@
                 <th>SERVICES</th>
                 <th>RATE</th>
                 <th>QTY</th>
+                <th  *ngIf="isVatEnabled">VAT</th>
                 <th>AMOUNT</th>
                 <th>ACTION</th>
             </thead>
@@ -20,6 +21,7 @@
                         </td>
                         <td style="text-align: right;">{{item.rate}}</td>
                         <td style="text-align: right;">{{item.quantity}}</td>
+                        <td *ngIf="isVatEnabled" style="text-align: right;">{{item.vat}}</td>
                         <td style="text-align: right;">{{item.total}}</td>
                         <td>
                             <button [disabled]="disableUpdate" mat-icon-button (click)="deleteItem(i)">
@@ -28,7 +30,7 @@
                         </td>
                     </tr>
                     <tr *ngIf="netTotal" style="height: 50px;">
-                        <td colspan="4" style="text-align: right;">
+                        <td  [attr.colspan]="isVatEnabled ? 5 : 4"  style="text-align: right;">
                             <label>Discount</label>
                         </td>
                         <td>
@@ -40,7 +42,7 @@
                         <td></td>
                     </tr>
                     <tr *ngIf="subTotal" style="height: 25px;">
-                        <td colspan="4" style="text-align: right;">
+                        <td [attr.colspan]="isVatEnabled ? 5 : 4" style="text-align: right;">
                             <label>Sub Total</label>
                         </td>
                         <td style="text-align: right; margin-right: 10px;">
@@ -49,7 +51,7 @@
                         <td></td>
                     </tr>
                     <tr *ngIf="netTotal && isVatEnabled" style="height: 25px;">
-                        <td colspan="4" style="text-align: right;">
+                        <td [attr.colspan]="isVatEnabled ? 5 : 4"   style="text-align: right;">
                             <label>VAT(5%)</label>
                         </td>
                         <td style="text-align: right; margin-right: 10px;">
@@ -58,7 +60,7 @@
                         <td></td>
                     </tr>
                     <tr *ngIf="roundoffAmount" style="height: 25px;">
-                        <td colspan="4" style="text-align: right;">
+                        <td [attr.colspan]="isVatEnabled ? 5 : 4" style="text-align: right;">
                             <label>Round Off</label>
                         </td>
                         <td style="text-align: right; margin-right: 10px;">
@@ -67,7 +69,7 @@
                         <td></td>
                     </tr>
                     <tr *ngIf="netTotal" style="height: 25px;">
-                        <td colspan="4" style="text-align: right;">
+                        <td [attr.colspan]="isVatEnabled ? 5 : 4" style="text-align: right;">
                             <label>Total Amount</label>
                         </td>
                         <td style="text-align: right;">
