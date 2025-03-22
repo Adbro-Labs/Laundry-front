@@ -276,7 +276,186 @@ export class TakeOrderComponent implements OnInit {
     }
   printReciept() {
     const elementIdsToHide = [];
-    this.orderApi.getInvoiceTemplate().subscribe((htmlString) => {
+
+    if (this.items.isVatEnabled) {
+        this.orderApi.getInvoiceTemplate().subscribe((htmlString) => {
+            // Process template replacements (same as before)
+            htmlString = htmlString.replace("[ORDER_NO]", this.orderNumber);
+            htmlString = htmlString.replace("[CUSTOMER_NAME]", this.customerDetails?.customerName);
+            htmlString = htmlString.replace("[CUSTOMER_MOBILE]", this.customerDetails?.mobile);
+            htmlString = htmlString.replace("[DATE]", this.datePipe.transform(this.orderDate, "dd-MM-yyyy", "+0400"));
+            htmlString = htmlString.replace("[SHOPNAME]", this.branchDetails?.title);
+            htmlString = htmlString.replace("[TITLE]", this.branchDetails?.title);
+            htmlString = htmlString.replace("[SUBTITLE1]", this.branchDetails?.subtitle1);
+            htmlString = htmlString.replace("[SUBTITLE2]", this.branchDetails?.subtitle2);
+            
+        
+    
+            if (this.branchDetails?.imageUrl) {
+                htmlString = htmlString.replace("[IMAGE_URL]", this.branchDetails?.imageUrl);
+            } else {
+                elementIdsToHide.push("shoplogo");
+            }
+    
+            const itemDetails = this.items.orderDetails.value;
+            let itemsString = '';
+            let subTotal = 0;
+    
+            let totalQty = 0;
+            itemDetails.forEach((el) => {
+                const item = `<tr>
+                    <td style="text-align: left;">${el.itemName}</td>
+                    <td>${el.quantity}</td>
+                    <td>${el.rate}</td>
+                    <td>${el.vat}</td>
+                    <td>${el.total}</td>
+                </tr>`;
+                itemsString += item;
+                subTotal += Number(el.rate);
+                if (Number(el.quantity)) {
+                    totalQty += Number(el.quantity);
+                }
+            });
+            htmlString = htmlString.replace("[TOTAL_ITEMS]", totalQty.toString());
+            htmlString = htmlString.replace("[PAYMENT_TYPE]", this.orderMaster.paymentMethod);
+            htmlString = htmlString.replace("[itemDetails]", itemsString);
+    
+    
+            if (this.orderMaster?.discount) {
+                htmlString = htmlString.replace("[DISCOUNT]", Number(this.orderMaster?.discount).toFixed(2));
+            } else {
+                elementIdsToHide.push("discountLabel");
+            }
+    
+            if (this.orderMaster?.subTotal) {
+                htmlString = htmlString.replace("[SUBTOTAL]", Number(this.orderMaster?.subTotal).toFixed(2));
+            } 
+            else {
+                elementIdsToHide.push("subTotalLabel");
+            }
+    
+            if (this.orderMaster?.vatAmount) {
+                htmlString = htmlString.replace("[VATAMOUNT]", Number(this.orderMaster?.vatAmount).toFixed(2));
+            } else {
+                elementIdsToHide.push("vatAmountLabel");
+            }
+    
+            if (this.orderMaster?.vatEnabled && this.branchDetails?.taxNumber) {
+                htmlString = htmlString.replace("[TRN]", this.branchDetails?.taxNumber);
+            } else {
+                elementIdsToHide.push("taxDetails");
+            }
+    
+            if (this.orderMaster?.roundoffAmount) {
+                htmlString = htmlString.replace("[ROUNDOFF]", Number(this.orderMaster?.roundoffAmount).toFixed(2));
+            } else {
+                elementIdsToHide.push("roundoffLabel");
+            }
+    
+            htmlString = htmlString.replace("[NETTOTAL]", Number(this.orderMaster?.netTotal).toFixed(2));
+    
+            if (this.orderMaster?.additionalInstructions) {
+                htmlString = htmlString.replace("[NOTES]", this.orderMaster?.additionalInstructions);
+            } else {
+                elementIdsToHide.push("notelabel");
+            }
+    
+            htmlString = htmlString.replace("[DELIVREY_TYPE]", this.orderMaster?.deliveryType);
+    
+            if (this.orderMaster?.deliveryTime) {
+                htmlString = htmlString.replace("[DELIVREY_TIME]", this.orderMaster?.deliveryTime);
+            } else {
+                elementIdsToHide.push("deliveryTimeLabel");
+            }
+    
+            htmlString = htmlString.replace("undefined", "");
+    
+            // Create a new print window
+            const printWindow = window.open("", "", "height=600,width=900");
+            
+            // Add content with a function that returns a Promise
+            const setupPrintWindow = () => {
+                return new Promise<void>((resolve) => {
+                    printWindow.document.write(`<html><head><title>${this.branchDetails?.title}</title>`);
+                    printWindow.document.write('<style>@media print { @page { size: 80mm auto; margin: 0; }}</style>');
+                    printWindow.document.write("</head><body>");
+                    printWindow.document.write(htmlString);
+                    printWindow.document.write("</body></html>");
+                    printWindow.document.close();
+                    
+                    // Wait for window to load before resolving
+                    if (printWindow.document.readyState === 'complete') {
+                        resolve();
+                    } else {
+                        // printWindow.onload = resolve;
+                        printWindow.onload = (event) => resolve();
+                    }
+                });
+            };
+            
+            // Manipulate DOM elements
+            const manipulateDom = () => {
+                return new Promise((resolve) => {
+                    // Hide elements
+                    for (let item of elementIdsToHide) {
+                        let element = printWindow.document.getElementById(item);
+                        if (element) {
+                            element.style.setProperty("display", "none", "important");
+                        }
+                    }
+                    
+                    // Add status watermark if needed
+                    if (this.orderMaster.status) {
+                        const div = printWindow.document.createElement("h4");
+                        const node = printWindow.document.createElement("h4");
+                        const text = printWindow.document.createTextNode(this.orderMaster.status);
+                        node.style.position = "absolute";
+                        node.style.top = "240px";
+                        node.style.zIndex = "-1";
+                        node.style.transform = "rotate(320deg)";
+                        node.style.color = "#c6afaf";
+                        node.style.fontSize = "25px";
+                        div.style.display = "flex";
+                        div.style.justifyContent = "center";
+                        node.appendChild(text);
+                        div.appendChild(node);
+                        const printDoc = printWindow.document.getElementById("invoice-box");
+                        if (printDoc) {
+                            printDoc.appendChild(div);
+                        }
+                    }
+                    
+                    // Use a short delay to ensure styles are applied
+                    setTimeout(resolve, 100);
+                });
+            };
+            
+            // Execute the printing process as a chain of promises
+            setupPrintWindow()
+                .then(manipulateDom)
+                .then(() => {
+                    return new Promise<void>((resolve) => {
+                        // Force a repaint before printing
+                        requestAnimationFrame(() => {
+                            requestAnimationFrame(() => {
+                                printWindow.print();
+                                setTimeout(() => {
+                                    printWindow.close();
+                                    resolve();
+                                }, 100);
+                            });
+                        });
+                    });
+                })
+                .catch((error) => {
+                    console.error("Print error:", error);
+                    printWindow.close();
+                });
+        });
+    }
+ else{
+
+    this.orderApi.getInvoiceTemplateWithoutVat().subscribe((htmlString) => {
         // Process template replacements (same as before)
         htmlString = htmlString.replace("[ORDER_NO]", this.orderNumber);
         htmlString = htmlString.replace("[CUSTOMER_NAME]", this.customerDetails?.customerName);
@@ -286,6 +465,8 @@ export class TakeOrderComponent implements OnInit {
         htmlString = htmlString.replace("[TITLE]", this.branchDetails?.title);
         htmlString = htmlString.replace("[SUBTITLE1]", this.branchDetails?.subtitle1);
         htmlString = htmlString.replace("[SUBTITLE2]", this.branchDetails?.subtitle2);
+        
+    
 
         if (this.branchDetails?.imageUrl) {
             htmlString = htmlString.replace("[IMAGE_URL]", this.branchDetails?.imageUrl);
@@ -302,8 +483,7 @@ export class TakeOrderComponent implements OnInit {
             const item = `<tr>
                 <td style="text-align: left;">${el.itemName}</td>
                 <td>${el.quantity}</td>
-                <td>${el.rate}</td>
-                <td>${el.vat}</td>
+                <td colspan="2">${el.rate}</td>
                 <td>${el.total}</td>
             </tr>`;
             itemsString += item;
@@ -315,6 +495,7 @@ export class TakeOrderComponent implements OnInit {
         htmlString = htmlString.replace("[TOTAL_ITEMS]", totalQty.toString());
         htmlString = htmlString.replace("[PAYMENT_TYPE]", this.orderMaster.paymentMethod);
         htmlString = htmlString.replace("[itemDetails]", itemsString);
+
 
         if (this.orderMaster?.discount) {
             htmlString = htmlString.replace("[DISCOUNT]", Number(this.orderMaster?.discount).toFixed(2));
@@ -329,11 +510,7 @@ export class TakeOrderComponent implements OnInit {
             elementIdsToHide.push("subTotalLabel");
         }
 
-        if (this.orderMaster?.vatAmount) {
-            htmlString = htmlString.replace("[VATAMOUNT]", Number(this.orderMaster?.vatAmount).toFixed(2));
-        } else {
-            elementIdsToHide.push("vatAmountLabel");
-        }
+   
 
         if (this.orderMaster?.vatEnabled && this.branchDetails?.taxNumber) {
             htmlString = htmlString.replace("[TRN]", this.branchDetails?.taxNumber);
@@ -447,6 +624,9 @@ export class TakeOrderComponent implements OnInit {
                 printWindow.close();
             });
     });
+ }
+
+    
 }
     showCancelOrderDialog() {
         this.dialog.open(ConfirmOrderCancelComponent, {

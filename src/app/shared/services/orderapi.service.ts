@@ -21,6 +21,11 @@ export class OrderapiService {
     const url = "/assets/html/invoice.html";
     return this.http.get(url, {responseType: "text"});
   }
+  getInvoiceTemplateWithoutVat() {
+    const url = "/assets/html/invoice-withoutVat.html";
+    return this.http.get(url, {responseType: "text"});
+  }
+
   getInvoiceReportTemplate() {
     const url = "/assets/html/invoice-report.html";
     return this.http.get(url, {responseType: "text"});
