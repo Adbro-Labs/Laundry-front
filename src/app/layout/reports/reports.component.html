@@ -65,15 +65,15 @@
         <tbody>
                 <tr *ngFor="let item of orders">
                     <td style="text-decoration: underline;cursor: pointer;" (click)="openDailyReport(item.date)">{{item.date | date: 'dd/MM/yyyy':'+0400'}}</td>
-                    <td>{{item.total}}</td>
+                    <td>{{item.total.toFixed(2)}}</td>
                     <td>{{item.discount}}</td>
                     <td>{{item.netTotal}}</td>
                 </tr>
                 <tr>
                     <td></td>
-                    <td>{{total.amount}}</td>
+                    <td>{{total.amount.toFixed(2)}}</td>
                     <td>{{total.discount}}</td>
-                    <td>{{total.netTotal}}</td>
+                    <td>{{total.netTotal.toFixed(2)}}</td>
                 </tr>
         </tbody>
     </table>
