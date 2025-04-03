@@ -43,7 +43,7 @@
                     </tr>
                     <tr *ngIf="subTotal" style="height: 25px;">
                         <td [attr.colspan]="isVatEnabled ? 5 : 4" style="text-align: right;">
-                            <label>Sub Total</label>
+                            <label>Sub Total (ex VAT)</label>
                         </td>
                         <td style="text-align: right; margin-right: 10px;">
                             <span>{{subTotal?.toFixed(2)}}</span>
@@ -64,7 +64,7 @@
                             <label>Round Off</label>
                         </td>
                         <td style="text-align: right; margin-right: 10px;">
-                            <span>-{{roundoffAmount?.toFixed(2)}}</span>
+                            <span>{{roundoffAmount?.toFixed(2)}}</span>
                         </td>
                         <td></td>
                     </tr>
