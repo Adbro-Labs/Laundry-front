@@ -251,5 +251,6 @@ export class ItemDetailsComponent implements OnInit {
     if (this.orderDetails.length < 1) {
       this.disableNumberChange.emit(false);
     }
+    this.calculateNetTotal();
   }
 }
