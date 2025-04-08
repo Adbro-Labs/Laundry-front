@@ -3,11 +3,10 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class BranchService {
-
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   saveBranch(body) {
     const url = environment.apiUrl + 'branch';

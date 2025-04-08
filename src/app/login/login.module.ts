@@ -7,12 +7,7 @@ import { MaterialModule } from '../shared/modules/material/material.module';
 import { FormsModule } from '@angular/forms';
 
 @NgModule({
-    imports: [
-        CommonModule,
-        LoginRoutingModule,
-        MaterialModule,
-        FormsModule
-    ],
-    declarations: [LoginComponent]
+  imports: [CommonModule, LoginRoutingModule, MaterialModule, FormsModule],
+  declarations: [LoginComponent],
 })
-export class LoginModule { }
+export class LoginModule {}

@@ -7,7 +7,8 @@ This project is a port of the famous Free Admin Bootstrap Theme [SB Admin v1.0](
 ## [Demo](https://start-javascript.github.io/sb-admin-material)
 
 ### Donation
-If this project help you reduce time to develop, you can give me a cup of tea :) 
+
+If this project help you reduce time to develop, you can give me a cup of tea :)
 
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.me/nitinkrmr)
 
@@ -19,18 +20,18 @@ Provides fast, reliable and extensible starter for the development of Angular pr
 
 `sb-admin-material` provides the following features:
 
-*   Developed using Material-v2.0.0
-*   angular-v9.1.1
-*   angular/cli-v9.1.1
-*   angular/material-v9.2.0
-*   angular/cdk-v9.2.0
-*   angular/flex-layout-v9.0.0-beta.29
-*   [ngx-translate-v11.0.1](https://github.com/ngx-translate)
-*   Following the best practices.
-*   Ahead-of-Time compilation support.
-*   Official Angular i18n support.
-*   Production and development builds.
-*   Tree-Shaking production builds.
+- Developed using Material-v2.0.0
+- angular-v9.1.1
+- angular/cli-v9.1.1
+- angular/material-v9.2.0
+- angular/cdk-v9.2.0
+- angular/flex-layout-v9.0.0-beta.29
+- [ngx-translate-v11.0.1](https://github.com/ngx-translate)
+- Following the best practices.
+- Ahead-of-Time compilation support.
+- Official Angular i18n support.
+- Production and development builds.
+- Tree-Shaking production builds.
 
 ### How to start
 

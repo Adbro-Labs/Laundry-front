@@ -1,49 +1,87 @@
 <div class="services">
-    <div class="service">
-        <label>Wash</label>
-        <input type="checkbox" [(ngModel)]="washRequired" name="" id="" style="height: 30px;width: 30px;" (change)="updateSelection('washRequired')">
-    </div>
-    <div class="service">
-        <label>Dry Clean</label>
-        <input type="checkbox" [(ngModel)]="dryCleanRequired" name="" id="" style="height: 30px;width: 30px;" (change)="updateSelection('dryCleanRequired')">
-    </div>
-    <div class="service">
-        <label>Press</label>
-        <input type="checkbox" [(ngModel)]="pressRequired" name="" id="" style="height: 30px;width: 30px;" (change)="updateSelection('pressRequired')">
-    </div>
+  <div class="service">
+    <label>Wash</label>
+    <input
+      type="checkbox"
+      [(ngModel)]="washRequired"
+      name=""
+      id=""
+      style="height: 30px; width: 30px"
+      (change)="updateSelection('washRequired')"
+    />
+  </div>
+  <div class="service">
+    <label>Dry Clean</label>
+    <input
+      type="checkbox"
+      [(ngModel)]="dryCleanRequired"
+      name=""
+      id=""
+      style="height: 30px; width: 30px"
+      (change)="updateSelection('dryCleanRequired')"
+    />
+  </div>
+  <div class="service">
+    <label>Press</label>
+    <input
+      type="checkbox"
+      [(ngModel)]="pressRequired"
+      name=""
+      id=""
+      style="height: 30px; width: 30px"
+      (change)="updateSelection('pressRequired')"
+    />
+  </div>
 </div>
 <div class="services">
-    <div class="service">
-        <label>Express Service</label>
-        <input type="checkbox" [(ngModel)]="isExpressRequired" name="" id="" style="height: 30px;width: 30px;" (change)="calculateCharge()">
-    </div>
+  <div class="service">
+    <label>Express Service</label>
+    <input
+      type="checkbox"
+      [(ngModel)]="isExpressRequired"
+      name=""
+      id=""
+      style="height: 30px; width: 30px"
+      (change)="calculateCharge()"
+    />
+  </div>
 </div>
-<hr>
+<hr />
 <div class="services">
-    <div class="service">
-        <button (click)="updateCharge(-1)">-</button>
-    </div>
-    <div class="service" style=" flex-direction: column;">
-        <label>Charge</label>
-        {{Charge}}
-    </div>
-    <div class="service">
-        <button (click)="updateCharge(1)">+</button>
-    </div>
+  <div class="service">
+    <button (click)="updateCharge(-1)">-</button>
+  </div>
+  <div class="service" style="flex-direction: column">
+    <label>Charge</label>
+    {{ Charge }}
+  </div>
+  <div class="service">
+    <button (click)="updateCharge(1)">+</button>
+  </div>
 </div>
-<hr>
+<hr />
 <div>
-    <p>Quantity:&nbsp;<span>{{quantity}}</span></p>
+  <p>
+    Quantity:&nbsp;<span>{{ quantity }}</span>
+  </p>
 </div>
 <div>
-    <mat-select matInput [(ngModel)]="processType">
-        <mat-option value="FOLD">Fold</mat-option>
-        <mat-option value="HANGER">Hanger</mat-option>
-    </mat-select>
+  <mat-select matInput [(ngModel)]="processType">
+    <mat-option value="FOLD">Fold</mat-option>
+    <mat-option value="HANGER">Hanger</mat-option>
+  </mat-select>
 </div>
-<br>
+<br />
 <div class="numberpad">
-    <button mat-stroked-button *ngFor="let item of [1, 2, 3, 4, 5, 6, 7, 8, 9, 0]" (click)="updateQuantity(item)">{{item}}</button>
-    <button mat-stroked-button (click)="updateQuantity('backspace')" [disabled]="!quantity"><mat-icon>keyboard_backspace</mat-icon></button>
-    <button mat-stroked-button (click)="submitDetails()"><mat-icon>check</mat-icon></button>
+  <button
+    mat-stroked-button
+    *ngFor="let item of [1, 2, 3, 4, 5, 6, 7, 8, 9, 0]"
+    (click)="updateQuantity(item)"
+  >
+    {{ item }}
+  </button>
+  <button mat-stroked-button (click)="updateQuantity('backspace')" [disabled]="!quantity">
+    <mat-icon>keyboard_backspace</mat-icon>
+  </button>
+  <button mat-stroked-button (click)="submitDetails()"><mat-icon>check</mat-icon></button>
 </div>

@@ -30,7 +30,7 @@ import { CustomerStatementComponent } from './customer-statement/customer-statem
     MatAutocompleteModule,
     MatInputModule,
     ReactiveFormsModule,
-    MatIconModule
-  ]
+    MatIconModule,
+  ],
 })
-export class ReportsModule { }
+export class ReportsModule {}

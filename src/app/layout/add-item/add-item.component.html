@@ -1,38 +1,88 @@
 <div class="container">
-    <form class="form" [formGroup]="customerForm" (ngSubmit)="saveCustomer()">
-        <mat-form-field>
-            <input formControlName="itemName" autocomplete="off" matInput type="text" placeholder="Item Name"/>
-        </mat-form-field>
-        <mat-form-field>
-            <input formControlName="washingCharge" autocomplete="off" matInput type="number" placeholder="Washing Charge"/>
-        </mat-form-field>
-        <mat-form-field>
-            <input formControlName="dryCleanCharge" autocomplete="off" matInput type="number" placeholder="Dryclean Charge"/>
-        </mat-form-field>
-        <mat-form-field>
-            <input formControlName="pressingCharge" autocomplete="off" matInput type="number" placeholder="Pressing Charge"/>
-        </mat-form-field>
-        <mat-form-field>
-            <input formControlName="expressWashingCharge" autocomplete="off" matInput type="number" placeholder="Express Washing Charge"/>
-        </mat-form-field>
-        <mat-form-field>
-            <input formControlName="expressDryCleanCharge" autocomplete="off" matInput type="number" placeholder="Express Dryclean Charge"/>
-        </mat-form-field>
-        <mat-form-field>
-            <input formControlName="expressPressingCharge" autocomplete="off" matInput type="number" placeholder="Express Pressing Charge"/>
-        </mat-form-field>
-        <mat-form-field>
-            <mat-label>Category</mat-label>
-            <mat-select formControlName="categories" multiple>
-                <mat-option *ngFor="let item of categories" [value]="item._id">{{item?.categoryName}}</mat-option>
-            </mat-select>
-          </mat-form-field>
-        <mat-form-field>
-            <input formControlName="sortOrder" autocomplete="off" matInput type="number" placeholder="Sort Order"/>
-        </mat-form-field>
-        <div class="btn-group">
-            <button type="submit" mat-raised-button color="primary">Submit</button>
-            <button (click)="closePopup()" type="reset" mat-raised-button color="accent">Cancel</button>
-        </div>
-    </form>
+  <form class="form" [formGroup]="customerForm" (ngSubmit)="saveCustomer()">
+    <mat-form-field>
+      <input
+        formControlName="itemName"
+        autocomplete="off"
+        matInput
+        type="text"
+        placeholder="Item Name"
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <input
+        formControlName="washingCharge"
+        autocomplete="off"
+        matInput
+        type="number"
+        placeholder="Washing Charge"
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <input
+        formControlName="dryCleanCharge"
+        autocomplete="off"
+        matInput
+        type="number"
+        placeholder="Dryclean Charge"
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <input
+        formControlName="pressingCharge"
+        autocomplete="off"
+        matInput
+        type="number"
+        placeholder="Pressing Charge"
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <input
+        formControlName="expressWashingCharge"
+        autocomplete="off"
+        matInput
+        type="number"
+        placeholder="Express Washing Charge"
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <input
+        formControlName="expressDryCleanCharge"
+        autocomplete="off"
+        matInput
+        type="number"
+        placeholder="Express Dryclean Charge"
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <input
+        formControlName="expressPressingCharge"
+        autocomplete="off"
+        matInput
+        type="number"
+        placeholder="Express Pressing Charge"
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Category</mat-label>
+      <mat-select formControlName="categories" multiple>
+        <mat-option *ngFor="let item of categories" [value]="item._id">{{
+          item?.categoryName
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <input
+        formControlName="sortOrder"
+        autocomplete="off"
+        matInput
+        type="number"
+        placeholder="Sort Order"
+      />
+    </mat-form-field>
+    <div class="btn-group">
+      <button type="submit" mat-raised-button color="primary">Submit</button>
+      <button (click)="closePopup()" type="reset" mat-raised-button color="accent">Cancel</button>
+    </div>
+  </form>
 </div>

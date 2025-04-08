@@ -7,12 +7,7 @@ import { DashboardComponent } from './dashboard.component';
 import { MaterialModule } from 'src/app/shared/modules/material/material.module';
 
 @NgModule({
-    imports: [
-        CommonModule,
-        DashboardRoutingModule,
-        StatModule,
-        MaterialModule
-    ],
-    declarations: [DashboardComponent]
+  imports: [CommonModule, DashboardRoutingModule, StatModule, MaterialModule],
+  declarations: [DashboardComponent],
 })
-export class DashboardModule { }
+export class DashboardModule {}

@@ -1,24 +1,53 @@
 <div class="card-container mb-20">
-    <div class="card-item" *ngIf="userType!= 'ADMIN'">
-        <app-stat (click)="order.generateNewOrder()" [bgClass]="'success'" 
-        [icon]="'add'" [label]="'New Order'"></app-stat>
-    </div>
-   
-    <div class="card-item" *ngIf="userType!= 'ADMIN'">
-        <app-stat routerLink="/orders" [bgClass]="'warn'" [icon]="'shopping_cart'"  [label]="'Orders'"></app-stat>
-    </div>
-    <div class="card-item" *ngIf="userType == 'ADMIN'">
-        <app-stat routerLink="/category" [bgClass]="'info'" [icon]="'view_list'" [label]="'Category'"></app-stat>
-    </div>
-    <div class="card-item">
-        <app-stat routerLink="/items" [bgClass]="'danger'" [icon]="'view_list'" [label]="'Items'"></app-stat>
-    </div>
-    <div class="card-item">
-        <app-stat routerLink="/customers"  [bgClass]="'info'" [icon]="'person'" [label]="'Customers'"></app-stat>
-    </div>
-    <div class="card-item">
-        <app-stat routerLink="/reports"  [bgClass]="'success'" [icon]="'list'" [label]="'Reports'"></app-stat>
-    </div>
+  <div class="card-item" *ngIf="userType != 'ADMIN'">
+    <app-stat
+      (click)="order.generateNewOrder()"
+      [bgClass]="'success'"
+      [icon]="'add'"
+      [label]="'New Order'"
+    ></app-stat>
+  </div>
+
+  <div class="card-item" *ngIf="userType != 'ADMIN'">
+    <app-stat
+      routerLink="/orders"
+      [bgClass]="'warn'"
+      [icon]="'shopping_cart'"
+      [label]="'Orders'"
+    ></app-stat>
+  </div>
+  <div class="card-item" *ngIf="userType == 'ADMIN'">
+    <app-stat
+      routerLink="/category"
+      [bgClass]="'info'"
+      [icon]="'view_list'"
+      [label]="'Category'"
+    ></app-stat>
+  </div>
+  <div class="card-item">
+    <app-stat
+      routerLink="/items"
+      [bgClass]="'danger'"
+      [icon]="'view_list'"
+      [label]="'Items'"
+    ></app-stat>
+  </div>
+  <div class="card-item">
+    <app-stat
+      routerLink="/customers"
+      [bgClass]="'info'"
+      [icon]="'person'"
+      [label]="'Customers'"
+    ></app-stat>
+  </div>
+  <div class="card-item">
+    <app-stat
+      routerLink="/reports"
+      [bgClass]="'success'"
+      [icon]="'list'"
+      [label]="'Reports'"
+    ></app-stat>
+  </div>
 </div>
 
 <!-- <div class="mb-20" flFlex flexLayout="row" flexLayout.lt-md="column">
@@ -41,4 +70,3 @@
         </table>
     </div>
 </div> -->
-

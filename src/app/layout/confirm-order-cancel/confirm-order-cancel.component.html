@@ -1,26 +1,30 @@
-<h3 style="text-align: center;">Order Cancellation</h3>
+<h3 style="text-align: center">Order Cancellation</h3>
 <div>
-    <mat-label>Cancellation Reason</mat-label>
-    <mat-radio-group (change)="updateReason($event)" 
-    style="display: flex;
-        flex-direction: column;
-        gap: 10px;
-        margin: 10px 0px;
-    ">
-        <mat-radio-button value="Incorrect order details"
-            >Incorrect order details</mat-radio-button
-        >
-        <mat-radio-button value="Order cancelled by customer"
-            >Order cancelled by customer</mat-radio-button
-        >
-        <mat-radio-button value="other">Others</mat-radio-button>
-    </mat-radio-group>
-    <mat-form-field appearance="fill" *ngIf="showInput">
-        <textarea matInput name="reason" [(ngModel)]="cancellationReason"></textarea>
-    </mat-form-field>
+  <mat-label>Cancellation Reason</mat-label>
+  <mat-radio-group
+    (change)="updateReason($event)"
+    style="display: flex; flex-direction: column; gap: 10px; margin: 10px 0px"
+  >
+    <mat-radio-button value="Incorrect order details">Incorrect order details</mat-radio-button>
+    <mat-radio-button value="Order cancelled by customer"
+      >Order cancelled by customer</mat-radio-button
+    >
+    <mat-radio-button value="other">Others</mat-radio-button>
+  </mat-radio-group>
+  <mat-form-field appearance="fill" *ngIf="showInput">
+    <textarea matInput name="reason" [(ngModel)]="cancellationReason"></textarea>
+  </mat-form-field>
 
-    <div>
-        <button (click)="confirmCancellation()" mat-raised-button color="warn" type="submit" [disabled]="!cancellationReason">Confirm</button>
-        <button mat-button type="button" (click)="closeDialog()">Cancel</button>
-    </div>
+  <div>
+    <button
+      (click)="confirmCancellation()"
+      mat-raised-button
+      color="warn"
+      type="submit"
+      [disabled]="!cancellationReason"
+    >
+      Confirm
+    </button>
+    <button mat-button type="button" (click)="closeDialog()">Cancel</button>
+  </div>
 </div>

@@ -6,12 +6,11 @@ import { CategoryService } from 'src/app/shared/services/category.service';
 @Component({
   selector: 'app-addcategory',
   templateUrl: './addcategory.component.html',
-  styleUrls: ['./addcategory.component.scss']
+  styleUrls: ['./addcategory.component.scss'],
 })
 export class AddcategoryComponent implements OnInit {
-
   categoryForm: FormGroup;
-  errorMessage = "";
+  errorMessage = '';
 
   constructor(
     private fb: FormBuilder,
@@ -21,7 +20,7 @@ export class AddcategoryComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.errorMessage = "";
+    this.errorMessage = '';
     this.initForm();
     if (this.data) {
       this.categoryForm.patchValue(this.data);
@@ -32,27 +31,30 @@ export class AddcategoryComponent implements OnInit {
     this.categoryForm = this.fb.group({
       _id: [''],
       categoryName: ['', Validators.required],
-      isActive: [false, Validators.required]
+      isActive: [false, Validators.required],
     });
   }
 
   saveCategory() {
-    this.errorMessage = "";
+    this.errorMessage = '';
     if (this.categoryForm.valid) {
       const categoryDetails = this.categoryForm.value;
-      console.log(categoryDetails,"catttegorrrry")
-      if(!categoryDetails._id) {
+      console.log(categoryDetails, 'catttegorrrry');
+      if (!categoryDetails._id) {
         delete categoryDetails._id;
       }
-    
-      this.category.saveCategory(categoryDetails).subscribe(data => {
-        this.popup.close(data);
-      }, error => {
-        console.log(error);
-        if (error.status && error.status === 400) {
-          this.errorMessage = error.error.message;
+
+      this.category.saveCategory(categoryDetails).subscribe(
+        (data) => {
+          this.popup.close(data);
+        },
+        (error) => {
+          console.log(error);
+          if (error.status && error.status === 400) {
+            this.errorMessage = error.error.message;
+          }
         }
-      });
+      );
     }
   }
 
@@ -60,4 +62,3 @@ export class AddcategoryComponent implements OnInit {
     this.popup.close();
   }
 }
-

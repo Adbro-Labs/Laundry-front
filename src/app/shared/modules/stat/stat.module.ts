@@ -6,8 +6,8 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
-    imports: [CommonModule, MatCardModule, MatGridListModule, MatIconModule],
-    declarations: [StatComponent],
-    exports: [StatComponent]
+  imports: [CommonModule, MatCardModule, MatGridListModule, MatIconModule],
+  declarations: [StatComponent],
+  exports: [StatComponent],
 })
 export class StatModule {}

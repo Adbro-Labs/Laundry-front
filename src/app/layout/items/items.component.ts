@@ -4,44 +4,50 @@ import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { ItemService } from 'src/app/shared/services/item.service';
 import { AddItemComponent } from '../add-item/add-item.component';
-import { startWith,map, debounceTime } from 'rxjs/operators';
+import { startWith, map, debounceTime } from 'rxjs/operators';
 import { CustomerService } from 'src/app/shared/services/customer.service';
 @Component({
   selector: 'app-customer',
   templateUrl: './items.component.html',
-  styleUrls: ['./items.component.scss']
+  styleUrls: ['./items.component.scss'],
 })
 export class ItemsComponent implements OnInit {
   customerDetails;
   myControl = new FormControl();
   options: any[] = [];
-  filteredOptions:any[];
-  constructor(private dialog: MatDialog, private item: ItemService, private customer: CustomerService) { }
+  filteredOptions: any[];
+  constructor(
+    private dialog: MatDialog,
+    private item: ItemService,
+    private customer: CustomerService
+  ) {}
 
   ngOnInit(): void {
     this.getAllCustomers();
-    this.getCustomers("");
-    this.myControl.valueChanges.pipe(debounceTime(500))
-    .subscribe(data => {
+    this.getCustomers('');
+    this.myControl.valueChanges.pipe(debounceTime(500)).subscribe((data) => {
       this.getCustomers(data);
     });
   }
   getCustomers(query) {
     if (typeof query == 'string') {
-      this.customer.getAllCustomers(0, query).subscribe(data => {
-        this.options = (data as any);
-        this.filteredOptions = (data as any);
+      this.customer.getAllCustomers(0, query).subscribe((data) => {
+        this.options = data as any;
+        this.filteredOptions = data as any;
       });
     }
   }
   showCustomerDialog() {
-    this.dialog.open(AddItemComponent, { disableClose: true, width: '400px'}).afterClosed().subscribe((response: any) => {
-      this.getAllCustomers();
-    });
+    this.dialog
+      .open(AddItemComponent, { disableClose: true, width: '400px' })
+      .afterClosed()
+      .subscribe((response: any) => {
+        this.getAllCustomers();
+      });
   }
   getAllCustomers() {
     const customerId = this.myControl?.value?._id;
-    this.item.getAllItems(customerId).subscribe(data => {
+    this.item.getAllItems(customerId).subscribe((data) => {
       this.customerDetails = data;
     });
   }
@@ -50,23 +56,30 @@ export class ItemsComponent implements OnInit {
     if (customerId) {
       item.customerId = customerId;
     }
-    this.dialog.open(AddItemComponent, { disableClose: true, width: '400px', data: item}).afterClosed().subscribe((response: any) => {
-      this.getAllCustomers();
-    });
+    this.dialog
+      .open(AddItemComponent, { disableClose: true, width: '400px', data: item })
+      .afterClosed()
+      .subscribe((response: any) => {
+        this.getAllCustomers();
+      });
   }
   private _filter(value: string): string[] {
-    if (typeof value == "string") {
+    if (typeof value == 'string') {
       const filterValue = value.toLowerCase();
-      return this.options.filter(option => option?.customerName?.toLowerCase()?.indexOf(filterValue) === 0 || option?.mobile?.toString()?.indexOf(filterValue) === 0);
+      return this.options.filter(
+        (option) =>
+          option?.customerName?.toLowerCase()?.indexOf(filterValue) === 0 ||
+          option?.mobile?.toString()?.indexOf(filterValue) === 0
+      );
     }
   }
   displayFn(user): string {
-    const customerName =  user && user.customerName ? user.customerName : '';
-    const customerMobile =  user && user.mobile ? user.mobile : '';
+    const customerName = user && user.customerName ? user.customerName : '';
+    const customerMobile = user && user.mobile ? user.mobile : '';
     if (customerName || customerMobile) {
       return `${customerName}`;
     }
-    return "";
+    return '';
   }
   getCustomerPricing() {
     const customerId = this.myControl?.value?._id;

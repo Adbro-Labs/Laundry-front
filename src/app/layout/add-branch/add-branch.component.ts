@@ -7,15 +7,17 @@ import { BranchService } from 'src/app/shared/services/measure.service';
 @Component({
   selector: 'app-add-customer',
   templateUrl: './add-branch.component.html',
-  styleUrls: ['./add-branch.component.scss']
+  styleUrls: ['./add-branch.component.scss'],
 })
 export class AddBranchComponent implements OnInit {
   customerForm: FormGroup;
-  errormessage = "";
-  constructor(private fb: FormBuilder, private item: BranchService,
-    private popup: MatDialogRef<AddBranchComponent>, @Optional() @Inject(MAT_DIALOG_DATA) public data) { 
-      
-    }
+  errormessage = '';
+  constructor(
+    private fb: FormBuilder,
+    private item: BranchService,
+    private popup: MatDialogRef<AddBranchComponent>,
+    @Optional() @Inject(MAT_DIALOG_DATA) public data
+  ) {}
 
   ngOnInit(): void {
     this.initForm();
@@ -34,21 +36,24 @@ export class AddBranchComponent implements OnInit {
       accessCode: [''],
       imageUrl: [''],
       enableVat: [false],
-      taxNumber: ['']
+      taxNumber: [''],
     });
   }
   saveCustomer() {
-    this.errormessage = "";
+    this.errormessage = '';
     if (this.customerForm.valid) {
       const customerDetails = this.customerForm.value;
-      if(!customerDetails._id || customerDetails.customerId) {
+      if (!customerDetails._id || customerDetails.customerId) {
         delete customerDetails._id;
       }
-      this.item.saveBranch(customerDetails).subscribe(data => {
-        this.popup.close(data);
-      }, error => {
-        this.errormessage = error?.error?.message;
-      });
+      this.item.saveBranch(customerDetails).subscribe(
+        (data) => {
+          this.popup.close(data);
+        },
+        (error) => {
+          this.errormessage = error?.error?.message;
+        }
+      );
     }
   }
   closePopup() {

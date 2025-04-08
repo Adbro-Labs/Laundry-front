@@ -1,8 +1,30 @@
 <div class="container">
-    <h3 class="settle-heading">Settlement</h3>
-    <div class="settle-options">
-        <button mat-stroked-button color="primary" class="settle-option" (click)="confirmSettlement(paymentMethod.CASH)"><mat-icon>money</mat-icon>CASH</button>
-        <button mat-stroked-button color="stroked" class="settle-option" (click)="confirmSettlement(paymentMethod.CARD)"><mat-icon>credit_card</mat-icon>CARD</button>
-        <button [disabled]="data?.disablePayLater" mat-stroked-button color="warn" class="settle-option" (click)="confirmSettlement(paymentMethod.PAY_LATER)"><mat-icon>money_off</mat-icon>PAY LATER</button>
-    </div>
+  <h3 class="settle-heading">Settlement</h3>
+  <div class="settle-options">
+    <button
+      mat-stroked-button
+      color="primary"
+      class="settle-option"
+      (click)="confirmSettlement(paymentMethod.CASH)"
+    >
+      <mat-icon>money</mat-icon>CASH
+    </button>
+    <button
+      mat-stroked-button
+      color="stroked"
+      class="settle-option"
+      (click)="confirmSettlement(paymentMethod.CARD)"
+    >
+      <mat-icon>credit_card</mat-icon>CARD
+    </button>
+    <button
+      [disabled]="data?.disablePayLater"
+      mat-stroked-button
+      color="warn"
+      class="settle-option"
+      (click)="confirmSettlement(paymentMethod.PAY_LATER)"
+    >
+      <mat-icon>money_off</mat-icon>PAY LATER
+    </button>
+  </div>
 </div>

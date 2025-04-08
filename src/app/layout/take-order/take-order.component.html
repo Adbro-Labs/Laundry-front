@@ -1,106 +1,125 @@
 <div class="container">
-    <div class="heading">
-        <h3>Order Details - {{ orderNumber }}</h3>
-        <div>
-            <mat-form-field>
-                <mat-select [(ngModel)]="orderStatus" placeholder="status" [disabled]="userRole == 'ADMIN'">
-                    <mat-option *ngFor="let item of orderStatusList;index as i" 
-                    [value]="item" [disabled]="i <= statusCode || item == 'CANCELLED'">{{item}}</mat-option>
-                </mat-select>
-            </mat-form-field>
-            <button
-                (click)="initiateSettlement()"
-                mat-raised-button
-                color="primary"
-                style="margin-left: 5px"
-                *ngIf="userRole!='ADMIN' && !disableUpdate"
-                [disabled]="disableSave"
-            >
-                Settle
-         </button>
-            &nbsp;
-            <button
-            (click)="initiateOrderStatusUpdate()"
-            mat-raised-button
-            color="primary"
-            style="margin-left: 5px"
-            *ngIf="userRole!='ADMIN' && disableUpdate"
-            [disabled]="disableSave"
+  <div class="heading">
+    <h3>Order Details - {{ orderNumber }}</h3>
+    <div>
+      <mat-form-field>
+        <mat-select [(ngModel)]="orderStatus" placeholder="status" [disabled]="userRole == 'ADMIN'">
+          <mat-option
+            *ngFor="let item of orderStatusList; index as i"
+            [value]="item"
+            [disabled]="i <= statusCode || item == 'CANCELLED'"
+            >{{ item }}</mat-option
+          >
+        </mat-select>
+      </mat-form-field>
+      <button
+        (click)="initiateSettlement()"
+        mat-raised-button
+        color="primary"
+        style="margin-left: 5px"
+        *ngIf="userRole != 'ADMIN' && !disableUpdate"
+        [disabled]="disableSave"
+      >
+        Settle
+      </button>
+      &nbsp;
+      <button
+        (click)="initiateOrderStatusUpdate()"
+        mat-raised-button
+        color="primary"
+        style="margin-left: 5px"
+        *ngIf="userRole != 'ADMIN' && disableUpdate"
+        [disabled]="disableSave"
+      >
+        Update Status
+      </button>
+      &nbsp;
+      <button
+        (click)="printReciept()"
+        mat-stroked-button
+        color="primary"
+        style="margin-left: 5px"
+        [disabled]="!enablePrint"
+      >
+        Print
+      </button>
+      &nbsp;
+      <button
+        [disabled]="!enablePrint || orderStatus == 'DELIVERED' || userRole == 'ADMIN'"
+        (click)="showCancelOrderDialog()"
+        mat-stroked-button
+        color="warn"
+      >
+        Cancel Order
+      </button>
+    </div>
+  </div>
+  <div style="display: flex; justify-content: space-between; gap: 40px">
+    <div style="display: flex; flex-direction: column">
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Customer</mat-label>
+        <input
+          type="text"
+          placeholder="Search Customer"
+          aria-label="customer"
+          name="customerName"
+          matInput
+          autocomplete="off"
+          [formControl]="mobileNumber"
+          [matAutocomplete]="auto"
+        />
+        <mat-autocomplete
+          autoActiveFirstOption
+          #auto="matAutocomplete"
+          (optionSelected)="setCustomerDetails()"
+          [displayWith]="displayFn"
+          [autoActiveFirstOption]="true"
         >
-            Update Status
-     </button>
-        &nbsp;
-            <button
-                (click)="printReciept()"
-                mat-stroked-button
-                color="primary"
-                style="margin-left: 5px"
-                [disabled]="!enablePrint"
+          <mat-option *ngFor="let option of tempCustomerList" [value]="option">
+            <span
+              >{{ option.customerName }} <br />
+              <small>{{ option.mobile }}</small></span
             >
-                Print
-            </button>
-            &nbsp;
-            <button [disabled]="!enablePrint || orderStatus == 'DELIVERED' || userRole == 'ADMIN'" 
-            (click)="showCancelOrderDialog()" mat-stroked-button color="warn">
-                Cancel Order
-            </button>
-        </div>
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
     </div>
-    <div style="display: flex; justify-content: space-between; gap: 40px">
+    <div>
+      <button
+        mat-stroked-button
+        (click)="guestLogin()"
+        [disabled]="disableUpdate || disableNumberChange"
+      >
+        Guest User
+      </button>
+    </div>
+    <div>
+      <div *ngIf="customerDetails" style="display: flex; gap: 10px">
         <div style="display: flex; flex-direction: column">
-            <mat-form-field class="example-full-width" appearance="fill">
-                <mat-label>Customer</mat-label>
-                <input type="text"
-                       placeholder="Search Customer"
-                       aria-label="customer"
-                       name="customerName"
-                       matInput
-                       autocomplete="off"
-                       [formControl]="mobileNumber"
-                       [matAutocomplete]="auto">
-                <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" 
-                (optionSelected)="setCustomerDetails()"
-                [displayWith]="displayFn" [autoActiveFirstOption]="true">
-                  <mat-option *ngFor="let option of tempCustomerList" [value]="option">
-                    <span>{{option.customerName}} <br/>
-                    <small>{{option.mobile}}</small></span>
-                  </mat-option>
-                </mat-autocomplete>
-              </mat-form-field>
+          <label>Customer Name</label>
+          <p>{{ customerDetails?.customerName }}</p>
         </div>
-        <div>
-            <button mat-stroked-button (click)="guestLogin()" [disabled]="disableUpdate|| disableNumberChange">Guest User</button>
+        <div style="display: flex; flex-direction: column">
+          <label>Address</label>
+          <p>{{ customerDetails?.address }}</p>
         </div>
-        <div>
-            <div *ngIf="customerDetails" style="display: flex; gap: 10px">
-                <div style="display: flex; flex-direction: column">
-                    <label>Customer Name</label>
-                    <p>{{ customerDetails?.customerName }}</p>
-                </div>
-                <div style="display: flex; flex-direction: column">
-                    <label>Address</label>
-                    <p>{{ customerDetails?.address }}</p>
-                </div>
-                
-            </div>
-            <ng-container *ngIf="showNoCustomer">
-                <div style="display: flex; flex-direction: column">
-                    <label>Customer not found.</label>
-                    <button
-                        mat-stroked-button
-                        color="accent"
-                        (click)="showCustomerForm()"
-                    >
-                        Create One
-                    </button>
-                </div>
-            </ng-container>
-            
+      </div>
+      <ng-container *ngIf="showNoCustomer">
+        <div style="display: flex; flex-direction: column">
+          <label>Customer not found.</label>
+          <button mat-stroked-button color="accent" (click)="showCustomerForm()">Create One</button>
         </div>
-        <div>
-            <button *ngIf="customerDetails" mat-stroked-button (click)="showPreviousBill()">Previous bill</button>
-        </div>
-        <div></div>
+      </ng-container>
     </div>
-    <app-item-details [customerId]="customerDetails?._id" (disableNumberChange)="updateNumberChange($event)"></app-item-details>
+    <div>
+      <button *ngIf="customerDetails" mat-stroked-button (click)="showPreviousBill()">
+        Previous bill
+      </button>
+    </div>
+    <div></div>
+  </div>
+  <app-item-details
+    [customerId]="customerDetails?._id"
+    (disableNumberChange)="updateNumberChange($event)"
+  ></app-item-details>
 </div>

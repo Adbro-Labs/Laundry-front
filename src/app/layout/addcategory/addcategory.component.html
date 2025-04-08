@@ -1,18 +1,29 @@
 <div class="container">
-    <p *ngIf="errorMessage" style="text-align: center;color: red;">{{errorMessage}}</p>
-    <form class="form" [formGroup]="categoryForm" (ngSubmit)="saveCategory()">
-        
-     
-        <mat-form-field>
-            <input formControlName="categoryName" autocomplete="off" matInput type="text" placeholder="Category Name"/>
-        </mat-form-field>
-      
-            <mat-checkbox style="margin-left: 20px;" formControlName="isActive">Active</mat-checkbox>
-    
-        <div class="btn-group">
-            <button type="submit" mat-raised-button color="primary" class="btn-submit">Submit</button>
-            <button (click)="closePopup()" type="reset" mat-raised-button color="accent" class="btn-cancel">Cancel</button>
-        </div>
-        
-    </form>
+  <p *ngIf="errorMessage" style="text-align: center; color: red">{{ errorMessage }}</p>
+  <form class="form" [formGroup]="categoryForm" (ngSubmit)="saveCategory()">
+    <mat-form-field>
+      <input
+        formControlName="categoryName"
+        autocomplete="off"
+        matInput
+        type="text"
+        placeholder="Category Name"
+      />
+    </mat-form-field>
+
+    <mat-checkbox style="margin-left: 20px" formControlName="isActive">Active</mat-checkbox>
+
+    <div class="btn-group">
+      <button type="submit" mat-raised-button color="primary" class="btn-submit">Submit</button>
+      <button
+        (click)="closePopup()"
+        type="reset"
+        mat-raised-button
+        color="accent"
+        class="btn-cancel"
+      >
+        Cancel
+      </button>
+    </div>
+  </form>
 </div>

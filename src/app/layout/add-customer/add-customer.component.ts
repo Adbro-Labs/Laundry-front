@@ -6,18 +6,20 @@ import { CustomerService } from 'src/app/shared/services/customer.service';
 @Component({
   selector: 'app-add-customer',
   templateUrl: './add-customer.component.html',
-  styleUrls: ['./add-customer.component.scss']
+  styleUrls: ['./add-customer.component.scss'],
 })
 export class AddCustomerComponent implements OnInit {
   customerForm: FormGroup;
-  errorMessage = "";
-  constructor(private fb: FormBuilder, private customer: CustomerService,
-    private popup: MatDialogRef<AddCustomerComponent>, @Optional() @Inject(MAT_DIALOG_DATA) public data) { 
-      
-    }
+  errorMessage = '';
+  constructor(
+    private fb: FormBuilder,
+    private customer: CustomerService,
+    private popup: MatDialogRef<AddCustomerComponent>,
+    @Optional() @Inject(MAT_DIALOG_DATA) public data
+  ) {}
 
   ngOnInit(): void {
-    this.errorMessage = "";
+    this.errorMessage = '';
     this.initForm();
     if (this.data) {
       this.customerForm.patchValue(this.data);
@@ -34,20 +36,23 @@ export class AddCustomerComponent implements OnInit {
     });
   }
   saveCustomer() {
-    this.errorMessage = "";
+    this.errorMessage = '';
     if (this.customerForm.valid) {
       const customerDetails = this.customerForm.value;
-      if(!customerDetails._id) {
+      if (!customerDetails._id) {
         delete customerDetails._id;
       }
-      this.customer.saveCustomer(customerDetails).subscribe(data => {
-        this.popup.close(data);
-      }, error => {
-        console.log(error);
-        if (error.status && error.status == 400) {
-          this.errorMessage = error.error.message;
+      this.customer.saveCustomer(customerDetails).subscribe(
+        (data) => {
+          this.popup.close(data);
+        },
+        (error) => {
+          console.log(error);
+          if (error.status && error.status == 400) {
+            this.errorMessage = error.error.message;
+          }
         }
-      });
+      );
     }
   }
   closePopup() {

@@ -6,17 +6,17 @@ import { OrderapiService } from 'src/app/shared/services/orderapi.service';
 @Component({
   selector: 'app-order-details',
   templateUrl: './order-details.component.html',
-  styleUrls: ['./order-details.component.scss']
+  styleUrls: ['./order-details.component.scss'],
 })
 export class OrderDetailsComponent implements OnInit {
+  constructor(
+    private order: OrderService,
+    private router: Router
+  ) {}
 
-  constructor(private order: OrderService, private router: Router) { }
-
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   generateOrderNumber() {
     this.order.generateNewOrder();
   }
-
 }
