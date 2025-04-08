@@ -2,74 +2,75 @@
 @import 'main';
 @import 'utils';
 @import 'responsive';
-@import "@danielmoncada/angular-datetime-picker/assets/style/picker.min.css";
+@import '@danielmoncada/angular-datetime-picker/assets/style/picker.min.css';
 
 $base-color: #3f51b5;
 .container {
-    margin: 0px;
-    padding: 0px;
-    position: relative;
-    margin-bottom: 5px;
+  margin: 0px;
+  padding: 0px;
+  position: relative;
+  margin-bottom: 5px;
 }
 .heading {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 .order-dates {
-    display: flex;
-    justify-content: space-between;
-    padding: 0 12vw 0 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 12vw 0 0;
 }
 .dategroup {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 .table {
-    display: flex;
-    table {
-        border-collapse: collapse;
+  display: flex;
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    td,
+    th {
+      border: 1px solid #ddd;
+      padding: 8px;
+      input[type='text'] {
         width: 100%;
-        td, th {
-            border: 1px solid #ddd;
-            padding: 8px;
-            input[type="text"] {
-                width: 100%; 
-                box-sizing: border-box;
-                -webkit-box-sizing:border-box;
-                -moz-box-sizing: border-box;
-            }
-        }
-        th {
-            padding-top: 12px;
-            padding-bottom: 12px;
-            text-align: left;
-            background-color: $base-color;
-            color: white;
-          }
-    } 
+        box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+      }
+    }
+    th {
+      padding-top: 12px;
+      padding-bottom: 12px;
+      text-align: left;
+      background-color: $base-color;
+      color: white;
+    }
+  }
 }
 .checkboxgroup {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 .align-vertical {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    padding: 0 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 0 10px;
 }
 .editable:empty:before {
-    content: attr(data-placeholder);
+  content: attr(data-placeholder);
 }
 .tdinput {
-    width: auto;
-    height: auto;
-    border: none;
-    outline: none;
-    -webkit-appearance: none;
-    text-align: center;
+  width: auto;
+  height: auto;
+  border: none;
+  outline: none;
+  -webkit-appearance: none;
+  text-align: center;
 }
 
 .tdinput:focus {
-    outline: none;
+  outline: none;
 }

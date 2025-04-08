@@ -8,9 +8,8 @@ describe('NumberpadComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ NumberpadComponent ]
-    })
-    .compileComponents();
+      declarations: [NumberpadComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

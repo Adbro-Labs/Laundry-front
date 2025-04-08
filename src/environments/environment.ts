@@ -9,9 +9,9 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'https://laundry-api.onrender.com/'
+  apiUrl: 'https://laundry-api.onrender.com/',
+  // apiUrl: 'http://localhost:8000/',
 };
-
 
 /*
  * For easier debugging in development mode, you can import the following file

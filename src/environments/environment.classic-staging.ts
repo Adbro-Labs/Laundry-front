@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://laundry-classic.onrender.com/'
+  apiUrl: 'https://laundry-classic.onrender.com/',
 };

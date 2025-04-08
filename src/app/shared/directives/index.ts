@@ -1,1 +1,1 @@
-export * from './ref.directive'
+export * from './ref.directive';

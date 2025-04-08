@@ -3,11 +3,10 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CustomerService {
-
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   searchCustomer(number) {
     const url = environment.apiUrl + 'customer/searchCustomer/' + number;
@@ -21,10 +20,10 @@ export class CustomerService {
     const url = environment.apiUrl + 'customer';
     return this.http.post(url, body);
   }
-  getAllCustomers(index, query = "") {
+  getAllCustomers(index, query = '') {
     let url = environment.apiUrl + 'customer?index=' + index;
     if (query) {
-      url = url + '&text='+query;
+      url = url + '&text=' + query;
     }
     return this.http.get(url);
   }
@@ -33,7 +32,7 @@ export class CustomerService {
     return this.http.get(url);
   }
   findCustomer(query) {
-    const url = environment.apiUrl + 'customer/findCustomer?query='+ query;
+    const url = environment.apiUrl + 'customer/findCustomer?query=' + query;
     return this.http.get(url);
   }
 }

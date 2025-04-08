@@ -10,60 +10,60 @@ import { CategoryComponent } from './category/category.component';
 import { DeliveryScheduleComponent } from './delivery-schedule/delivery-schedule.component';
 
 const routes: Routes = [
-    {
+  {
+    path: '',
+    component: LayoutComponent,
+    children: [
+      {
         path: '',
-        component: LayoutComponent,
-        children: [
-            {
-                path: '',
-                redirectTo: 'dashboard'
-            },
-            {
-                path: 'dashboard',
-                loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule)
-            },
-            {
-                path: 'orders',
-                component: OrderDetailsComponent
-            },
-            {
-                path: 'takeOrder/:id',
-                component: TakeOrderComponent
-            },
-            {
-                path: 'customers',
-                component: CustomerComponent
-            },
-            {
-                path: 'takeOrder',
-                component: TakeOrderComponent
-            },
-            {
-                path: 'items',
-                component: ItemsComponent
-            },
-            {
-                path: 'reports',
-                loadChildren: () => import('./reports/reports.module').then(m => m.ReportsModule)
-            },
-            {
-                path: 'branch',
-                component: BranchComponent
-            },
-            {
-                path: 'category',
-                component: CategoryComponent
-            },
-            {
-                path: 'delivery-schedule',
-                component: DeliveryScheduleComponent
-            }
-        ]
-    }
+        redirectTo: 'dashboard',
+      },
+      {
+        path: 'dashboard',
+        loadChildren: () => import('./dashboard/dashboard.module').then((m) => m.DashboardModule),
+      },
+      {
+        path: 'orders',
+        component: OrderDetailsComponent,
+      },
+      {
+        path: 'takeOrder/:id',
+        component: TakeOrderComponent,
+      },
+      {
+        path: 'customers',
+        component: CustomerComponent,
+      },
+      {
+        path: 'takeOrder',
+        component: TakeOrderComponent,
+      },
+      {
+        path: 'items',
+        component: ItemsComponent,
+      },
+      {
+        path: 'reports',
+        loadChildren: () => import('./reports/reports.module').then((m) => m.ReportsModule),
+      },
+      {
+        path: 'branch',
+        component: BranchComponent,
+      },
+      {
+        path: 'category',
+        component: CategoryComponent,
+      },
+      {
+        path: 'delivery-schedule',
+        component: DeliveryScheduleComponent,
+      },
+    ],
+  },
 ];
 
 @NgModule({
-    imports: [RouterModule.forChild(routes)],
-    exports: [RouterModule],
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule],
 })
 export class LayoutRoutingModule {}

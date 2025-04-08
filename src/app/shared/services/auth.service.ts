@@ -4,14 +4,13 @@ import { environment } from 'src/environments/environment';
 import jwt_decode from 'jwt-decode';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   login(body) {
-    const url = environment.apiUrl + "user/auth";
+    const url = environment.apiUrl + 'user/auth';
     return this.http.post(url, body);
   }
   decodeJwt(): any {
@@ -21,7 +20,7 @@ export class AuthService {
         return jwt_decode(token);
       }
       return null;
-    } catch(error) {
+    } catch (error) {
       return null;
     }
   }
@@ -32,7 +31,7 @@ export class AuthService {
     }
   }
   getToken() {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
     return token;
   }
   getBranchCode() {

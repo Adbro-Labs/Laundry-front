@@ -1,28 +1,30 @@
 <div class="container">
-    <div class="heading">
-        <h3>Branches</h3>
-        <button mat-raised-button color="primary" (click)="showCustomerDialog()">Add Branch</button>
-    </div>
+  <div class="heading">
+    <h3>Branches</h3>
+    <button mat-raised-button color="primary" (click)="showCustomerDialog()">Add Branch</button>
+  </div>
 </div>
 <div class="table">
-    <table>
-        <thead>
-            <th>No</th>
-            <th>Name</th>
-            <th>Invoice Title</th>
-            <th>Invoice SubTitle 1</th>
-            <th>Invoice SubTitle 2</th>
-            <th>Action</th>
-        </thead>
-        <tbody>
-                <tr *ngFor="let item of tempCustomerList; index as i">
-                    <td>{{i+1}}</td>
-                    <td>{{item.branchName}}</td>
-                    <td>{{item.title}}</td>
-                    <td>{{item.subtitle1}}</td>
-                    <td>{{item.subtitle2}}</td>
-                    <td><button mat-icon-button (click)="editBranch(item)"><mat-icon>edit</mat-icon></button></td>
-                </tr>
-        </tbody>
-    </table>
+  <table>
+    <thead>
+      <th>No</th>
+      <th>Name</th>
+      <th>Invoice Title</th>
+      <th>Invoice SubTitle 1</th>
+      <th>Invoice SubTitle 2</th>
+      <th>Action</th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of tempCustomerList; index as i">
+        <td>{{ i + 1 }}</td>
+        <td>{{ item.branchName }}</td>
+        <td>{{ item.title }}</td>
+        <td>{{ item.subtitle1 }}</td>
+        <td>{{ item.subtitle2 }}</td>
+        <td>
+          <button mat-icon-button (click)="editBranch(item)"><mat-icon>edit</mat-icon></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>

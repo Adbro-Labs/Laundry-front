@@ -8,9 +8,8 @@ describe('ServiceCountComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ServiceCountComponent ]
-    })
-    .compileComponents();
+      declarations: [ServiceCountComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

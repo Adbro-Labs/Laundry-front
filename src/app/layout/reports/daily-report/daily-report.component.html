@@ -1,63 +1,68 @@
 <div class="container">
-    <div class="heading">
-        <h3>Daily Report</h3>
-    </div>
+  <div class="heading">
+    <h3>Daily Report</h3>
+  </div>
 </div>
 
 <div>
+  <mat-form-field>
+    <mat-label>Date</mat-label>
+    <input matInput [matDatepicker]="dp3" [(ngModel)]="date" disabled />
+    <mat-datepicker #dp3 [disabled]="false"></mat-datepicker>
+  </mat-form-field>
+  <mat-datepicker-toggle matIconSuffix [for]="dp3"></mat-datepicker-toggle>
+  <ng-container *ngIf="userType == 'ADMIN'">
     <mat-form-field>
-        <mat-label>Date</mat-label>
-        <input matInput [matDatepicker]="dp3" [(ngModel)]="date" disabled>
-        <mat-datepicker #dp3 [disabled]="false"></mat-datepicker>
-      </mat-form-field>
-      <mat-datepicker-toggle matIconSuffix [for]="dp3"></mat-datepicker-toggle>
-      <ng-container *ngIf="userType == 'ADMIN'">
-        <mat-form-field>
-            <mat-select [(ngModel)]="branchCode" placeholder="Branch">
-                <mat-option value="">All</mat-option>
-                <mat-option [value]="item.branchCode" *ngFor="let item of branches; index as i">{{item.branchName}}</mat-option>
-            </mat-select>
-        </mat-form-field>
-        &nbsp;
-    </ng-container>
-    <button mat-stroked-button (click)="getDailyReport()">Search</button>
+      <mat-select [(ngModel)]="branchCode" placeholder="Branch">
+        <mat-option value="">All</mat-option>
+        <mat-option [value]="item.branchCode" *ngFor="let item of branches; index as i">{{
+          item.branchName
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    &nbsp;
+  </ng-container>
+  <button mat-stroked-button (click)="getDailyReport()">Search</button>
 </div>
 
 <div class="table">
-    <table>
-        <thead>
-            <tr>
-                <th>No</th>
-                <th>DATE</th>
-                <th>BILL NO</th>
-                <th>BILL AMOUNT</th>
-                <th>DISCOUNT</th>
-                <th>NET TOTAL</th> 
-                <th>STATUS</th>
-                <th *ngIf="userType=='ADMIN'">BRANCH</th>
-            </tr>
-        </thead>
-        <tbody>
-                <tr *ngFor="let item of report; index as i">
-                    <td>{{i+1}}</td>
-                    <td>{{item.orderDate | date: 'dd-MM-yyyy hh:mm:ss a':'+0400'}}</td>
-                    <td>{{item?.orderNumber}}</td>
-                    <td>{{item.total}}</td>
-                    <td>{{item.discount || 0}}</td>
-                    <td>{{item.netTotal}}</td>
-                    <td [class]="item.status">{{item.status}} {{item.cancellationReason && '(' + item.cancellationReason + ')'}} {{item.cancellationTime && '(' + (item.cancellationTime | date: 'dd/MM hh:mm a') + ')'}}</td>
-                    <td *ngIf="userType=='ADMIN'">{{(findBranch(item.branchCode))}}</td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>{{total.amount}}</td>
-                    <td>{{total.discount}}</td>
-                    <td>{{total.netTotal}}</td>
-                    <td></td>
-                    <td></td>
-                </tr>
-        </tbody>
-    </table>
+  <table>
+    <thead>
+      <tr>
+        <th>No</th>
+        <th>DATE</th>
+        <th>BILL NO</th>
+        <th>BILL AMOUNT</th>
+        <th>DISCOUNT</th>
+        <th>NET TOTAL</th>
+        <th>STATUS</th>
+        <th *ngIf="userType == 'ADMIN'">BRANCH</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of report; index as i">
+        <td>{{ i + 1 }}</td>
+        <td>{{ item.orderDate | date: 'dd-MM-yyyy hh:mm:ss a' : '+0400' }}</td>
+        <td>{{ item?.orderNumber }}</td>
+        <td>{{ item.total }}</td>
+        <td>{{ item.discount || 0 }}</td>
+        <td>{{ item.netTotal }}</td>
+        <td [class]="item.status">
+          {{ item.status }} {{ item.cancellationReason && '(' + item.cancellationReason + ')' }}
+          {{ item.cancellationTime && '(' + (item.cancellationTime | date: 'dd/MM hh:mm a') + ')' }}
+        </td>
+        <td *ngIf="userType == 'ADMIN'">{{ findBranch(item.branchCode) }}</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>{{ total.amount }}</td>
+        <td>{{ total.discount }}</td>
+        <td>{{ total.netTotal }}</td>
+        <td></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
 </div>

@@ -1,90 +1,96 @@
 <div class="container">
-    <div class="heading">
-        <h3>Customer Report</h3>
-    </div>
-    <div style="text-align:right">
-        <button mat-stroked-button (click)="printReciept()" [disabled]="orders?.length < 1">Print</button>
-    </div>
+  <div class="heading">
+    <h3>Customer Report</h3>
+  </div>
+  <div style="text-align: right">
+    <button mat-stroked-button (click)="printReciept()" [disabled]="orders?.length < 1">
+      Print
+    </button>
+  </div>
 </div>
 <mat-form-field>
-    <mat-select [(ngModel)]="year" placeholder="Year">
-        <mat-option *ngFor="let item of yearList;" [value]="item">{{item}}</mat-option>
-    </mat-select>
+  <mat-select [(ngModel)]="year" placeholder="Year">
+    <mat-option *ngFor="let item of yearList" [value]="item">{{ item }}</mat-option>
+  </mat-select>
 </mat-form-field>
 &nbsp;
 <mat-form-field>
-    <mat-select [(ngModel)]="month" placeholder="Month">
-        <mat-option *ngFor="let item of monthList; index as i" [value]="i+1">{{item}}</mat-option>
-    </mat-select>
+  <mat-select [(ngModel)]="month" placeholder="Month">
+    <mat-option *ngFor="let item of monthList; index as i" [value]="i + 1">{{ item }}</mat-option>
+  </mat-select>
 </mat-form-field>
 &nbsp;
 <ng-container *ngIf="userRole == 'ADMIN'">
-    <mat-form-field>
-        <mat-select [(ngModel)]="branchCode" placeholder="Branch">
-            <mat-option [value]="item.branchCode" *ngFor="let item of branches; index as i">{{item.branchName}}</mat-option>
-        </mat-select>
-    </mat-form-field>
+  <mat-form-field>
+    <mat-select [(ngModel)]="branchCode" placeholder="Branch">
+      <mat-option [value]="item.branchCode" *ngFor="let item of branches; index as i">{{
+        item.branchName
+      }}</mat-option>
+    </mat-select>
+  </mat-form-field>
 </ng-container>
 &nbsp;
 <mat-form-field class="example-full-width" appearance="fill">
-    <mat-label>Customer</mat-label>
-    <input
-        type="text"
-        placeholder="Search Customer"
-        aria-label="customer"
-        matInput
-        [formControl]="mobileNumber"
-        [matAutocomplete]="auto"
-    />
-    <mat-autocomplete
-        autoActiveFirstOption
-        #auto="matAutocomplete"
-        (optionSelected)="setCustomerDetails()"
-        [displayWith]="displayFn"
-        [autoActiveFirstOption]="true"
-    >
-        <mat-option *ngFor="let option of tempCustomerList" [value]="option">
-            <span
-                >{{ option.customerName }} <br />
-                <small>{{ option.mobile }}</small></span
-            >
-        </mat-option>
-    </mat-autocomplete>
-    <mat-icon style="cursor: pointer;" matSuffix class="my-icon" (click)="clearCustomerId($event)">close</mat-icon>
+  <mat-label>Customer</mat-label>
+  <input
+    type="text"
+    placeholder="Search Customer"
+    aria-label="customer"
+    matInput
+    [formControl]="mobileNumber"
+    [matAutocomplete]="auto"
+  />
+  <mat-autocomplete
+    autoActiveFirstOption
+    #auto="matAutocomplete"
+    (optionSelected)="setCustomerDetails()"
+    [displayWith]="displayFn"
+    [autoActiveFirstOption]="true"
+  >
+    <mat-option *ngFor="let option of tempCustomerList" [value]="option">
+      <span
+        >{{ option.customerName }} <br />
+        <small>{{ option.mobile }}</small></span
+      >
+    </mat-option>
+  </mat-autocomplete>
+  <mat-icon style="cursor: pointer" matSuffix class="my-icon" (click)="clearCustomerId($event)"
+    >close</mat-icon
+  >
 </mat-form-field>
 &nbsp;
 <mat-form-field>
-    <mat-select [(ngModel)]="status" placeholder="Status">
-        <mat-option>All</mat-option>
-        <mat-option *ngFor="let item of statusList; index as i" [value]="item">{{item}}</mat-option>
-    </mat-select>
+  <mat-select [(ngModel)]="status" placeholder="Status">
+    <mat-option>All</mat-option>
+    <mat-option *ngFor="let item of statusList; index as i" [value]="item">{{ item }}</mat-option>
+  </mat-select>
 </mat-form-field>
 &nbsp;
 <button mat-raised-button (click)="getMonthlyReport()">Search</button>
 <div class="table">
-    <table>
-        <thead>
-            <th>No</th>
-            <th>DATE</th>
-            <th>BILL NO</th>
-            <th>NET TOTAL</th>
-            <th>STATUS</th>
-        </thead>
-        <tbody>
-                <tr *ngFor="let item of orders; index as i">
-                    <td>{{i+1}}</td>
-                    <td>{{item.orderDate | date: 'dd/MM/yyyy':'+0400'}}</td>
-                    <td>{{item.orderNumber}}</td>
-                    <td>{{item.netTotal}}</td>
-                    <td>{{item.status}}</td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>{{total.netTotal}}</td>
-                    <td></td>
-                </tr>
-        </tbody>
-    </table>
+  <table>
+    <thead>
+      <th>No</th>
+      <th>DATE</th>
+      <th>BILL NO</th>
+      <th>NET TOTAL</th>
+      <th>STATUS</th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of orders; index as i">
+        <td>{{ i + 1 }}</td>
+        <td>{{ item.orderDate | date: 'dd/MM/yyyy' : '+0400' }}</td>
+        <td>{{ item.orderNumber }}</td>
+        <td>{{ item.netTotal }}</td>
+        <td>{{ item.status }}</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>{{ total.netTotal }}</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
 </div>

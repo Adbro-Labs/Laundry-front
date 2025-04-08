@@ -6,7 +6,7 @@ import { AuthService } from './auth.service';
 import { OrderapiService } from './orderapi.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class OrderService {
   private customerId = new BehaviorSubject(null);
@@ -16,12 +16,15 @@ export class OrderService {
   public itemDetailsAgent = this.itemDetails.asObservable();
   public showSidebarAgent = this.showSidebar.asObservable();
   orderForm: FormGroup;
-  constructor(private fb: FormBuilder, private orderapi: OrderapiService, private auth: AuthService,
-    private router: Router) { 
+  constructor(
+    private fb: FormBuilder,
+    private orderapi: OrderapiService,
+    private auth: AuthService,
+    private router: Router
+  ) {
     this.initForm();
   }
 
- 
   setCustomerId(id) {
     this.customerId.next(id);
   }
@@ -31,23 +34,23 @@ export class OrderService {
   setOrderNumber(orderNumber) {
     this.orderForm.patchValue({
       orderMaster: {
-        orderNumber
-      }
+        orderNumber,
+      },
     });
   }
   setCustomerDetails(customerDetails) {
     this.orderForm.patchValue({
       orderMaster: {
         customerId: customerDetails._id,
-        customer: customerDetails
-      }
+        customer: customerDetails,
+      },
     });
   }
   setTotalAmount(total) {
     this.orderForm.patchValue({
       orderMaster: {
-        total
-      }
+        total,
+      },
     });
   }
   initForm() {
@@ -56,15 +59,15 @@ export class OrderService {
         orderNumber: [null, Validators.required],
         customer: [null, Validators.required],
         customerId: [null, Validators.required],
-        total: [null, Validators.required]
+        total: [null, Validators.required],
       }),
-      orderDetails: this.fb.array([])
-    })
+      orderDetails: this.fb.array([]),
+    });
   }
   generateNewOrder() {
     const branchCode = this.auth.decodeJwt()?.branchCode;
     if (branchCode) {
-      this.orderapi.getLatestOrderNumber(branchCode).subscribe(data => {
+      this.orderapi.getLatestOrderNumber(branchCode).subscribe((data) => {
         this.router.navigate(['/takeOrder', (data as any).orderNumber]);
       });
     }

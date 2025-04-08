@@ -4,33 +4,31 @@ import { MatDialogRef } from '@angular/material/dialog';
 @Component({
   selector: 'app-confirm-order-cancel',
   templateUrl: './confirm-order-cancel.component.html',
-  styleUrls: ['./confirm-order-cancel.component.scss']
+  styleUrls: ['./confirm-order-cancel.component.scss'],
 })
 export class ConfirmOrderCancelComponent implements OnInit {
-  cancellationReason = "";
+  cancellationReason = '';
   showInput = false;
 
-  constructor(private dialogRef: MatDialogRef<ConfirmOrderCancelComponent>) { }
+  constructor(private dialogRef: MatDialogRef<ConfirmOrderCancelComponent>) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   updateReason(event) {
     const reason = event.value;
-    if (reason == "other") {
+    if (reason == 'other') {
       this.showInput = true;
-      this.cancellationReason = "";
+      this.cancellationReason = '';
     } else {
       this.showInput = false;
       this.cancellationReason = reason;
     }
   }
   closeDialog() {
-    this.cancellationReason = "";
+    this.cancellationReason = '';
     this.dialogRef.close();
   }
   confirmCancellation() {
     this.dialogRef.close(this.cancellationReason);
   }
-
 }

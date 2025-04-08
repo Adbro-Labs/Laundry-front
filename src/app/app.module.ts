@@ -13,20 +13,20 @@ import { RequestInterceptor } from './shared/interceptor/request.interceptor';
 
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from '@danielmoncada/angular-datetime-picker';
 @NgModule({
-    declarations: [AppComponent, RefDirective],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        BrowserAnimationsModule,
-        LayoutModule,
-        OverlayModule,
-        HttpClientModule,
-        FormsModule,
-        ReactiveFormsModule,
-        OwlDateTimeModule,
-        OwlNativeDateTimeModule
-    ],
-    providers: [{ provide: HTTP_INTERCEPTORS, useClass: RequestInterceptor, multi: true }],
-    bootstrap: [AppComponent]
+  declarations: [AppComponent, RefDirective],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    LayoutModule,
+    OverlayModule,
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule,
+    OwlDateTimeModule,
+    OwlNativeDateTimeModule,
+  ],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: RequestInterceptor, multi: true }],
+  bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -7,15 +7,18 @@ import { ItemService } from 'src/app/shared/services/item.service';
 @Component({
   selector: 'app-add-customer',
   templateUrl: './add-item.component.html',
-  styleUrls: ['./add-item.component.scss']
+  styleUrls: ['./add-item.component.scss'],
 })
 export class AddItemComponent implements OnInit {
   customerForm: FormGroup;
   categories = [];
-  constructor(private fb: FormBuilder, private item: ItemService, private category: CategoryService,
-    private popup: MatDialogRef<AddItemComponent>, @Optional() @Inject(MAT_DIALOG_DATA) public data) { 
-      
-    }
+  constructor(
+    private fb: FormBuilder,
+    private item: ItemService,
+    private category: CategoryService,
+    private popup: MatDialogRef<AddItemComponent>,
+    @Optional() @Inject(MAT_DIALOG_DATA) public data
+  ) {}
 
   ngOnInit(): void {
     this.initForm();
@@ -39,16 +42,16 @@ export class AddItemComponent implements OnInit {
       expressDryCleanCharge: ['', [Validators.required]],
       expressPressingCharge: ['', [Validators.required]],
       categories: [[]],
-      sortOrder: [null]
+      sortOrder: [null],
     });
   }
   saveCustomer() {
     if (this.customerForm.valid) {
       const customerDetails = this.customerForm.value;
-      if(!customerDetails._id) {
+      if (!customerDetails._id) {
         delete customerDetails._id;
       }
-      this.item.saveItem(customerDetails, customerDetails.customerId).subscribe(data => {
+      this.item.saveItem(customerDetails, customerDetails.customerId).subscribe((data) => {
         this.popup.close(data);
       });
     }
@@ -57,8 +60,8 @@ export class AddItemComponent implements OnInit {
     this.popup.close();
   }
   getActiveCategories() {
-    this.category.getActiveCategories().subscribe(data => {
+    this.category.getActiveCategories().subscribe((data) => {
       this.categories = data;
-    })
+    });
   }
 }

@@ -1,44 +1,52 @@
 <div class="container">
-    <div class="heading">
-        <h3>Items</h3>
-        <button mat-raised-button color="primary" (click)="showCustomerDialog()">Add Items</button>
-    </div>
+  <div class="heading">
+    <h3>Items</h3>
+    <button mat-raised-button color="primary" (click)="showCustomerDialog()">Add Items</button>
+  </div>
 </div>
-<div style="display: flex; justify-content: space-between;">
-    <mat-form-field class="example-full-width" style="width: 300px;">
-        <input type="text"
-               placeholder="Search Customer"
-               aria-label="Number"
-               matInput
-               [formControl]="myControl"
-               [matAutocomplete]="auto">
-        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [autoActiveFirstOption]="true" [displayWith]="displayFn" (optionSelected)="getCustomerPricing()">
-          <mat-option *ngFor="let option of filteredOptions" [value]="option">
-            {{option.customerName}} - {{option.mobile}}
-          </mat-option>
-        </mat-autocomplete>
-      </mat-form-field>
-    <button mat-stroked-button (click)="showDefaultPricing()">Show Default Pricing</button>
+<div style="display: flex; justify-content: space-between">
+  <mat-form-field class="example-full-width" style="width: 300px">
+    <input
+      type="text"
+      placeholder="Search Customer"
+      aria-label="Number"
+      matInput
+      [formControl]="myControl"
+      [matAutocomplete]="auto"
+    />
+    <mat-autocomplete
+      autoActiveFirstOption
+      #auto="matAutocomplete"
+      [autoActiveFirstOption]="true"
+      [displayWith]="displayFn"
+      (optionSelected)="getCustomerPricing()"
+    >
+      <mat-option *ngFor="let option of filteredOptions" [value]="option">
+        {{ option.customerName }} - {{ option.mobile }}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+  <button mat-stroked-button (click)="showDefaultPricing()">Show Default Pricing</button>
 </div>
 <div class="table">
-    <table>
-        <thead>
-            <th>ORDER</th>
-            <th>NAME</th>
-            <th>WASH & PRESS</th>
-            <th>DRY CLEANING</th>
-            <th>PRESSING</th>
-            <th>ACTION</th>
-        </thead>
-        <tbody>
-                <tr *ngFor="let item of customerDetails; index as i;">
-                    <td>{{item.sortOrder}}</td>
-                    <td>{{item.itemName}}</td>
-                    <td>{{item.washingCharge}}/{{item.expressWashingCharge}}</td>
-                    <td>{{item.dryCleanCharge}}/{{item.expressDryCleanCharge}}</td>
-                    <td>{{item.pressingCharge}}/{{item.expressPressingCharge}}</td>
-                    <td><mat-icon style="cursor: pointer;" (click)="editItem(item)">edit</mat-icon></td>
-                </tr>
-        </tbody>
-    </table>
+  <table>
+    <thead>
+      <th>ORDER</th>
+      <th>NAME</th>
+      <th>WASH & PRESS</th>
+      <th>DRY CLEANING</th>
+      <th>PRESSING</th>
+      <th>ACTION</th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of customerDetails; index as i">
+        <td>{{ item.sortOrder }}</td>
+        <td>{{ item.itemName }}</td>
+        <td>{{ item.washingCharge }}/{{ item.expressWashingCharge }}</td>
+        <td>{{ item.dryCleanCharge }}/{{ item.expressDryCleanCharge }}</td>
+        <td>{{ item.pressingCharge }}/{{ item.expressPressingCharge }}</td>
+        <td><mat-icon style="cursor: pointer" (click)="editItem(item)">edit</mat-icon></td>
+      </tr>
+    </tbody>
+  </table>
 </div>

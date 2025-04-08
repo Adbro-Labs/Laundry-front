@@ -4,24 +4,23 @@ import { CustomerStatementComponent } from './customer-statement/customer-statem
 import { DailyReportComponent } from './daily-report/daily-report.component';
 import { ReportsComponent } from './reports.component';
 
-
 const routes: Routes = [
   {
     path: '',
-    component: ReportsComponent
+    component: ReportsComponent,
   },
   {
     path: 'daily',
-    component: DailyReportComponent
+    component: DailyReportComponent,
   },
   {
     path: 'customer',
-    component: CustomerStatementComponent
-  }
+    component: CustomerStatementComponent,
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class ReportsRoutingModule { }
+export class ReportsRoutingModule {}
