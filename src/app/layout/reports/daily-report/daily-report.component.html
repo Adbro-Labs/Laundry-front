@@ -23,6 +23,9 @@
     &nbsp;
   </ng-container>
   <button mat-stroked-button (click)="getDailyReport()">Search</button>
+  <button    *ngIf="userType == 'ADMIN'" mat-stroked-button (click)="downloadPdf()" style="margin-left: 10px">
+    {{ isDownloading ? 'Printing...' : 'Print' }}
+  </button>
 </div>
 
 <div class="table">
@@ -44,7 +47,7 @@
         <td>{{ i + 1 }}</td>
         <td>{{ item.orderDate | date: 'dd-MM-yyyy hh:mm:ss a' : '+0400' }}</td>
         <td>{{ item?.orderNumber }}</td>
-        <td>{{ item.total }}</td>
+        <td>{{ item.total.toFixed(2) }}</td>
         <td>{{ item.discount || 0 }}</td>
         <td>{{ item.netTotal }}</td>
         <td [class]="item.status">
@@ -57,9 +60,9 @@
         <td></td>
         <td></td>
         <td></td>
-        <td>{{ total.amount }}</td>
+        <td>{{ total.amount.toFixed(2) }}</td>
         <td>{{ total.discount }}</td>
-        <td>{{ total.netTotal }}</td>
+        <td>{{ total.netTotal.toFixed(2) }}</td>
         <td></td>
         <td></td>
       </tr>

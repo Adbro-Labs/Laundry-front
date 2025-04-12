@@ -30,4 +30,9 @@ export class ReportService {
     const url = environment.apiUrl + `order/getDailyReport?date=${date}&branchCode=${branch}`;
     return this.http.get(url);
   }
+
+  downloadDailyReport(date, branch = '') {
+    const url = environment.apiUrl + `order/downloadDailyReport?date=${date}&branchCode=${branch}`;
+    return this.http.get(url, { responseType: 'blob' });
+  }
 }

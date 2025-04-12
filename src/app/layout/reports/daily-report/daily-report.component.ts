@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { BranchService } from 'src/app/shared/services/measure.service';
 import { ReportService } from '../shared/report.service';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-daily-report',
@@ -12,6 +13,7 @@ import { ReportService } from '../shared/report.service';
 export class DailyReportComponent implements OnInit {
   date: Date;
   branchCode = '';
+  isDownloading = false;
   report = [];
   total = {
     amount: 0,
@@ -73,6 +75,34 @@ export class DailyReportComponent implements OnInit {
       this.branches = data as any;
     });
   }
+
+  downloadPdf() {
+    this.isDownloading = true;
+    this.service
+      .downloadDailyReport(this.date, this.branchCode)
+      .pipe(
+        finalize(() => {
+          this.isDownloading = false;
+        })
+      )
+      .subscribe({
+        next: (data) => {
+          const blob = new Blob([data], { type: 'application/pdf' });
+          const url = window.URL.createObjectURL(blob);
+          //download the file
+          // const link = document.createElement('a');
+          // link.href = url;
+          // link.download = 'report.pdf';
+          // link.click();
+
+          window.open(url);
+        },
+        error: (err) => {
+          console.error('Error downloading PDF:', err);
+        },
+      });
+  }
+
   findBranch(branchCode) {
     if (this.branches && this.branches.length > 0) {
       const branch = this.branches.find((x) => x.branchCode == branchCode);
