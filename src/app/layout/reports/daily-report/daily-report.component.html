@@ -36,8 +36,10 @@
         <th>DATE</th>
         <th>BILL NO</th>
         <th>BILL AMOUNT</th>
+        <th>VAT</th>
         <th>DISCOUNT</th>
-        <th>NET TOTAL</th>
+        <th>ROUND</th>
+        <th>NET TOTAL</th> 
         <th>STATUS</th>
         <th *ngIf="userType == 'ADMIN'">BRANCH</th>
       </tr>
@@ -47,9 +49,11 @@
         <td>{{ i + 1 }}</td>
         <td>{{ item.orderDate | date: 'dd-MM-yyyy hh:mm:ss a' : '+0400' }}</td>
         <td>{{ item?.orderNumber }}</td>
-        <td>{{ item.total.toFixed(2) }}</td>
-        <td>{{ item.discount || 0 }}</td>
-        <td>{{ item.netTotal }}</td>
+        <td>{{item.total?.toFixed(2)}}</td>
+        <td>{{item.vatAmount?.toFixed(2)}}</td>
+        <td>{{item.discount || 0}}</td>
+        <td>{{item.roundoffAmount}}</td>
+        <td>{{item.netTotal}}</td>
         <td [class]="item.status">
           {{ item.status }} {{ item.cancellationReason && '(' + item.cancellationReason + ')' }}
           {{ item.cancellationTime && '(' + (item.cancellationTime | date: 'dd/MM hh:mm a') + ')' }}
@@ -60,12 +64,14 @@
         <td></td>
         <td></td>
         <td></td>
-        <td>{{ total.amount.toFixed(2) }}</td>
-        <td>{{ total.discount }}</td>
-        <td>{{ total.netTotal.toFixed(2) }}</td>
+        <td>{{total.amount?.toFixed(2)}}</td>
+        <td>{{total.vatTotal?.toFixed(2)}}</td>
+        <td>{{total.discount}}</td>
+        <td>{{total.roundoffTotal?.toFixed(2)}}</td>
+        <td>{{total.netTotal}}</td>
         <td></td>
         <td></td>
-      </tr>
+    </tr>
     </tbody>
   </table>
 </div>

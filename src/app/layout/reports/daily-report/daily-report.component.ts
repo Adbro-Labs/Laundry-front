@@ -19,7 +19,9 @@ export class DailyReportComponent implements OnInit {
     amount: 0,
     discount: 0,
     netTotal: 0,
-  };
+    vatTotal: 0,
+    roundoffTotal: 0
+  }
   branches = [];
   userType = '';
   constructor(
@@ -51,17 +53,15 @@ export class DailyReportComponent implements OnInit {
           amount: 0,
           discount: 0,
           netTotal: 0,
-        };
+          vatTotal: 0,
+          roundoffTotal: 0
+        }
         if (this.report.length > 0) {
-          this.total.amount = this.getSumofItems(
-            this.report.filter((x) => x.status != 'CANCELLED').map((x) => x.total)
-          );
-          this.total.discount = this.getSumofItems(
-            this.report.filter((x) => x.status != 'CANCELLED').map((x) => x.discount)
-          );
-          this.total.netTotal = this.getSumofItems(
-            this.report.filter((x) => x.status != 'CANCELLED').map((x) => x.netTotal)
-          );
+          this.total.amount = this.getSumofItems(this.report.filter(x => x.status != 'CANCELLED').map(x => x.total));
+          this.total.discount = this.getSumofItems(this.report.filter(x => x.status != 'CANCELLED').map(x => x.discount));
+          this.total.netTotal = this.getSumofItems(this.report.filter(x => x.status != 'CANCELLED').map(x => x.netTotal));
+          this.total.roundoffTotal = this.getSumofItems(this.report.filter(x => x.status != 'CANCELLED').map(x => x.roundoffAmount));
+          this.total.vatTotal = this.getSumofItems(this.report.filter(x => x.status != 'CANCELLED').map(x => x.vatAmount));
         }
       });
     }
