@@ -25,7 +25,9 @@
     <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/reports/customer']">
       <mat-icon class="sidenav-icon">list</mat-icon> {{ 'Customer Report' }}
     </a>
-
+    <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/delivery-schedule']">
+      <mat-icon class="sidenav-icon">directions_car</mat-icon> {{ 'Delivery Schedule' }}
+    </a>
     <a
       *ngIf="userType == 'ADMIN'"
       mat-list-item
