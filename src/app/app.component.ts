@@ -12,4 +12,5 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.order.showSidebars();
   }
+  
 }
