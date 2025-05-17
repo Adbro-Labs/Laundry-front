@@ -6,12 +6,37 @@
   <p *ngIf="data.permission === 'denied'">
     You've blocked notifications. Please enable them in your browser settings manually.
   </p>
-  <p>
-    options > settings > Privacy & Security > Notifications > Site settings > Notifications > Three
-    dots > Allow
-  </p>
+  <p>Click the icon</p>
+  <img class="notification-image" src="assets/images/sample2.png" alt="notification" />
+  <p>allow the notification</p>
+  <img class="notification-image" src="assets/images/urlsample.png" alt="notificationq" />
 </mat-dialog-content>
+
 <mat-dialog-actions align="end">
   <button mat-button *ngIf="data.permission === 'default'" (click)="onRetry()">Allow</button>
   <button mat-button mat-dialog-close>Close</button>
 </mat-dialog-actions>
+
+<style>
+  .notification-images-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .notification-image {
+    max-width: 200px;
+    height: auto;
+    width: 100%;
+    object-fit: contain;
+  }
+
+  /* Responsive adjustments */
+  @media (min-width: 768px) {
+    .notification-images-container {
+      flex-direction: row;
+      justify-content: center;
+    }
+  }
+</style>

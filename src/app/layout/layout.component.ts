@@ -21,7 +21,7 @@ export class LayoutComponent implements OnInit {
       const permission = await Notification.requestPermission();
 
       if (permission === 'granted') {
-        alert('Notifications allowed');
+        return;
       } else if (!this.isDialogOpen) {
         this.openNotificationDialog(permission);
       }
