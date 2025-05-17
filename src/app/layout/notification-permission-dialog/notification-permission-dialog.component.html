@@ -1,0 +1,17 @@
+<h2 mat-dialog-title>Enable Notifications</h2>
+<mat-dialog-content>
+  <p *ngIf="data.permission === 'default'">
+    To get updates, please allow notifications in your browser settings.
+  </p>
+  <p *ngIf="data.permission === 'denied'">
+    You've blocked notifications. Please enable them in your browser settings manually.
+  </p>
+  <p>
+    options > settings > Privacy & Security > Notifications > Site settings > Notifications > Three
+    dots > Allow
+  </p>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button *ngIf="data.permission === 'default'" (click)="onRetry()">Allow</button>
+  <button mat-button mat-dialog-close>Close</button>
+</mat-dialog-actions>
