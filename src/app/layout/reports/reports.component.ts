@@ -18,6 +18,7 @@ export class ReportsComponent implements OnInit {
   orders = [];
   year;
   month;
+  totalBillCount = [];
   total = {
     amount: 0,
     discount: 0,
@@ -43,6 +44,7 @@ export class ReportsComponent implements OnInit {
   userRole = '';
   selectedBranchCode = '';
   customerId = '';
+  status = '';
   mobileNumber = new FormControl('');
   tempCustomerList = [];
   branchDetails;
@@ -74,7 +76,39 @@ export class ReportsComponent implements OnInit {
       }
     });
     this.getBranchDetails();
+    this.getBillCount();
+
   }
+
+
+  getBillCount(branchCode = '') {
+    this.service
+      .getBillCount(this.month, this.year, branchCode)
+      .subscribe((data: { status: string }[]) => {
+        const countMap = new Map<string, number>();
+
+        data.forEach(({ status }) => {
+          countMap.set(status, (countMap.get(status) || 0) + 1);
+        });
+
+        this.totalBillCount = Array.from(countMap.entries()).map(([status, count]) => ({
+          status,
+          count,
+        }));
+
+        console.log('Bill Count:', this.totalBillCount);
+      });
+  }
+
+  getStatusCount(status: string): number {
+    if (status === '') {
+      return this.totalBillCount.reduce((sum, item) => sum + item.count, 0);
+    }
+
+    const found = this.totalBillCount.find((item) => item.status === status);
+    return found ? found.count : 0;
+  }
+
   getBranches() {
     this.branch.getAllBranch().subscribe((data) => {
       this.branches = data as any;
@@ -87,9 +121,12 @@ export class ReportsComponent implements OnInit {
     });
   }
 
-  getMonthlyReport() {
+  getMonthlyReport(status: string = '') {
+    this.getBillCount(this.branchCode);
+
+    this.status = status; 
     this.service
-      .getMonthlyReport(this.month, this.year, this.branchCode, this.customerId)
+      .getMonthlyReport(this.month, this.year, this.branchCode, this.customerId, status)
       .subscribe((data) => {
         this.orders = data as any;
         if (this.customerId) {
@@ -108,13 +145,14 @@ export class ReportsComponent implements OnInit {
         this.selectedBranchCode = this.branchCode;
       });
   }
+
   getSumofItems = (list) => {
     const sum = list.reduce((partialSum, a) => Number(partialSum) + Number(a), 0);
     return sum;
   };
   openDailyReport(date) {
     this.router.navigate(['/reports/daily'], {
-      queryParams: { date, branchCode: this.selectedBranchCode },
+      queryParams: { date, branchCode: this.selectedBranchCode, status: this.status },
     });
   }
   setCustomerDetails() {

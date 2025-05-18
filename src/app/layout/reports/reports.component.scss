@@ -1,3 +1,40 @@
 mat-option {
   line-height: 16px;
 }
+.success-button {
+  color: #4caf50; 
+}
+.error-button {
+  color: #f44336; 
+pointer-events: none; 
+}
+.info-button {
+  color: #2196f3; 
+}
+
+.active {
+  background-color: rgba(63, 81, 181, 0.1);
+  font-weight: bold;
+  border-radius: 4px;
+}
+
+.active-pending {
+  background-color: #d9b5c141; 
+  font-weight: bold;
+  border-radius: 4px;
+}
+
+.active-success-button {
+  background-color: #e0ffe3; 
+  font-weight: bold;
+  border-radius: 4px;
+   color: #4caf50;
+}
+
+.active-info-button {
+  background-color: #c1d5ff4f; 
+  font-weight: bold;
+  border-radius: 4px;
+   color: #2196f3;
+}
+

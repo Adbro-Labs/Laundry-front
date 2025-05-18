@@ -12,6 +12,7 @@ import { finalize } from 'rxjs/operators';
 })
 export class DailyReportComponent implements OnInit {
   date: Date;
+  status = '';
   branchCode = '';
   isDownloading = false;
   report = [];
@@ -33,6 +34,7 @@ export class DailyReportComponent implements OnInit {
 
   ngOnInit(): void {
     const date = this.route.snapshot.queryParams.date;
+    this.status = this.route.snapshot.queryParams.status;
     this.branchCode = this.route.snapshot.queryParams.branchCode;
     if (date) {
       const dateWithoutHour = new Date(date).setHours(0, 0, 0, 0);
@@ -47,7 +49,7 @@ export class DailyReportComponent implements OnInit {
       if (this.userType !== 'ADMIN' && !this.branchCode) {
         return;
       }
-      this.service.getDailyReport(this.date, this.branchCode).subscribe((data) => {
+      this.service.getDailyReport(this.date, this.branchCode, this.status).subscribe((data) => {
         this.report = data as any;
         this.total = {
           amount: 0,
