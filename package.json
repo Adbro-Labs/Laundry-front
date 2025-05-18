@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build --prod",
+    "format": "prettier --write .",
     "build:staging": "ng build -c staging",
     "postinstall": "ngcc --properties es2015 browser module main --first-only --create-ivy-entry-points",
     "gitbuild": "ng build --prod --base-href /start-javascript/sb-admin-material/master/dist/",
