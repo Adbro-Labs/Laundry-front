@@ -16,7 +16,7 @@
     color="primary"
     (click)="getMonthlyReport('')"
   >
-    Total Bills ({{ getStatusCount('') }})
+    Total Bills ({{ totalCount }})
   </button>
 
   <button
@@ -25,7 +25,7 @@
     color="accent"
     (click)="getMonthlyReport('PENDING')"
   >
-    Pending Bills ({{ getStatusCount('PENDING') }})
+    Pending Bills ({{ pendingCount }})
   </button>
 
   <button
@@ -33,7 +33,7 @@
     [ngClass]="status === 'PAID' ? 'active-success-button' : 'success-button'"
     (click)="getMonthlyReport('PAID')"
   >
-    Paid Bills ({{ getStatusCount('PAID') }})
+    Paid Bills  ({{ paidCount }})
   </button>
 
   <button
@@ -42,11 +42,11 @@
     class="info-button"
     (click)="getMonthlyReport('DELIVERED')"
   >
-    Delivered Bills ({{ getStatusCount('DELIVERED') }})
+    Delivered Bills  ({{ deliveredCount }})
   </button>
 
   <button mat-button class="error-button" (click)="getMonthlyReport('CANCELLED')">
-    Canceled Bills ({{ getStatusCount('CANCELLED') }})
+    Canceled Bills ({{ cancelledCount }})
   </button>
 </div>
 

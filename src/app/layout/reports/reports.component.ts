@@ -49,6 +49,12 @@ export class ReportsComponent implements OnInit {
   tempCustomerList = [];
   branchDetails;
   customerDetails;
+  totalCount = 0;
+  pendingCount = 0;
+  paidCount = 0;
+  deliveredCount = 0;
+  cancelledCount = 0;
+
   constructor(
     private service: ReportService,
     private router: Router,
@@ -79,26 +85,31 @@ export class ReportsComponent implements OnInit {
     this.getBillCount(this.branchCode);
   }
 
-  getBillCount(branchCode = '') {
-    this.service
-      .getBillCount(this.month, this.year, branchCode)
-      .subscribe((data: { status: string }[]) => {
-        const countMap = new Map<string, number>();
+getBillCount(branchCode = '') {
+  this.service
+    .getBillCount(this.month, this.year, branchCode)
+    .subscribe((data: { status: string }[]) => {
+      const countMap = new Map<string, number>();
 
-        data.forEach(({ status }) => {
-          countMap.set(status, (countMap.get(status) || 0) + 1);
-        });
-
-        this.totalBillCount = Array.from(countMap.entries()).map(
-          ([status, count]) => ({
-            status,
-            count,
-          })
-        );
-
-        console.log('Bill Count:', this.totalBillCount);
+      data.forEach(({ status }) => {
+        countMap.set(status, (countMap.get(status) || 0) + 1);
       });
-  }
+
+      this.totalBillCount = Array.from(countMap.entries()).map(
+        ([status, count]) => ({
+          status,
+          count,
+        })
+      );
+
+      this.totalCount = this.totalBillCount.reduce((sum, item) => sum + item.count, 0);
+      this.pendingCount = countMap.get('PENDING') || 0;
+      this.paidCount = countMap.get('PAID') || 0;
+      this.deliveredCount = countMap.get('DELIVERED') || 0;
+      this.cancelledCount = countMap.get('CANCELLED') || 0;
+    });
+}
+
 
   getStatusCount(status: string): number {
     if (status === '') {
