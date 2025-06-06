@@ -30,6 +30,8 @@ import { MatChipsModule } from '@angular/material/chips';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from '@danielmoncada/angular-datetime-picker';
 import { DeliveryScheduleComponent } from './delivery-schedule/delivery-schedule.component';
 import { ConfirmOrderCancelComponent } from './confirm-order-cancel/confirm-order-cancel.component';
+import { NotificationPermissionDialogComponent } from './notification-permission-dialog/notification-permission-dialog.component';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -67,6 +69,7 @@ import { ConfirmOrderCancelComponent } from './confirm-order-cancel/confirm-orde
     CategoryComponent,
     DeliveryScheduleComponent,
     ConfirmOrderCancelComponent,
+    NotificationPermissionDialogComponent,
   ],
   providers: [DatePipe],
 })

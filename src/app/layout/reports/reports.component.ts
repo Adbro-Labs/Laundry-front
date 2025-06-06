@@ -18,6 +18,7 @@ export class ReportsComponent implements OnInit {
   orders = [];
   year;
   month;
+  totalBillCount = [];
   total = {
     amount: 0,
     discount: 0,
@@ -43,10 +44,17 @@ export class ReportsComponent implements OnInit {
   userRole = '';
   selectedBranchCode = '';
   customerId = '';
+  status = '';
   mobileNumber = new FormControl('');
   tempCustomerList = [];
   branchDetails;
   customerDetails;
+  totalCount = 0;
+  pendingCount = 0;
+  paidCount = 0;
+  deliveredCount = 0;
+  cancelledCount = 0;
+
   constructor(
     private service: ReportService,
     private router: Router,
@@ -65,7 +73,7 @@ export class ReportsComponent implements OnInit {
       this.branchCode = this.auth.decodeJwt()?.branchCode;
     }
     this.getBranches();
-    this.mobileNumber.valueChanges.pipe(debounceTime(500)).subscribe((data) => {
+    this.mobileNumber.valueChanges.pipe(debounceTime(500)).subscribe(data => {
       if (typeof data == 'string') {
         if (data.length < 1) {
           this.customerId = null;
@@ -74,23 +82,69 @@ export class ReportsComponent implements OnInit {
       }
     });
     this.getBranchDetails();
+    this.getBillCount(this.branchCode);
   }
+
+getBillCount(branchCode = '') {
+  this.service
+    .getBillCount(this.month, this.year, branchCode)
+    .subscribe((data: { status: string }[]) => {
+      const countMap = new Map<string, number>();
+
+      data.forEach(({ status }) => {
+        countMap.set(status, (countMap.get(status) || 0) + 1);
+      });
+
+      this.totalBillCount = Array.from(countMap.entries()).map(
+        ([status, count]) => ({
+          status,
+          count,
+        })
+      );
+
+      this.totalCount = this.totalBillCount.reduce((sum, item) => sum + item.count, 0);
+      this.pendingCount = countMap.get('PENDING') || 0;
+      this.paidCount = countMap.get('PAID') || 0;
+      this.deliveredCount = countMap.get('DELIVERED') || 0;
+      this.cancelledCount = countMap.get('CANCELLED') || 0;
+    });
+}
+
+
+  getStatusCount(status: string): number {
+    if (status === '') {
+      return this.totalBillCount.reduce((sum, item) => sum + item.count, 0);
+    }
+
+    const found = this.totalBillCount.find(item => item.status === status);
+    return found ? found.count : 0;
+  }
+
   getBranches() {
-    this.branch.getAllBranch().subscribe((data) => {
+    this.branch.getAllBranch().subscribe(data => {
       this.branches = data as any;
     });
   }
 
   searchCustomers(query) {
-    this.customer.findCustomer(query).subscribe((data) => {
+    this.customer.findCustomer(query).subscribe(data => {
       this.tempCustomerList = data as any;
     });
   }
 
-  getMonthlyReport() {
+  getMonthlyReport(status: string = '') {
+    this.getBillCount(this.branchCode);
+
+    this.status = status;
     this.service
-      .getMonthlyReport(this.month, this.year, this.branchCode, this.customerId)
-      .subscribe((data) => {
+      .getMonthlyReport(
+        this.month,
+        this.year,
+        this.branchCode,
+        this.customerId,
+        status
+      )
+      .subscribe(data => {
         this.orders = data as any;
         if (this.customerId) {
           this.customerDetails = this.mobileNumber.value;
@@ -101,20 +155,32 @@ export class ReportsComponent implements OnInit {
           netTotal: 0,
         };
         if (this.orders.length > 0) {
-          this.total.amount = this.getSumofItems(this.orders.map((x) => x.total));
-          this.total.discount = this.getSumofItems(this.orders.map((x) => x.discount));
-          this.total.netTotal = this.getSumofItems(this.orders.map((x) => x.netTotal));
+          this.total.amount = this.getSumofItems(this.orders.map(x => x.total));
+          this.total.discount = this.getSumofItems(
+            this.orders.map(x => x.discount)
+          );
+          this.total.netTotal = this.getSumofItems(
+            this.orders.map(x => x.netTotal)
+          );
         }
         this.selectedBranchCode = this.branchCode;
       });
   }
-  getSumofItems = (list) => {
-    const sum = list.reduce((partialSum, a) => Number(partialSum) + Number(a), 0);
+
+  getSumofItems = list => {
+    const sum = list.reduce(
+      (partialSum, a) => Number(partialSum) + Number(a),
+      0
+    );
     return sum;
   };
   openDailyReport(date) {
     this.router.navigate(['/reports/daily'], {
-      queryParams: { date, branchCode: this.selectedBranchCode },
+      queryParams: {
+        date,
+        branchCode: this.selectedBranchCode,
+        status: this.status,
+      },
     });
   }
   setCustomerDetails() {
@@ -144,32 +210,49 @@ export class ReportsComponent implements OnInit {
     };
   }
   getBranchDetails() {
-    this.customer.getBranchByCode(this.auth.decodeJwt()?.branchCode).subscribe((data) => {
-      this.branchDetails = data as any;
-    });
+    this.customer
+      .getBranchByCode(this.auth.decodeJwt()?.branchCode)
+      .subscribe(data => {
+        this.branchDetails = data as any;
+      });
   }
   printReciept() {
     const elementIdsToHide = [];
-    this.orderApi.getInvoiceTemplate().subscribe((htmlString) => {
+    this.orderApi.getInvoiceTemplate().subscribe(htmlString => {
       htmlString = htmlString.replace('[ORDER_NO]', '');
-      htmlString = htmlString.replace('[CUSTOMER_NAME]', this.customerDetails?.customerName);
-      htmlString = htmlString.replace('[CUSTOMER_MOBILE]', this.customerDetails?.mobile);
+      htmlString = htmlString.replace(
+        '[CUSTOMER_NAME]',
+        this.customerDetails?.customerName
+      );
+      htmlString = htmlString.replace(
+        '[CUSTOMER_MOBILE]',
+        this.customerDetails?.mobile
+      );
       htmlString = htmlString.replace(
         '[DATE]',
         this.datePipe.transform(new Date(), 'dd-MM-yyyy', '+0400')
       );
       htmlString = htmlString.replace('[SHOPNAME]', this.branchDetails?.title);
       htmlString = htmlString.replace('[TITLE]', this.branchDetails?.title);
-      htmlString = htmlString.replace('[SUBTITLE1]', this.branchDetails?.subtitle1);
-      htmlString = htmlString.replace('[SUBTITLE2]', this.branchDetails?.subtitle2);
-      htmlString = htmlString.replace('[IMAGE_URL]', this.branchDetails?.imageUrl);
+      htmlString = htmlString.replace(
+        '[SUBTITLE1]',
+        this.branchDetails?.subtitle1
+      );
+      htmlString = htmlString.replace(
+        '[SUBTITLE2]',
+        this.branchDetails?.subtitle2
+      );
+      htmlString = htmlString.replace(
+        '[IMAGE_URL]',
+        this.branchDetails?.imageUrl
+      );
       if (!this.customerDetails) {
         elementIdsToHide.push('customerDetails');
       }
       let itemsString;
       let subTotal = 0;
       let totalQty = 0;
-      this.orders.forEach((el) => {
+      this.orders.forEach(el => {
         const item = `<tr>
          <td style="text-align: left;">${this.datePipe.transform(el.date, 'dd-MM-yyyy', '+0400')}</td>
          <td></td>
@@ -185,13 +268,18 @@ export class ReportsComponent implements OnInit {
       htmlString = htmlString.replace('[TOTAL_ITEMS]', totalQty.toString());
       htmlString = htmlString.replace('[itemDetails]', itemsString);
       elementIdsToHide.push('discountLabel');
-      htmlString = htmlString.replace('[NETTOTAL]', Number(this.total.netTotal).toFixed(2));
+      htmlString = htmlString.replace(
+        '[NETTOTAL]',
+        Number(this.total.netTotal).toFixed(2)
+      );
       elementIdsToHide.push('notelabel');
       htmlString = htmlString.replace('[DELIVREY_TYPE]', '');
       elementIdsToHide.push('deliveryTimeLabel');
       htmlString = htmlString.split('undefined').join('');
       var printWindow = window.open('', '', 'height=600,width=900');
-      printWindow.document.write(`<html><head><title>${this.branchDetails?.title}</title>`);
+      printWindow.document.write(
+        `<html><head><title>${this.branchDetails?.title}</title>`
+      );
       printWindow.document.write('</head><body>');
       printWindow.document.write(htmlString);
       printWindow.document.addEventListener('DOMContentLoaded', () => {
@@ -205,7 +293,7 @@ export class ReportsComponent implements OnInit {
         elementIdsToHide.push('terms-label');
         elementIdsToHide.push('terms-list');
         elementIdsToHide.push('paymentTypeLabel');
-        elementIdsToHide.forEach((data) => {
+        elementIdsToHide.forEach(data => {
           printWindow.document.getElementById(data).style.display = 'none';
         });
       });

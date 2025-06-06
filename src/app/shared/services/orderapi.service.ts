@@ -49,6 +49,11 @@ export class OrderapiService {
     const url = environment.apiUrl + 'order/cancelOrder';
     return this.http.post(url, orderDetails);
   }
+
+  getDeliverySchedule() {
+    const url = environment.apiUrl + 'order/getDeliverySchedule';
+    return this.http.post(url, {});
+  }
   updateOrderStatus(orderId, status, paymentMethod) {
     const url =
       environment.apiUrl +

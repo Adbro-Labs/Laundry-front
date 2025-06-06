@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { OrderapiService } from 'src/app/shared/services/orderapi.service';
 
 @Component({
   selector: 'app-delivery-schedule',
@@ -6,7 +7,21 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./delivery-schedule.component.scss'],
 })
 export class DeliveryScheduleComponent implements OnInit {
-  constructor() {}
+  deliverySchedule = [];
+  constructor(private service: OrderapiService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.getDeliverySchedule();
+  }
+
+  getDeliverySchedule() {
+    this.service.getDeliverySchedule().subscribe({
+      next: (response) => {
+        this.deliverySchedule = response as any;
+      },
+      error: (error) => {
+        console.error(error);
+      },
+    });
+  }
 }

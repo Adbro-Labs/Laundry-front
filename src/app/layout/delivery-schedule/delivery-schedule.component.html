@@ -2,38 +2,36 @@
   <div class="heading">
     <h3>Delivery Schedule</h3>
   </div>
-  <mat-form-field>
-    <mat-label>Date</mat-label>
-    <input matInput [matDatepicker]="dp3" disabled />
-    <mat-datepicker #dp3 [disabled]="false"></mat-datepicker>
+  <!-- <mat-form-field>
+      <mat-label>Date</mat-label>
+      <input matInput [matDatepicker]="dp3" disabled>
+      <mat-datepicker #dp3 [disabled]="false"></mat-datepicker>
   </mat-form-field>
   <mat-datepicker-toggle matIconSuffix [for]="dp3"></mat-datepicker-toggle>
-  <div style="text-align: right">
-    <button mat-stroked-button>Print</button>
-  </div>
+  <div style="text-align:right">
+      <button mat-stroked-button>Print</button>
+  </div> -->
 </div>
 
-<button mat-raised-button>Search</button>
+<!-- <button mat-raised-button>Search</button> -->
 <div class="table">
   <table>
     <thead>
-      <th>DATE</th>
+      <th>ORDER DATE</th>
+      <th>DELIVERY DATE</th>
       <th>BILL NO</th>
       <th>NET TOTAL</th>
       <th>STATUS</th>
     </thead>
     <tbody>
-      <tr *ngFor="let item of []">
-        <td>{{ item.orderDate | date: 'dd/MM/yyyy' : '+0400' }}</td>
-        <td>{{ item.orderNumber }}</td>
+      <tr *ngFor="let item of deliverySchedule">
+        <td>{{ item.orderDate | date: 'dd/MM/yyyy' }}</td>
+        <td>{{ item.deliveryTime | date: 'dd/MM/yyyy' }}</td>
+        <td>
+          <a [routerLink]="['/takeOrder', item.orderNumber]">{{ item.orderNumber }}</a>
+        </td>
         <td>{{ item.netTotal }}</td>
         <td>{{ item.status }}</td>
-      </tr>
-      <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
       </tr>
     </tbody>
   </table>

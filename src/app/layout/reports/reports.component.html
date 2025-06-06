@@ -8,6 +8,48 @@
     </button>
   </div>
 </div>
+
+<div class="container">
+  <button
+    [ngClass]="status === '' ? 'active' : ''"
+    mat-button
+    color="primary"
+    (click)="getMonthlyReport('')"
+  >
+    Total Bills ({{ totalCount }})
+  </button>
+
+  <button
+    [ngClass]="status === 'PENDING' ? 'active-pending' : ''"
+    mat-button
+    color="accent"
+    (click)="getMonthlyReport('PENDING')"
+  >
+    Pending Bills ({{ pendingCount }})
+  </button>
+
+  <button
+    mat-button
+    [ngClass]="status === 'PAID' ? 'active-success-button' : 'success-button'"
+    (click)="getMonthlyReport('PAID')"
+  >
+    Paid Bills  ({{ paidCount }})
+  </button>
+
+  <button
+    mat-button
+    [ngClass]="status === 'DELIVERED' ? 'active-info-button ' : 'info-button '"
+    class="info-button"
+    (click)="getMonthlyReport('DELIVERED')"
+  >
+    Delivered Bills  ({{ deliveredCount }})
+  </button>
+
+  <button mat-button class="error-button" (click)="getMonthlyReport('CANCELLED')">
+    Canceled Bills ({{ cancelledCount }})
+  </button>
+</div>
+
 <mat-form-field>
   <mat-select [(ngModel)]="year" placeholder="Year">
     <mat-option *ngFor="let item of yearList" [value]="item">{{ item }}</mat-option>
