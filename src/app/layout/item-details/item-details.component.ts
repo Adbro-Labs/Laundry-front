@@ -120,7 +120,7 @@ export class ItemDetailsComponent implements OnInit {
             itemName: response?.itemDetails?.itemName,
             itemId: response?.itemDetails?._id,
             quantity: response?.quantity,
-            vat: (response?.updatedCharge * 0.05).toFixed(2),
+            vat: (response?.updatedCharge * 0.05)?.toFixed(2),
             washRequired: response?.washRequired,
             dryCleanRequired: response?.dryCleanRequired,
             pressRequired: response?.pressRequired,
@@ -220,7 +220,7 @@ export class ItemDetailsComponent implements OnInit {
       const roundedAmount = Math.floor(this.netTotal);
       const decimalPart = this.netTotal - roundedAmount;
       const adjustedTotal = decimalPart >= 0.5 ? roundedAmount + 0.5 : roundedAmount;
-      this.roundoffAmount = parseFloat((adjustedTotal - this.netTotal).toFixed(2));
+      this.roundoffAmount = parseFloat((adjustedTotal - this.netTotal)?.toFixed(2));
       this.netTotal = adjustedTotal;
     }
   }
