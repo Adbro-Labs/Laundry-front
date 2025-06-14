@@ -49,7 +49,7 @@ export class DashboardComponent implements OnInit {
 
   subscribeToNotifications() {
     this.swPush.requestSubscription({
-      serverPublicKey: this.VAPID_PUBLIC_KEY,
+      serverPublicKey: this.VAPID_PUBLIC_KEY
     })
     .then(sub => {
      this.push.subscribeforPush(sub).subscribe();

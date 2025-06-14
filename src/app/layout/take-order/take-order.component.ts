@@ -243,7 +243,7 @@ export class TakeOrderComponent implements OnInit {
           branchCode: this.auth.decodeJwt()?.branchCode,
           status: this.orderStatus,
           paymentMethod,
-          vatAmount: this.items.vatAmount.toFixed(2),
+          vatAmount: this.items.vatAmount?.toFixed(2),
           subTotal: this.items.subTotal,
           roundoffAmount: this.items.roundoffAmount,
           vatEnabled: this.items.isVatEnabled,

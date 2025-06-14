@@ -50,8 +50,11 @@ export class OrderapiService {
     return this.http.post(url, orderDetails);
   }
 
-  getDeliverySchedule() {
-    const url = environment.apiUrl + 'order/getDeliverySchedule';
+  getDeliverySchedule(deliveryDate) {
+    let url = environment.apiUrl + 'order/getDeliverySchedule';
+    if (deliveryDate) {
+      url += '?deliveryDate=' + deliveryDate;
+    }
     return this.http.post(url, {});
   }
   updateOrderStatus(orderId, status, paymentMethod) {

@@ -2,18 +2,19 @@
   <div class="heading">
     <h3>Delivery Schedule</h3>
   </div>
-  <!-- <mat-form-field>
+  <mat-form-field>
       <mat-label>Date</mat-label>
-      <input matInput [matDatepicker]="dp3" disabled>
+      <input matInput [matDatepicker]="dp3" disabled [(ngModel)]="deliveryDate">
       <mat-datepicker #dp3 [disabled]="false"></mat-datepicker>
   </mat-form-field>
   <mat-datepicker-toggle matIconSuffix [for]="dp3"></mat-datepicker-toggle>
-  <div style="text-align:right">
+  <!-- <div style="text-align:right">
       <button mat-stroked-button>Print</button>
   </div> -->
 </div>
 
-<!-- <button mat-raised-button>Search</button> -->
+<button mat-raised-button (click)="searchSchedule()" style="margin: 5px;">Search</button>
+<button mat-stroked-button (click)="getAllSchedule()" style="margin: 5px;">Get All</button>
 <div class="table">
   <table>
     <thead>
@@ -26,7 +27,7 @@
     <tbody>
       <tr *ngFor="let item of deliverySchedule">
         <td>{{ item.orderDate | date: 'dd/MM/yyyy' }}</td>
-        <td>{{ item.deliveryTime | date: 'dd/MM/yyyy' }}</td>
+        <td>{{ item.deliveryTime }}</td>
         <td>
           <a [routerLink]="['/takeOrder', item.orderNumber]">{{ item.orderNumber }}</a>
         </td>
