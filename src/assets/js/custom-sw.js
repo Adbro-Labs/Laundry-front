@@ -29,5 +29,3 @@ self.addEventListener('push', event => {
     }
   }
 });
-
-importScripts('ngsw-worker.js')
