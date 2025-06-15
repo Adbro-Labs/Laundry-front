@@ -23,7 +23,11 @@
             "main": "src/main.ts",
             "tsConfig": "src/tsconfig.app.json",
             "polyfills": "src/polyfills.ts",
-            "assets": ["src/assets", "src/favicon.ico", "src/_redirects", "src/manifest.webmanifest", "src/dev-sw.js"],
+            "assets": ["src/assets", "src/favicon.ico", "src/_redirects", "src/manifest.webmanifest", {
+              "glob": "**/*",
+              "input": "src/assets/js",
+              "output": "assets/js"
+            }],
             "styles": ["src/styles/styles.scss"],
             "scripts": [],
             "serviceWorker": true,
