@@ -52,7 +52,15 @@ export class DashboardComponent implements OnInit {
       serverPublicKey: this.VAPID_PUBLIC_KEY
     })
     .then(sub => {
-     this.push.subscribeforPush(sub).subscribe();
+     this.push.subscribeforPush(sub).subscribe({
+        next: (response) => {
+          console.log('Subscription successful', response);
+        },
+        error: (err) => {
+          console.error('Subscription failed', err);
+        }
+      }
+    );
     })
     .catch(err => console.error('Could not subscribe', err));
   }
