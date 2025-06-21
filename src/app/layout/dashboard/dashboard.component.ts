@@ -27,7 +27,7 @@ export class DashboardComponent implements OnInit {
   dataSource = new MatTableDataSource(ELEMENT_DATA);
   places: Array<any> = [];
   userType = '';
-  readonly VAPID_PUBLIC_KEY = 'BEbE1WpMkxiJL8KR8K0tp1RFar0H5tAmLFy_Ps-JUbqGK5kM4ODCDySdDnOSEvXCEuKUKCOCgUWxHpGhtgGzcos';
+  
 
   applyFilter(filterValue: string) {
     filterValue = filterValue.trim(); // Remove whitespace
@@ -37,31 +37,10 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     public auth: AuthService,
-    public order: OrderService,
-    private swPush: SwPush,
-    private push: WebpushService
+    public order: OrderService
   ) {}
 
   ngOnInit() {
     this.userType = this.auth.getUserRole();
-    this.subscribeToNotifications();
-  }
-
-  subscribeToNotifications() {
-    this.swPush.requestSubscription({
-      serverPublicKey: this.VAPID_PUBLIC_KEY
-    })
-    .then(sub => {
-     this.push.subscribeforPush(sub).subscribe({
-        next: (response) => {
-          console.log('Subscription successful', response);
-        },
-        error: (err) => {
-          console.error('Subscription failed', err);
-        }
-      }
-    );
-    })
-    .catch(err => console.error('Could not subscribe', err));
   }
 }
