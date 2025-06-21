@@ -26,10 +26,10 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     ReactiveFormsModule,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
-    ServiceWorkerModule.register('/assets/js/custom-sw.js', {
+    ServiceWorkerModule.register('/custom-sw.js', {
       enabled: true,
       registrationStrategy: 'registerWhenStable:30000',
-      scope: '/assets/js/'
+      scope: '/'
     })
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: RequestInterceptor, multi: true }],

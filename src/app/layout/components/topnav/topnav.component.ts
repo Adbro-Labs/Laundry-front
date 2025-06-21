@@ -43,6 +43,9 @@ export class TopnavComponent implements OnInit {
         }, 3000);
       }
     });
+    setTimeout(() => {
+      this.subscribeToNotifications();
+    }, 3000);
   }
 
   isToggled(): boolean {
