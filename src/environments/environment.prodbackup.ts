@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://laundry-production-backup.onrender.com/',
+  apiUrl: 'https://royaltouchbe.adbro.in/',
 };
