@@ -38,7 +38,7 @@ export class ReportsComponent implements OnInit {
     'November',
     'December',
   ];
-  yearList = [2023, 2024, 2025];
+  yearList = [2023, 2024, 2025, 2026, 2027];
   branches = [];
   branchCode = '';
   userRole = '';
