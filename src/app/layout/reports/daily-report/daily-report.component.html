@@ -15,15 +15,22 @@
     <mat-form-field>
       <mat-select [(ngModel)]="branchCode" placeholder="Branch">
         <mat-option value="">All</mat-option>
-        <mat-option [value]="item.branchCode" *ngFor="let item of branches; index as i">{{
-          item.branchName
-        }}</mat-option>
+        <mat-option
+          [value]="item.branchCode"
+          *ngFor="let item of branches; index as i"
+          >{{ item.branchName }}</mat-option
+        >
       </mat-select>
     </mat-form-field>
     &nbsp;
   </ng-container>
   <button mat-stroked-button (click)="getDailyReport()">Search</button>
-  <button    *ngIf="userType == 'ADMIN'" mat-stroked-button (click)="downloadPdf()" style="margin-left: 10px">
+  <button
+    *ngIf="userType == 'ADMIN'"
+    mat-stroked-button
+    (click)="downloadPdf()"
+    style="margin-left: 10px"
+  >
     {{ isDownloading ? 'Printing...' : 'Print' }}
   </button>
 </div>
@@ -39,9 +46,11 @@
         <th>VAT</th>
         <th>DISCOUNT</th>
         <th>ROUND</th>
-        <th>NET TOTAL</th> 
+        <th>NET TOTAL</th>
         <th>STATUS</th>
         <th *ngIf="userType == 'ADMIN'">BRANCH</th>
+        <th *ngIf="userType == 'ADMIN'">ACTION</th>
+        <th *ngIf="userType == 'ADMIN'">REMARKS</th>
       </tr>
     </thead>
     <tbody>
@@ -49,29 +58,45 @@
         <td>{{ i + 1 }}</td>
         <td>{{ item.orderDate | date: 'dd-MM-yyyy hh:mm:ss a' : '+0400' }}</td>
         <td>{{ item?.orderNumber }}</td>
-        <td>{{item.total?.toFixed(2)}}</td>
-        <td>{{item.vatAmount?.toFixed(2)}}</td>
-        <td>{{item.discount || 0}}</td>
-        <td>{{item.roundoffAmount}}</td>
-        <td>{{item.netTotal}}</td>
+        <td>{{ item.total?.toFixed(2) }}</td>
+        <td>{{ item.vatAmount?.toFixed(2) }}</td>
+        <td>{{ item.discount || 0 }}</td>
+        <td>{{ item.roundoffAmount }}</td>
+        <td>{{ item.netTotal }}</td>
         <td [class]="item.status">
-          {{ item.status }} {{ item.cancellationReason && '(' + item.cancellationReason + ')' }}
-          {{ item.cancellationTime && '(' + (item.cancellationTime | date: 'dd/MM hh:mm a') + ')' }}
+          {{ item.status }}
+          {{ item.cancellationReason && '(' + item.cancellationReason + ')' }}
+          {{
+            item.cancellationTime &&
+              '(' + (item.cancellationTime | date: 'dd/MM hh:mm a') + ')'
+          }}
         </td>
         <td *ngIf="userType == 'ADMIN'">{{ findBranch(item.branchCode) }}</td>
+        <td *ngIf="userType == 'ADMIN'">
+          <div style="display: flex; gap: 2px">
+            <button mat-icon-button (click)="viewBillHistory(item)">
+              <mat-icon>history</mat-icon>
+            </button>
+            <button mat-icon-button (click)="viewCloseBill(item)">
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+        </td>
+        <td *ngIf="userType == 'ADMIN'">{{ item.remarks }}</td>
       </tr>
       <tr>
         <td></td>
         <td></td>
         <td></td>
-        <td>{{total.amount?.toFixed(2)}}</td>
-        <td>{{total.vatTotal?.toFixed(2)}}</td>
-        <td>{{total.discount}}</td>
-        <td>{{total.roundoffTotal?.toFixed(2)}}</td>
-        <td>{{total.netTotal}}</td>
+        <td>{{ total.amount?.toFixed(2) }}</td>
+        <td>{{ total.vatTotal?.toFixed(2) }}</td>
+        <td>{{ total.discount }}</td>
+        <td>{{ total.roundoffTotal?.toFixed(2) }}</td>
+        <td>{{ total.netTotal }}</td>
         <td></td>
-        <td></td>
-    </tr>
+        <td *ngIf="userType == 'ADMIN'"></td>
+        <td *ngIf="userType == 'ADMIN'"></td>
+      </tr>
     </tbody>
   </table>
 </div>

@@ -1,6 +1,10 @@
 <div id="sidebar">
   <mat-nav-list>
-    <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/dashboard']">
+    <a
+      mat-list-item
+      [routerLinkActive]="'active'"
+      [routerLink]="['/dashboard']"
+    >
       <mat-icon class="sidenav-icon">dashboard</mat-icon> {{ 'Dashboard' }}
     </a>
     <ng-container *ngIf="userType != 'ADMIN'">
@@ -8,11 +12,16 @@
         <mat-icon class="sidenav-icon">build</mat-icon> {{ 'Orders' }}
       </a>
     </ng-container>
-    <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/customers']">
+    <a
+      mat-list-item
+      [routerLinkActive]="'active'"
+      [routerLink]="['/customers']"
+    >
       <mat-icon class="sidenav-icon">people</mat-icon> {{ 'Customers' }}
     </a>
     <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/items']">
-      <mat-icon class="sidenav-icon">local_laundry_service</mat-icon> {{ 'Items' }}
+      <mat-icon class="sidenav-icon">local_laundry_service</mat-icon>
+      {{ 'Items' }}
     </a>
     <ng-container *ngIf="userType == 'ADMIN'">
       <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/branch']">
@@ -22,11 +31,27 @@
     <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/reports']">
       <mat-icon class="sidenav-icon">list</mat-icon> {{ 'Reports' }}
     </a>
-    <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/reports/customer']">
+    <a
+      mat-list-item
+      [routerLinkActive]="'active'"
+      [routerLink]="['/reports/daily']"
+    >
+      <mat-icon class="sidenav-icon">list</mat-icon> {{ 'Daily Report' }}
+    </a>
+    <a
+      mat-list-item
+      [routerLinkActive]="'active'"
+      [routerLink]="['/reports/customer']"
+    >
       <mat-icon class="sidenav-icon">list</mat-icon> {{ 'Customer Report' }}
     </a>
-    <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/delivery-schedule']">
-      <mat-icon class="sidenav-icon">directions_car</mat-icon> {{ 'Delivery Schedule' }}
+    <a
+      mat-list-item
+      [routerLinkActive]="'active'"
+      [routerLink]="['/delivery-schedule']"
+    >
+      <mat-icon class="sidenav-icon">directions_car</mat-icon>
+      {{ 'Delivery Schedule' }}
     </a>
     <a
       *ngIf="userType == 'ADMIN'"

@@ -65,12 +65,7 @@ export class OrderService {
     });
   }
   generateNewOrder() {
-    const branchCode = this.auth.decodeJwt()?.branchCode;
-    if (branchCode) {
-      this.orderapi.getLatestOrderNumber(branchCode).subscribe((data) => {
-        this.router.navigate(['/takeOrder', (data as any).orderNumber]);
-      });
-    }
+     this.router.navigate(['/takeOrder']);
   }
   showSidebars() {
     this.showSidebar.next(true);

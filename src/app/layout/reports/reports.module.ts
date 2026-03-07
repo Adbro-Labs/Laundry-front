@@ -14,9 +14,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatIconModule } from '@angular/material/icon';
 import { CustomerStatementComponent } from './customer-statement/customer-statement.component';
+import { BillHistoryDialogComponent } from './daily-report/bill-history-dialog/bill-history-dialog.component';
+import { CloseBillDialogComponent } from './daily-report/close-bill-dialog/close-bill-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatRadioModule } from '@angular/material/radio';
 
 @NgModule({
-  declarations: [ReportsComponent, DailyReportComponent, CustomerStatementComponent],
+  declarations: [ReportsComponent, DailyReportComponent, CustomerStatementComponent, BillHistoryDialogComponent, CloseBillDialogComponent],
   imports: [
     CommonModule,
     ReportsRoutingModule,
@@ -31,6 +35,8 @@ import { CustomerStatementComponent } from './customer-statement/customer-statem
     MatInputModule,
     ReactiveFormsModule,
     MatIconModule,
+    MatDialogModule,
+    MatRadioModule
   ],
 })
 export class ReportsModule {}

@@ -2,6 +2,23 @@
   height: 100%;
 }
 
+.global-loader {
+  position: fixed;
+  top: 64px; // right below the toolbar
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  height: 4px;
+
+  ::ng-deep .mat-progress-bar-fill::after {
+    background-color: #fdd835;
+  }
+
+  ::ng-deep .mat-progress-bar-buffer {
+    background-color: rgba(253, 216, 53, 0.25);
+  }
+}
+
 .sidenav {
   width: 250px;
   box-shadow: 3px 0 6px rgba(0, 0, 0, 0.24);

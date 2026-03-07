@@ -1,4 +1,9 @@
 <app-topnav></app-topnav>
+<mat-progress-bar
+  *ngIf="isLoading$ | async"
+  mode="indeterminate"
+  class="global-loader"
+></mat-progress-bar>
 <mat-sidenav-container class="sidenav-container">
   <mat-sidenav
     #drawer

@@ -68,4 +68,13 @@ export class OrderapiService {
       paymentMethod;
     return this.http.post(url, {});
   }
+  getBillHistory(orderNumber, branchCode) {
+    const url = environment.apiUrl + `bills/getBillHistory?orderNumber=${orderNumber}&branchCode=${branchCode}`;
+    return this.http.get(url);
+  }
+  
+  closeBillWithStatus(orderNumber, status, description, branchCode) {
+    const url = environment.apiUrl + 'bills/closeBillWithStatus';
+    return this.http.post(url, { orderNumber, status, description, branchCode });
+  }
 }

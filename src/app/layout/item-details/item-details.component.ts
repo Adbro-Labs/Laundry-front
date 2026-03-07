@@ -36,6 +36,7 @@ export class ItemDetailsComponent implements OnInit {
   isVatEnabled;
   vatAmount;
   roundoffAmount;
+  orderStatus = 'PENDING';
   constructor(
     private item: ItemService,
     private fb: FormBuilder,
@@ -75,7 +76,7 @@ export class ItemDetailsComponent implements OnInit {
   initOrderDetails() {
     const orderDetails = this.fb.group({
       _id: [null],
-      orderNumber: [null, Validators.required],
+      orderNumber: [null],
       branchCode: [null],
       itemName: [null, Validators.required],
       itemId: [null, Validators.required],
@@ -94,7 +95,9 @@ export class ItemDetailsComponent implements OnInit {
       status: [null],
     });
     const orderNumber = this.route.snapshot.params.id;
-    orderDetails.get('orderNumber').setValue(orderNumber);
+    if (orderNumber) {
+      orderDetails.get('orderNumber').setValue(orderNumber);
+    }
     orderDetails.get('customerId').setValue(this.customerId);
     const branchCode = this.auth.decodeJwt()?.branchCode;
     orderDetails.get('branchCode').setValue(branchCode);
@@ -209,9 +212,7 @@ export class ItemDetailsComponent implements OnInit {
         const totalAmount = this.orderDetails.value
           .map((x) => x.rate * x.quantity)
           .reduce((a, b) => a + b, 0);
-        this.vatAmount = this.orderDetails.value
-          .map((x) => x.vat * x.quantity)
-          .reduce((a, b) => a + b, 0);
+        this.vatAmount = parseFloat((this.subTotal * 0.05).toFixed(2));
         this.netTotal = this.subTotal + this.vatAmount;
       } else {
         this.netTotal = this.subTotal;
@@ -236,15 +237,22 @@ export class ItemDetailsComponent implements OnInit {
       });
   }
   showKeyPad() {
-    this.dialog
-      .open(NumberpadComponent, { width: '270px', data: this.discount })
-      .afterClosed()
-      .subscribe((quantity) => {
+    const dialogRef = this.dialog
+      .open(NumberpadComponent, { width: '270px', data: this.discount, position: {
+        right: '40%'
+      } });
+     
+    dialogRef.componentInstance.valueChanged.subscribe((value) => {
+      console.log('Value changed:', value);
+      this.discount = value.toFixed(2);
+      this.calculateNetTotal();
+    });
+    dialogRef.afterClosed().subscribe((quantity) => {
         if (Number(quantity) >= 0) {
           this.discount = quantity.toFixed(2);
         }
         this.calculateNetTotal();
-      });
+    });
   }
   deleteItem(index) {
     this.orderDetails.removeAt(index);

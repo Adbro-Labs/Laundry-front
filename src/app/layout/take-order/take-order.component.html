@@ -3,12 +3,18 @@
     <h3>Order Details - {{ orderNumber }}</h3>
     <div>
       <mat-form-field>
-        <mat-select [(ngModel)]="orderStatus" placeholder="status" [disabled]="userRole == 'ADMIN'">
+        <mat-select
+          [(ngModel)]="orderStatus"
+          placeholder="status"
+          [disabled]="userRole == 'ADMIN'"
+        >
           <mat-option
             *ngFor="let item of orderStatusList; index as i"
-            [value]="item"
-            [disabled]="i <= statusCode || item == 'CANCELLED'"
-            >{{ item }}</mat-option
+            [value]="item.code"
+            [disabled]="
+              i <= statusCode || orderStatus == 'CANCELLED' || item.disabled
+            "
+            >{{ item.label }}</mat-option
           >
         </mat-select>
       </mat-form-field>
@@ -17,21 +23,10 @@
         mat-raised-button
         color="primary"
         style="margin-left: 5px"
-        *ngIf="userRole != 'ADMIN' && !disableUpdate"
+        *ngIf="userRole != 'ADMIN'"
         [disabled]="disableSave"
       >
         Settle
-      </button>
-      &nbsp;
-      <button
-        (click)="initiateOrderStatusUpdate()"
-        mat-raised-button
-        color="primary"
-        style="margin-left: 5px"
-        *ngIf="userRole != 'ADMIN' && disableUpdate"
-        [disabled]="disableSave"
-      >
-        Update Status
       </button>
       &nbsp;
       <button
@@ -45,7 +40,9 @@
       </button>
       &nbsp;
       <button
-        [disabled]="!enablePrint || orderStatus == 'DELIVERED' || userRole == 'ADMIN'"
+        [disabled]="
+          !enablePrint || orderStatus == 'DELIVERED' || userRole == 'ADMIN'
+        "
         (click)="showCancelOrderDialog()"
         mat-stroked-button
         color="warn"
@@ -107,12 +104,22 @@
       <ng-container *ngIf="showNoCustomer">
         <div style="display: flex; flex-direction: column">
           <label>Customer not found.</label>
-          <button mat-stroked-button color="accent" (click)="showCustomerForm()">Create One</button>
+          <button
+            mat-stroked-button
+            color="accent"
+            (click)="showCustomerForm()"
+          >
+            Create One
+          </button>
         </div>
       </ng-container>
     </div>
     <div>
-      <button *ngIf="customerDetails" mat-stroked-button (click)="showPreviousBill()">
+      <button
+        *ngIf="customerDetails"
+        mat-stroked-button
+        (click)="showPreviousBill()"
+      >
         Previous bill
       </button>
     </div>

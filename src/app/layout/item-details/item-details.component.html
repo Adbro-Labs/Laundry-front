@@ -12,7 +12,10 @@
       </thead>
       <tbody>
         <ng-container *ngIf="orderDetails?.value?.length > 0; else nodata">
-          <tr *ngFor="let item of orderDetails.value; index as i" style="height: 50px">
+          <tr
+            *ngFor="let item of orderDetails.value; index as i"
+            style="height: 50px"
+          >
             <td>
               {{ item.itemName }}
             </td>
@@ -21,10 +24,16 @@
             </td>
             <td style="text-align: right">{{ item.rate }}</td>
             <td style="text-align: right">{{ item.quantity }}</td>
-            <td *ngIf="isVatEnabled" style="text-align: right">{{ item.vat }}</td>
+            <td *ngIf="isVatEnabled" style="text-align: right">
+              {{ item.vat }}
+            </td>
             <td style="text-align: right">{{ item.total }}</td>
             <td>
-              <button [disabled]="disableUpdate" mat-icon-button (click)="deleteItem(i)">
+              <button
+                [disabled]="disableUpdate"
+                mat-icon-button
+                (click)="deleteItem(i)"
+              >
                 <mat-icon>delete</mat-icon>
               </button>
             </td>
@@ -35,7 +44,11 @@
             </td>
             <td>
               <div style="display: flex; justify-content: space-between">
-                <button mat-stroked-button (click)="showKeyPad()" [disabled]="disableUpdate">
+                <button
+                  mat-stroked-button
+                  (click)="showKeyPad()"
+                  [disabled]="orderStatus !== 'PENDING'"
+                >
                   {{ discount > 0 ? 'Update' : 'Add' }} Discount
                 </button>
                 <span *ngIf="discount">{{ discount }}</span>
@@ -82,7 +95,9 @@
         </ng-container>
         <ng-template #nodata>
           <tr style="height: 50px">
-            <td colspan="6" style="text-align: center">add items to list here</td>
+            <td colspan="6" style="text-align: center">
+              add items to list here
+            </td>
           </tr>
         </ng-template>
       </tbody>
@@ -95,9 +110,12 @@
         color="primary"
         [disabled]="disableItemSelection || !customerId || disableUpdate"
       >
-        <mat-chip (click)="filterItems(item._id)" color="primary" *ngFor="let item of categories">{{
-          item.categoryName
-        }}</mat-chip>
+        <mat-chip
+          (click)="filterItems(item._id)"
+          color="primary"
+          *ngFor="let item of categories"
+          >{{ item.categoryName }}</mat-chip
+        >
         <mat-chip (click)="filterItems(null)" color="warn">All</mat-chip>
         <mat-chip
           (click)="addNewItem()"
@@ -151,7 +169,11 @@
         [owlDateTimeTrigger]="dt1"
         placeholder="Delivery Time"
       />
-      <owl-date-time [pickerMode]="'dialog'" [stepMinute]="10" #dt1></owl-date-time>
+      <owl-date-time
+        [pickerMode]="'dialog'"
+        [stepMinute]="10"
+        #dt1
+      ></owl-date-time>
     </mat-form-field>
   </div>
 </div>

@@ -57,7 +57,7 @@ const routes: Routes = [
       {
         path: 'delivery-schedule',
         component: DeliveryScheduleComponent,
-      },
+      }
     ],
   },
 ];

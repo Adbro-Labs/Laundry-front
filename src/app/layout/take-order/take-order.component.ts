@@ -35,7 +35,16 @@ export class TakeOrderComponent implements OnInit {
   orderStatus = 'PENDING';
   enablePrint = false;
   disableNumberChange = false;
-  orderStatusList = ['PENDING', 'PAID', 'CANCELLED', 'DELIVERED'];
+  orderStatusList = [
+    { code: 'PENDING', label: 'Pending' },
+    { code: 'PAID', label: 'Paid' },
+    { code: 'READY_FOR_DELIVERY', label: 'Ready for Delivery' },
+    { code: 'OUT_FOR_DELIVERY', label: 'Out for Delivery' },
+    { code: 'CANCELLED', label: 'Cancelled' },
+    { code: 'DELIVERED', label: 'Delivered' },
+    { code: 'IN_REVIEW', label: 'In Review', disabled: true },
+    { code: 'SETTLED', label: 'Settled', disabled: true },
+  ];
   statusCode = 0;
   userRole = this.auth.getUserRole();
   customerList = [];
@@ -202,12 +211,13 @@ export class TakeOrderComponent implements OnInit {
         this.items.netTotal = orderMaster?.netTotal;
         this.items.disableUpdate = true;
         this.items.isVatEnabled = orderMaster.vatEnabled;
+        this.items.orderStatus = this.orderMaster.status;
         this.mobileNumber.setValue(this.customerDetails.mobile);
         this.items.setItemDetail((data as any).orderDetails);
         this.enablePrint = true;
         this.orderStatus = this.orderMaster.status;
         this.mobileNumber.disable();
-        this.statusCode = this.orderStatusList.findIndex((x) => x == this.orderMaster.status);
+  this.statusCode = this.orderStatusList.findIndex((x) => x.code == this.orderMaster.status);
       });
   }
   saveOrder(paymentMethod) {
@@ -717,6 +727,8 @@ export class TakeOrderComponent implements OnInit {
           data: {
             orderNumber: this.orderNumber,
             disablePayLater: true,
+            showDiscountInput: true,
+            ...this.orderMaster
           },
           position: {
             top: '150px',
@@ -751,6 +763,7 @@ export class TakeOrderComponent implements OnInit {
     const OrderMaster = (data as any)?.masterResponse;
     if (OrderMaster) {
       this.orderMaster = OrderMaster;
+      this.orderNumber = OrderMaster.orderNumber;
     }
     this.enablePrint = true;
     this.disableUpdate = true;
@@ -773,6 +786,7 @@ export class TakeOrderComponent implements OnInit {
         .afterClosed()
         .subscribe((data) => {
           if (data) {
+            console.log(data);
             this.saveOrder(data);
           }
         });

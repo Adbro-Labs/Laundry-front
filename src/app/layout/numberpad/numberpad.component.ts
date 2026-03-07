@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, Optional } from '@angular/core';
+import { Component, EventEmitter, Inject, OnInit, Optional, Output } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
@@ -8,6 +8,8 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 })
 export class NumberpadComponent implements OnInit {
   quantity = 0;
+  @Output() valueChanged = new EventEmitter<number>();
+  currentValue: number = 0;
   constructor(
     private dialogref: MatDialogRef<NumberpadComponent>,
     @Optional() @Inject(MAT_DIALOG_DATA) public existingQuantity
@@ -35,6 +37,7 @@ export class NumberpadComponent implements OnInit {
           break;
       }
     }
+    this.valueChanged.emit(this.quantity);
   }
   submitDetails() {
     this.dialogref.close(this.quantity);

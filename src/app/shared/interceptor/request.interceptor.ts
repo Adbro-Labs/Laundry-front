@@ -8,14 +8,22 @@ import {
   HttpResponse,
 } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { map, catchError, finalize } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { LoaderService } from '../services/loader.service';
 
 @Injectable()
 export class RequestInterceptor implements HttpInterceptor {
   private AUTH_HEADER = 'Authorization';
-  constructor(private router: Router) {}
+  private activeRequests = 0;
+
+  constructor(private router: Router, private loader: LoaderService) {}
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    if (this.activeRequests === 0) {
+      this.loader.show();
+    }
+    this.activeRequests++;
+
     const token = localStorage.getItem('token') || '';
     request = request.clone({
       headers: request.headers
@@ -34,6 +42,12 @@ export class RequestInterceptor implements HttpInterceptor {
           this.router.navigate(['/login']);
         }
         return throwError(error);
+      }),
+      finalize(() => {
+        this.activeRequests--;
+        if (this.activeRequests === 0) {
+          this.loader.hide();
+        }
       })
     );
   }
