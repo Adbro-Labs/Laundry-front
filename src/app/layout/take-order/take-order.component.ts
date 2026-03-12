@@ -257,6 +257,7 @@ export class TakeOrderComponent implements OnInit {
           subTotal: this.items.subTotal,
           roundoffAmount: this.items.roundoffAmount,
           vatEnabled: this.items.isVatEnabled,
+          orderDate: this.orderDate
         },
         orderDetails: this.items.orderDetails.value,
       };
@@ -775,10 +776,14 @@ export class TakeOrderComponent implements OnInit {
 
   initiateSettlement() {
     if (this.items.orderDetails.valid) {
-      this.dialog
+      if (this.orderMaster.paymentMethod != 'CARD' && this.orderMaster.paymentMethod != 'CASH') {
+        this.dialog
         .open(SettlementComponent, {
           width: '500px',
-          data: this.orderNumber,
+          data: {
+            orderNumber: this.orderNumber,
+            disablePayLater: (!this.orderMaster.paymentMethod || this.orderMaster.paymentMethod == paymentMethod.PAY_LATER) && this.orderMaster.status == 'DELIVERED'
+          },
           position: {
             top: '150px',
           },
@@ -790,6 +795,9 @@ export class TakeOrderComponent implements OnInit {
             this.saveOrder(data);
           }
         });
+      } else {
+        this.saveOrder(this.orderMaster.paymentMethod);
+      }
     } else {
       this.snack.open('complete the item details', 'Ok', {
         duration: 1500,

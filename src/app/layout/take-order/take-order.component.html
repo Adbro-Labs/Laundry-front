@@ -2,6 +2,8 @@
   <div class="heading">
     <h3>Order Details - {{ orderNumber }}</h3>
     <div>
+      <span>Payment - {{ orderMaster?.paymentMethod || 'None' }}</span
+      >&nbsp;
       <mat-form-field>
         <mat-select
           [(ngModel)]="orderStatus"
