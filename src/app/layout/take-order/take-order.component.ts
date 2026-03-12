@@ -776,13 +776,13 @@ export class TakeOrderComponent implements OnInit {
 
   initiateSettlement() {
     if (this.items.orderDetails.valid) {
-      if (this.orderMaster.paymentMethod != 'CARD' && this.orderMaster.paymentMethod != 'CASH') {
+      if (this.orderMaster?.paymentMethod != 'CARD' && this.orderMaster?.paymentMethod != 'CASH') {
         this.dialog
         .open(SettlementComponent, {
           width: '500px',
           data: {
             orderNumber: this.orderNumber,
-            disablePayLater: (!this.orderMaster.paymentMethod || this.orderMaster.paymentMethod == paymentMethod.PAY_LATER) && this.orderMaster.status == 'DELIVERED'
+            disablePayLater: (!this.orderMaster?.paymentMethod || this.orderMaster?.paymentMethod == paymentMethod.PAY_LATER) && this.orderMaster?.status == 'DELIVERED'
           },
           position: {
             top: '150px',
