@@ -7,6 +7,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 import { OrderService } from 'src/app/shared/services/order.service';
 import { WebpushService } from 'src/app/shared/services/webpush.service';
 import { NotificationPermissionDialogComponent } from '../../notification-permission-dialog/notification-permission-dialog.component';
+import { AppConfigService } from 'src/app/shared/services/app-config.service';
 
 @Component({
   selector: 'app-topnav',
@@ -17,6 +18,7 @@ export class TopnavComponent implements OnInit {
   public pushRightClass: string;
   orderNumber = new FormControl('');
   userDetails;
+  appName: string;
   readonly VAPID_PUBLIC_KEY = 'BEbE1WpMkxiJL8KR8K0tp1RFar0H5tAmLFy_Ps-JUbqGK5kM4ODCDySdDnOSEvXCEuKUKCOCgUWxHpGhtgGzcos';
   constructor(
     public router: Router,
@@ -25,6 +27,8 @@ export class TopnavComponent implements OnInit {
     private swPush: SwPush,
     private push: WebpushService,
     private dialog: MatDialog
+    ,
+    private appConfig: AppConfigService
   ) {
     this.router.events.subscribe((val) => {
       if (val instanceof NavigationEnd && window.innerWidth <= 992 && this.isToggled()) {
@@ -32,6 +36,7 @@ export class TopnavComponent implements OnInit {
       }
     });
     this.userDetails = auth.decodeJwt();
+    this.appName = this.appConfig.appName;
   }
 
   ngOnInit() {

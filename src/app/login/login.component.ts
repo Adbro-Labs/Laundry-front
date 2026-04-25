@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../shared/services/auth.service';
+import { AppConfigService } from '../shared/services/app-config.service';
 
 @Component({
   selector: 'app-login',
@@ -10,12 +11,17 @@ import { AuthService } from '../shared/services/auth.service';
 export class LoginComponent implements OnInit {
   password = '';
   message = '';
+  appName: string;
   constructor(
     private router: Router,
     private auth: AuthService
+    ,
+    private appConfig: AppConfigService
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.appName = this.appConfig.appName;
+  }
 
   onLogin() {
     this.message = '';
