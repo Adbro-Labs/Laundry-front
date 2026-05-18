@@ -39,6 +39,10 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
           <span class="label">Remarks</span>
           <span class="value">{{ data.bills[currentIndex]?.remarks }}</span>
         </div>
+        <div class="field">
+          <span class="label">Last Update</span>
+          <span class="value">{{ data.bills[currentIndex]?.lastUpdate | date: 'dd-MM-yy hh:mm' }}</span>
+        </div>
       </div>
     </mat-dialog-content>
     <mat-dialog-actions align="end">
