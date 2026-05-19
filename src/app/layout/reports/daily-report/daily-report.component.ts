@@ -140,7 +140,7 @@ export class DailyReportComponent implements OnInit {
     this.dialog
       .open(CloseBillDialogComponent, {
         width: '420px',
-        data: { orderNumber: item.orderNumber },
+        data: { orderNumber: item.orderNumber, status: item.status },
       })
       .afterClosed()
       .subscribe((result) => {

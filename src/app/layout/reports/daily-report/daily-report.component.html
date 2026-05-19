@@ -74,11 +74,11 @@
         <td *ngIf="userType == 'ADMIN'">{{ findBranch(item.branchCode) }}</td>
         <td *ngIf="userType == 'ADMIN'">
           <div style="display: flex; gap: 2px">
-            <button mat-icon-button (click)="viewBillHistory(item)">
+            <button mat-icon-button (click)="viewBillHistory(item)" matTooltipPosition="above" matTooltip="View Bill History">
               <mat-icon>history</mat-icon>
             </button>
-            <button mat-icon-button (click)="viewCloseBill(item)">
-              <mat-icon>close</mat-icon>
+            <button mat-icon-button (click)="viewCloseBill(item)" matTooltipPosition="above" matTooltip="Review Bill" [disabled]="item.status === 'SETTLED' || item.status === 'CANCELLED'">
+              <mat-icon>ads_click</mat-icon>
             </button>
           </div>
         </td>

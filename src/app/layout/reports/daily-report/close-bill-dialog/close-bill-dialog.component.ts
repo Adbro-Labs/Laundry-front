@@ -11,6 +11,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
       <mat-radio-group [(ngModel)]="selectedStatus" class="status-group">
         <mat-radio-button value="SETTLED">Approve</mat-radio-button>
         <mat-radio-button value="IN_REVIEW">In Review</mat-radio-button>
+        <mat-radio-button value="CANCELLED" *ngIf="currentStatus === 'IN_REVIEW'">Cancel</mat-radio-button>
       </mat-radio-group>
 
       <mat-form-field appearance="outline" class="description-field">
@@ -48,11 +49,16 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 export class CloseBillDialogComponent {
   selectedStatus: string = '';
   remarks: string = '';
+  currentStatus = '';
 
   constructor(
     private dialogRef: MatDialogRef<CloseBillDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) {}
+  ) {
+    this.currentStatus = data.status;
+    this.selectedStatus = data.status;
+    console.log(this.currentStatus, "status");
+  }
 
   submit() {
     this.dialogRef.close({

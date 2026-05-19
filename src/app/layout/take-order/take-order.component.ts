@@ -214,7 +214,7 @@ export class TakeOrderComponent implements OnInit {
         this.items.orderStatus = this.orderMaster.status;
         this.mobileNumber.setValue(this.customerDetails.mobile);
         this.items.setItemDetail((data as any).orderDetails);
-        this.enablePrint = true;
+        this.enablePrint = this.orderMaster.status !== 'IN_REVIEW' && this.orderMaster.status !== 'CANCELLED' && this.orderMaster.status !== 'SETTLED';
         this.orderStatus = this.orderMaster.status;
         this.mobileNumber.disable();
   this.statusCode = this.orderStatusList.findIndex((x) => x.code == this.orderMaster.status);

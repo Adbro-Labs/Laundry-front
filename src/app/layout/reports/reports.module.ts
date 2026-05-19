@@ -18,6 +18,7 @@ import { BillHistoryDialogComponent } from './daily-report/bill-history-dialog/b
 import { CloseBillDialogComponent } from './daily-report/close-bill-dialog/close-bill-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [ReportsComponent, DailyReportComponent, CustomerStatementComponent, BillHistoryDialogComponent, CloseBillDialogComponent],
@@ -36,7 +37,8 @@ import { MatRadioModule } from '@angular/material/radio';
     ReactiveFormsModule,
     MatIconModule,
     MatDialogModule,
-    MatRadioModule
+    MatRadioModule,
+    MatTooltipModule
   ],
 })
 export class ReportsModule {}
