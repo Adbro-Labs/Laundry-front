@@ -19,9 +19,10 @@ import { CloseBillDialogComponent } from './daily-report/close-bill-dialog/close
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { ReplacePipe } from 'src/app/shared/pipes/replace.pipe';
 
 @NgModule({
-  declarations: [ReportsComponent, DailyReportComponent, CustomerStatementComponent, BillHistoryDialogComponent, CloseBillDialogComponent],
+  declarations: [ReportsComponent, DailyReportComponent, CustomerStatementComponent, BillHistoryDialogComponent, CloseBillDialogComponent, ReplacePipe],
   imports: [
     CommonModule,
     ReportsRoutingModule,

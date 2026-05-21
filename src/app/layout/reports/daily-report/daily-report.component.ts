@@ -15,7 +15,7 @@ import { OrderapiService } from 'src/app/shared/services/orderapi.service';
   styleUrls: ['./daily-report.component.scss'],
 })
 export class DailyReportComponent implements OnInit {
-  date: Date;
+  date: Date = new Date();
   status = '';
   branchCode = '';
   isDownloading = false;
@@ -157,5 +157,9 @@ export class DailyReportComponent implements OnInit {
     this.order.closeBillWithStatus(item.orderNumber, result.status, result.remarks, item.branchCode).subscribe(() => {
       this.getDailyReport();
     });
+  }
+  quickFilter(status) {
+    this.status = status;
+    this.getDailyReport();
   }
 }

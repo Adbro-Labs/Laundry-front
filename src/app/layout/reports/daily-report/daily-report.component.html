@@ -35,6 +35,15 @@
   </button>
 </div>
 
+<button mat-button color="accent" (click)="quickFilter('PENDING')">Pending Orders</button>
+<button mat-button color="primary" (click)="quickFilter('PAID')">Paid Orders</button>
+<button mat-button color="primary" (click)="quickFilter('READY_FOR_DELIVERY')">Ready for Delivery</button>
+<button mat-button color="primary" (click)="quickFilter('OUT_FOR_DELIVERY')">Out for Delivery</button>
+<button mat-button color="primary" (click)="quickFilter('DELIVERED')">Delivered Orders</button>
+<button mat-button color="accent" (click)="quickFilter('SETTLED')">Settled</button>
+<button mat-button color="warn" (click)="quickFilter('IN_REVIEW')">In Review</button>
+<button mat-button color="warn" (click)="quickFilter('CANCELLED')">Cancelled Orders</button>
+
 <div class="table">
   <table>
     <thead>

@@ -62,7 +62,7 @@
 <mat-form-field>
   <mat-select [(ngModel)]="status" placeholder="Status">
     <mat-option>All</mat-option>
-    <mat-option *ngFor="let item of statusList; index as i" [value]="item">{{ item }}</mat-option>
+    <mat-option *ngFor="let item of statusList; index as i" [value]="item">{{ item | replace: '_':' ' }}</mat-option>
   </mat-select>
 </mat-form-field>
 &nbsp;
@@ -82,7 +82,7 @@
         <td>{{ item.orderDate | date: 'dd/MM/yyyy' : '+0400' }}</td>
         <td>{{ item.orderNumber }}</td>
         <td>{{ item.netTotal }}</td>
-        <td>{{ item.status }}</td>
+        <td>{{ item.status | replace: '_':' ' }}</td>
       </tr>
       <tr>
         <td></td>

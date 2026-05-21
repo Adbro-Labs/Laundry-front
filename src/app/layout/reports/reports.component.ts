@@ -54,6 +54,8 @@ export class ReportsComponent implements OnInit {
   paidCount = 0;
   deliveredCount = 0;
   cancelledCount = 0;
+  readyForDeliveryCount = 0;
+  outForDeliveryCount = 0;
 
   constructor(
     private service: ReportService,
@@ -107,6 +109,8 @@ getBillCount(branchCode = '') {
       this.paidCount = countMap.get('PAID') || 0;
       this.deliveredCount = countMap.get('DELIVERED') || 0;
       this.cancelledCount = countMap.get('CANCELLED') || 0;
+      this.readyForDeliveryCount = countMap.get('READY_FOR_DELIVERY') || 0;
+      this.outForDeliveryCount = countMap.get('OUT_FOR_DELIVERY') || 0;
     });
 }
 

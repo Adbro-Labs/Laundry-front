@@ -37,7 +37,7 @@ export class CustomerStatementComponent implements OnInit {
     'November',
     'December',
   ];
-  yearList = [2023, 2024, 2025];
+  yearList = [2023, 2024, 2025, 2026, 2027];
   branches = [];
   branchCode = '';
   userRole = '';
@@ -47,7 +47,7 @@ export class CustomerStatementComponent implements OnInit {
   tempCustomerList = [];
   branchDetails;
   customerDetails;
-  statusList = ['PENDING', 'PAID', 'DELIVERED'];
+  statusList = ['PENDING', 'PAID', 'READY_FOR_DELIVERY', 'OUT_FOR_DELIVERY', 'DELIVERED'];
   status;
   constructor(
     private service: ReportService,
