@@ -43,6 +43,9 @@ export class DailyReportComponent implements OnInit {
     this.status = this.route.snapshot.queryParams.status;
     this.branchCode = this.route.snapshot.queryParams.branchCode;
     this.userType = this.auth.getUserRole();
+    if (this.userType !== 'ADMIN') {
+      this.branchCode = this.auth.decodeJwt()?.branchCode;
+    }
     if (date) {
       const dateWithoutHour = new Date(date).setHours(0, 0, 0, 0);
       this.date = new Date(dateWithoutHour);
@@ -50,6 +53,12 @@ export class DailyReportComponent implements OnInit {
     this.getDailyReport();
     this.getBranches();
   }
+
+  showDailyReport() {
+    this.status = '';
+    this.getDailyReport();
+  }
+
   getDailyReport() {
     if (this.date) {
       this.userType = this.auth.getUserRole();
