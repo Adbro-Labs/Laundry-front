@@ -1,0 +1,29 @@
+<div class="page">
+  <h2>Central Stock Report</h2>
+  <div class="table-wrapper">
+    <div class="table">
+      <table>
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Current Stock</th>
+            <th>Minimum</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let report of centralStock"
+            [ngClass]="getStockClass(report)"
+          >
+            <td>{{ report.item?.itemName || '-' }}</td>
+            <td>{{ report.currentStock }}</td>
+            <td>{{ report.minimumStockLevel }}</td>
+          </tr>
+          <tr *ngIf="centralStock.length === 0">
+            <td colspan="3" style="text-align: center">No stock found</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

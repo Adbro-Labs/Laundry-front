@@ -1,0 +1,64 @@
+<h2 mat-dialog-title>Invoice Details</h2>
+
+<mat-dialog-content>
+  <div *ngIf="loading" class="loading">Loading invoice...</div>
+
+  <ng-container *ngIf="!loading && invoice">
+    <div class="invoice-details">
+      <div>
+        <span class="label">Supplier</span>
+        <strong>{{ getSupplierName() }}</strong>
+      </div>
+      <div>
+        <span class="label">Invoice Number</span>
+        <strong>{{ invoice.invoiceNumber }}</strong>
+      </div>
+      <div>
+        <span class="label">Invoice Date</span>
+        <strong>{{ invoice.invoiceDate | date: 'medium' }}</strong>
+      </div>
+      <div>
+        <span class="label">Remarks</span>
+        <strong>{{ invoice.remarks || '-' }}</strong>
+      </div>
+    </div>
+
+    <div class="items" *ngIf="invoice.items?.length; else noItems">
+      <div class="item-row item-header">
+        <span>Item</span>
+        <span>Rate</span>
+        <span>Quantity</span>
+        <span class="total-column">Total</span>
+      </div>
+      <div class="item-row" *ngFor="let item of invoice.items">
+        <span>{{ getItemName(item) }}</span>
+        <span>{{ item.unitCost | appCurrency }}</span>
+        <span>{{ item.quantity }}</span>
+        <span class="total-column">{{ item.totalCost | appCurrency }}</span>
+      </div>
+    </div>
+
+    <ng-template #noItems>
+      <p class="empty">No invoice items found.</p>
+    </ng-template>
+
+    <div class="summary">
+      <div>
+        <span>Discount</span>
+        <strong>{{ invoice.discount || 0 | appCurrency }}</strong>
+      </div>
+      <div>
+        <span>Net Total</span>
+        <strong>{{
+          invoice.grandTotal || invoice.netTotal || 0 | appCurrency
+        }}</strong>
+      </div>
+    </div>
+  </ng-container>
+
+  <p *ngIf="!loading && !invoice" class="empty">Unable to load invoice.</p>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="close()">Close</button>
+</mat-dialog-actions>

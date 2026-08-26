@@ -17,6 +17,7 @@ const routes: Routes = [
       {
         path: '',
         redirectTo: 'dashboard',
+        pathMatch: 'full',
       },
       {
         path: 'dashboard',
@@ -45,6 +46,10 @@ const routes: Routes = [
       {
         path: 'reports',
         loadChildren: () => import('./reports/reports.module').then((m) => m.ReportsModule),
+      },
+      {
+        path: 'inventory',
+        loadChildren: () => import('./inventory/inventory.module').then((m) => m.InventoryModule),
       },
       {
         path: 'branch',

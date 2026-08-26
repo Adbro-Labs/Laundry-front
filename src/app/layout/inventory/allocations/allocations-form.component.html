@@ -1,0 +1,138 @@
+<div class="page allocations-form">
+  <h2>Create Allocation</h2>
+
+  <form [formGroup]="form" (ngSubmit)="save()">
+    <mat-form-field class="half-width">
+      <mat-label>Branch</mat-label>
+      <mat-select formControlName="branchId">
+        <mat-option *ngFor="let b of branches" [value]="b._id">{{
+          b.branchName
+        }}</mat-option>
+      </mat-select>
+      <mat-error
+        *ngIf="form.get('branchId').invalid && form.get('branchId').touched"
+        >Branch is required</mat-error
+      >
+    </mat-form-field>
+
+    <mat-form-field class="half-width">
+      <mat-label>Remarks</mat-label>
+      <textarea matInput formControlName="remarks" rows="3"></textarea>
+    </mat-form-field>
+
+    <div class="table-wrap">
+      <div class="table-content">
+        <table class="items-table">
+          <thead>
+            <tr>
+              <th class="item-column">Item</th>
+              <th class="stock-column">Quantity</th>
+              <th class="stock-column">Central</th>
+              <th class="action-column">Action</th>
+            </tr>
+          </thead>
+          <tbody formArrayName="items">
+            <tr
+              *ngFor="let it of items.controls; let i = index; let last = last"
+              [formGroupName]="i"
+            >
+              <td class="item-column">
+                <mat-form-field class="item-select-field">
+                  <mat-select
+                    formControlName="itemId"
+                    placeholder="Select item"
+                    [disabled]="!form.get('branchId').value"
+                  >
+                    <mat-option
+                      *ngFor="let itm of allItems"
+                      [value]="itm._id"
+                      >{{ itm.itemName }}</mat-option
+                    >
+                  </mat-select>
+                  <mat-error
+                    *ngIf="
+                      it.get('itemId').invalid &&
+                      (it.get('itemId').touched || it.get('itemId').dirty)
+                    "
+                    >Item is required</mat-error
+                  >
+                </mat-form-field>
+              </td>
+
+              <td class="stock-column">
+                <mat-form-field class="quantity-field">
+                  <input
+                    matInput
+                    type="number"
+                    formControlName="quantity"
+                    [attr.max]="getRowQuantityMax(it.get('itemId').value, i)"
+                    min="1"
+                    step="1"
+                    maxlength="4"
+                  />
+                  <mat-error *ngIf="it.get('quantity').hasError('integer')"
+                    >Whole numbers only</mat-error
+                  >
+                  <mat-error *ngIf="it.get('quantity').hasError('max')"
+                    >Exceeds central stock</mat-error
+                  >
+                  <mat-error *ngIf="it.get('quantity').hasError('min')"
+                    >Minimum 1</mat-error
+                  >
+                </mat-form-field>
+              </td>
+
+              <td class="stock-column center-col">
+                {{ centralStockMap[it.get('itemId').value] ?? 0 }}
+              </td>
+
+              <td class="action-column action-cell">
+                <button
+                  *ngIf="last"
+                  mat-icon-button
+                  class="add-item-button"
+                  type="button"
+                  (click)="add()"
+                  [disabled]="!form.get('branchId').value || !canAddItem()"
+                  matTooltip="Add Item"
+                >
+                  <mat-icon>add</mat-icon>
+                </button>
+                <button
+                  *ngIf="i > 0"
+                  mat-icon-button
+                  color="warn"
+                  class="delete-item-button"
+                  type="button"
+                  (click)="remove(i)"
+                  [disabled]="items.length === 1"
+                  matTooltip="Remove Item"
+                >
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </td>
+            </tr>
+
+            <tr *ngIf="items.length === 0">
+              <td colspan="4" style="text-align: center">No items added</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="actions">
+        <button
+          mat-raised-button
+          color="accent"
+          type="submit"
+          [disabled]="form.invalid || items.length === 0"
+        >
+          Save
+        </button>
+        <button mat-raised-button type="button" (click)="cancel()">
+          Close
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

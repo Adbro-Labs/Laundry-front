@@ -1,0 +1,70 @@
+<h2 mat-dialog-title>Settle Invoice(s)</h2>
+
+<mat-dialog-content>
+  <div class="supplier-details">
+    <span>Supplier</span>
+    <strong>{{ supplierName }}</strong>
+  </div>
+
+  <div class="invoice-list">
+    <div class="invoice-row invoice-header">
+      <span>Invoice Number</span>
+      <span>Amount</span>
+    </div>
+    <div class="invoice-row" *ngFor="let invoice of data.invoices">
+      <span>{{ invoice.invoiceNumber }}</span>
+      <span>{{ invoice.grandTotal | appCurrency }}</span>
+    </div>
+  </div>
+
+  <div class="total-row">
+    <span>Total Amount</span>
+    <strong>{{ totalAmount | appCurrency }}</strong>
+  </div>
+
+  <mat-form-field class="paying-amount">
+    <mat-label>User Paying Amount</mat-label>
+    <input
+      matInput
+      type="number"
+      [formControl]="payingAmount"
+      min="0"
+      readonly
+    />
+    <mat-error *ngIf="payingAmount.hasError('required')">
+      Paying amount is required
+    </mat-error>
+    <mat-error
+      *ngIf="payingAmount.hasError('min') || payingAmount.hasError('max')"
+    >
+      Paying amount must equal the total amount
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="payment-method">
+    <mat-label>Payment Method</mat-label>
+    <mat-select [formControl]="paymentMethod">
+      <mat-option value="CASH">Cash</mat-option>
+      <mat-option value="CARD">Card</mat-option>
+    </mat-select>
+    <mat-error>Payment method is required</mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="reference-number">
+    <mat-label>Reference Number</mat-label>
+    <input matInput [formControl]="referenceNumber" />
+  </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button type="button" (click)="close()">Cancel</button>
+  <button
+    mat-raised-button
+    color="primary"
+    type="button"
+    (click)="settle()"
+    [disabled]="payingAmount.invalid"
+  >
+    Settle
+  </button>
+</mat-dialog-actions>

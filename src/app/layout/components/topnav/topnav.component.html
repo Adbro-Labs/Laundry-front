@@ -9,7 +9,9 @@
     <mat-icon>menu</mat-icon>
   </button>
 
-  <div class="nav-brand" routerLink="/" style="cursor: pointer">{{ appName }}</div>
+  <div class="nav-brand" routerLink="/" style="cursor: pointer">
+    {{ appName }}
+  </div>
   <!-- <form class="hidden-sm" style="margin-left: 20px; margin-top: 5px">
         <mat-form-field>
             <input [formControl]="orderNumber" autocomplete="off" autofocus matInput [placeholder]="'Order number' | translate">
@@ -18,11 +20,13 @@
   <!-- <button mat-icon-button (click)="subscribeToNotifications()">
     <mat-icon>notifications</mat-icon>
   </button> -->
-  <div style="position: absolute; right: 120px">
+  <div class="branch-name">
     <h4>{{ userDetails?.branchName }}</h4>
   </div>
   <span class="nav-spacer"></span>
-  <button mat-icon-button (click)="requestFullscreen()"><mat-icon>fullscreen</mat-icon></button>
+  <button mat-icon-button (click)="requestFullscreen()">
+    <mat-icon>fullscreen</mat-icon>
+  </button>
 
   <button mat-icon-button (click)="onLoggedout()">
     <mat-icon>exit_to_app</mat-icon>

@@ -1,0 +1,82 @@
+mat-dialog-content {
+  min-width: 420px;
+}
+
+.invoice-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 24px;
+  margin-bottom: 20px;
+
+  > div {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .label {
+    color: #666;
+    font-size: 12px;
+  }
+}
+
+h3 {
+  margin: 0 0 8px;
+}
+
+.item-row,
+.summary > div {
+  display: grid;
+  gap: 16px;
+  align-items: center;
+}
+
+.item-row {
+  grid-template-columns: minmax(0, 1fr) 80px 100px 100px;
+  padding: 10px 0;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.item-header {
+  font-weight: 600;
+  color: #666;
+}
+
+.total-column {
+  text-align: right;
+}
+
+.summary {
+  margin-top: 20px;
+  width: 100%;
+
+  > div {
+    grid-template-columns: minmax(0, 1fr) 80px 100px;
+    padding: 6px 0;
+
+    span:first-child {
+      grid-column: 1 / 3;
+      text-align: right;
+    }
+
+    strong {
+      grid-column: 3;
+      text-align: right;
+    }
+  }
+}
+
+.loading,
+.empty {
+  padding: 16px 0;
+}
+
+@media screen and (max-width: 600px) {
+  mat-dialog-content {
+    min-width: 0;
+  }
+
+  .invoice-details {
+    grid-template-columns: 1fr;
+  }
+}

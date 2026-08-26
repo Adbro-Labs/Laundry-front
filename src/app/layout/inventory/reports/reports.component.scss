@@ -1,0 +1,21 @@
+.page {
+  box-sizing: border-box;
+}
+
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table {
+  min-width: 520px;
+}
+
+.stock-warning {
+  background-color: #fff3cd;
+}
+
+.stock-critical {
+  background-color: #f8d7da;
+}

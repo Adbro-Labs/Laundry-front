@@ -1,0 +1,66 @@
+<div class="page">
+  <div class="page-header">
+    <h2>Payments</h2>
+  </div>
+
+  <mat-form-field class="search-field">
+    <mat-label>Search payments</mat-label>
+    <input
+      matInput
+      [formControl]="searchControl"
+      placeholder="Date, supplier, invoice, method or reference"
+    />
+    <mat-icon matSuffix>search</mat-icon>
+  </mat-form-field>
+
+  <div class="table-wrapper" *ngIf="payments.length > 0">
+    <div class="table">
+      <table>
+        <thead>
+          <tr>
+            <th>Supplier</th>
+            <th>Invoice Number(s)</th>
+            <th class="amount">Amount</th>
+            <th>Payment Method</th>
+            <th>Reference Number</th>
+            <th>Settled Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let payment of payments">
+            <td>{{ payment.supplierName || '-' }}</td>
+            <td>
+              <ng-container
+                *ngIf="payment.invoiceLinks?.length; else invoiceText"
+              >
+                <ng-container
+                  *ngFor="let invoice of payment.invoiceLinks; let last = last"
+                >
+                  <button
+                    class="invoice-link"
+                    type="button"
+                    (click)="viewInvoice(invoice._id)"
+                  >
+                    {{ invoice.invoiceNumber }}
+                  </button>
+                  <span *ngIf="!last">, </span>
+                </ng-container>
+              </ng-container>
+              <ng-template #invoiceText>{{
+                payment.invoiceNumber || '-'
+              }}</ng-template>
+            </td>
+            <td class="amount">{{ payment.amount | appCurrency }}</td>
+            <td>{{ payment.paymentMethod || '-' }}</td>
+            <td>{{ payment.referenceNumber || '-' }}</td>
+            <td>{{ payment.paymentDate | date: 'medium' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="empty-state" *ngIf="payments.length === 0">
+    <p>No payments found</p>
+  </div>
+</div>

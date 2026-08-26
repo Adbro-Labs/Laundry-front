@@ -1,0 +1,51 @@
+<h2 mat-dialog-title>{{ isEditMode ? 'Edit' : 'Create' }} Supplier</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="form">
+    <mat-form-field class="full-width">
+      <mat-label>Supplier Name</mat-label>
+      <input matInput formControlName="supplierName" />
+      <mat-error *ngIf="form.controls.supplierName.invalid"
+        >Supplier name is required</mat-error
+      >
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Contact Person</mat-label>
+      <input matInput formControlName="contactPerson" />
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Phone</mat-label>
+      <input matInput formControlName="phone" />
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email" />
+      <mat-error *ngIf="form.controls.email.invalid">Invalid email</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Address</mat-label>
+      <textarea matInput formControlName="address" rows="3"></textarea>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Notes</mat-label>
+      <textarea matInput formControlName="notes" rows="3"></textarea>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="close()">Cancel</button>
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="save()"
+    [disabled]="loading || form.invalid"
+  >
+    {{ loading ? 'Saving...' : 'Save' }}
+  </button>
+</mat-dialog-actions>

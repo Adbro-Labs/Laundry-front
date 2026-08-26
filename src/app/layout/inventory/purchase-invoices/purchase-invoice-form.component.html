@@ -1,0 +1,174 @@
+<div class="page">
+  <div class="page-header">
+    <h2>
+      {{ id ? (isReadOnly ? 'View' : 'Edit') : 'Create' }} Purchase Invoice
+    </h2>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="save()">
+    <div class="form-section">
+      <h3>Invoice Details</h3>
+
+      <div class="row" style="display: flex; flex-wrap: wrap; gap: 16px">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Supplier</mat-label>
+          <mat-select formControlName="supplierId">
+            <mat-option *ngFor="let s of allSuppliers" [value]="s._id">
+              {{ s.supplierName }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="form.get('supplierId').invalid"
+            >Supplier is required</mat-error
+          >
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Invoice Number</mat-label>
+          <input matInput formControlName="invoiceNumber" />
+          <mat-error *ngIf="form.get('invoiceNumber').invalid"
+            >Invoice number is required</mat-error
+          >
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Invoice Date</mat-label>
+          <input
+            matInput
+            [matDatepicker]="picker"
+            formControlName="invoiceDate"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Remarks</mat-label>
+          <textarea matInput formControlName="remarks" rows="2"></textarea>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div
+        style="
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        "
+      >
+        <h3>Invoice Items</h3>
+        <button
+          *ngIf="!isReadOnly"
+          mat-raised-button
+          color="primary"
+          type="button"
+          (click)="openItemDialog()"
+        >
+          <mat-icon>add</mat-icon> Add Item
+        </button>
+      </div>
+
+      <div class="table">
+        <table class="project-table">
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Quantity</th>
+              <th>Unit Cost</th>
+              <th>Total</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let element of items.controls; let i = index">
+              <td>
+                {{ getItemName(element.get('itemId').value) }}
+              </td>
+
+              <td>
+                {{ element.get('quantity').value }}
+              </td>
+
+              <td>
+                {{ element.get('unitCost').value | appCurrency }}
+              </td>
+
+              <td>
+                {{ element.get('totalCost').value | appCurrency }}
+              </td>
+
+              <td>
+                <button
+                  *ngIf="!isReadOnly"
+                  mat-icon-button
+                  type="button"
+                  (click)="editRow(i)"
+                  matTooltip="Edit"
+                >
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button
+                  *ngIf="!isReadOnly"
+                  mat-icon-button
+                  type="button"
+                  (click)="removeRow(i)"
+                  matTooltip="Delete"
+                >
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="3" class="summary-label">Subtotal:</td>
+              <td class="amount-summary">
+                {{ form.get('subtotal').value | appCurrency }}
+              </td>
+              <td></td>
+            </tr>
+            <tr>
+              <td colspan="3" class="summary-label">Discount:</td>
+              <td class="amount-summary">
+                <mat-form-field class="discount-field">
+                  <input
+                    matInput
+                    type="number"
+                    formControlName="discount"
+                    min="0"
+                    [max]="form.get('subtotal').value"
+                  />
+                </mat-form-field>
+              </td>
+              <td></td>
+            </tr>
+            <tr>
+              <td colspan="3" class="summary-label">Grand Total:</td>
+              <td class="amount-summary grand">
+                {{ form.get('grandTotal').value | appCurrency }}
+              </td>
+              <td></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+
+    <div class="form-actions" style="margin-top: 10px; display: flex; gap: 5px">
+      <button
+        *ngIf="!isReadOnly"
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="loading || form.invalid"
+      >
+        {{ loading ? 'Saving...' : 'Save Invoice' }}
+      </button>
+      <button mat-raised-button color="warn" type="button" (click)="cancel()">
+        Cancel
+      </button>
+    </div>
+  </form>
+</div>

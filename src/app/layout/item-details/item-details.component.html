@@ -2,13 +2,15 @@
   <div class="table">
     <table>
       <thead>
-        <th>ITEM</th>
-        <th>SERVICES</th>
-        <th>RATE</th>
-        <th>QTY</th>
-        <th *ngIf="isVatEnabled">VAT</th>
-        <th>AMOUNT</th>
-        <th>ACTION</th>
+        <tr>
+          <th>ITEM</th>
+          <th>SERVICES</th>
+          <th>RATE</th>
+          <th>QTY</th>
+          <th *ngIf="isVatEnabled">VAT</th>
+          <th>AMOUNT</th>
+          <th>ACTION</th>
+        </tr>
       </thead>
       <tbody>
         <ng-container *ngIf="orderDetails?.value?.length > 0; else nodata">
@@ -95,7 +97,7 @@
         </ng-container>
         <ng-template #nodata>
           <tr style="height: 50px">
-            <td colspan="6" style="text-align: center">
+            <td [attr.colspan]="isVatEnabled ? 7 : 6" style="text-align: center">
               add items to list here
             </td>
           </tr>

@@ -2,64 +2,147 @@
   <mat-nav-list>
     <a
       mat-list-item
+      class="dashboard-item"
       [routerLinkActive]="'active'"
       [routerLink]="['/dashboard']"
     >
       <mat-icon class="sidenav-icon">dashboard</mat-icon> {{ 'Dashboard' }}
     </a>
-    <ng-container *ngIf="userType != 'ADMIN'">
-      <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/orders']">
-        <mat-icon class="sidenav-icon">build</mat-icon> {{ 'Orders' }}
-      </a>
-    </ng-container>
-    <a
-      mat-list-item
-      [routerLinkActive]="'active'"
-      [routerLink]="['/customers']"
-    >
-      <mat-icon class="sidenav-icon">people</mat-icon> {{ 'Customers' }}
-    </a>
-    <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/items']">
-      <mat-icon class="sidenav-icon">local_laundry_service</mat-icon>
-      {{ 'Items' }}
-    </a>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <mat-icon class="sidenav-icon">folder</mat-icon> Master
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <mat-nav-list>
+        <a
+          mat-list-item
+          [routerLinkActive]="'active'"
+          [routerLink]="['/customers']"
+          ><mat-icon>people</mat-icon> Customers</a
+        >
+        <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/items']"
+          ><mat-icon>local_laundry_service</mat-icon> Items</a
+        >
+        <a
+          *ngIf="userType == 'ADMIN'"
+          mat-list-item
+          [routerLinkActive]="'active'"
+          [routerLink]="['/category']"
+          ><mat-icon>category</mat-icon> Category</a
+        >
+      </mat-nav-list>
+    </mat-expansion-panel>
     <ng-container *ngIf="userType == 'ADMIN'">
-      <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/branch']">
-        <mat-icon class="sidenav-icon">home</mat-icon> {{ 'Branches' }}
-      </a>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <mat-icon class="sidenav-icon">inventory</mat-icon> Inventory
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-nav-list>
+          <a
+            mat-list-item
+            [routerLinkActive]="'active'"
+            [routerLink]="['/inventory/items']"
+            ><mat-icon>inventory_2</mat-icon> Items</a
+          >
+          <a
+            mat-list-item
+            [routerLinkActive]="'active'"
+            [routerLink]="['/inventory/suppliers']"
+            ><mat-icon>local_shipping</mat-icon> Suppliers</a
+          >
+          <a
+            mat-list-item
+            [routerLinkActive]="'active'"
+            [routerLink]="['/inventory/purchase-invoices']"
+            ><mat-icon>receipt_long</mat-icon> Purchase Invoices</a
+          >
+          <a
+            mat-list-item
+            [routerLinkActive]="'active'"
+            [routerLink]="['/inventory/payments']"
+            ><mat-icon>payments</mat-icon> Supplier Payments</a
+          >
+          <a
+            mat-list-item
+            [routerLinkActive]="'active'"
+            [routerLink]="['/inventory/allocations']"
+            ><mat-icon>swap_horiz</mat-icon> Stock Allocation</a
+          >
+          <a
+            mat-list-item
+            [routerLinkActive]="'active'"
+            [routerLink]="['/inventory/reports']"
+            ><mat-icon>assessment</mat-icon> Reports</a
+          >
+        </mat-nav-list>
+      </mat-expansion-panel>
     </ng-container>
-    <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/reports']">
-      <mat-icon class="sidenav-icon">list</mat-icon> {{ 'Reports' }}
-    </a>
-    <a
-      mat-list-item
-      [routerLinkActive]="'active'"
-      [routerLink]="['/reports/daily']"
-    >
-      <mat-icon class="sidenav-icon">list</mat-icon> {{ 'Daily Report' }}
-    </a>
-    <a
-      mat-list-item
-      [routerLinkActive]="'active'"
-      [routerLink]="['/reports/customer']"
-    >
-      <mat-icon class="sidenav-icon">list</mat-icon> {{ 'Customer Report' }}
-    </a>
-    <a
-      mat-list-item
-      [routerLinkActive]="'active'"
-      [routerLink]="['/delivery-schedule']"
-    >
-      <mat-icon class="sidenav-icon">directions_car</mat-icon>
-      {{ 'Delivery Schedule' }}
-    </a>
-    <a
-      *ngIf="userType == 'ADMIN'"
-      mat-list-item
-      [routerLinkActive]="'active'"
-      [routerLink]="['/category']"
-    >
-      <mat-icon class="sidenav-icon">category</mat-icon> {{ 'Category ' }}
-    </a>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <mat-icon class="sidenav-icon">assessment</mat-icon> Reports
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <mat-nav-list>
+        <a
+          mat-list-item
+          [routerLinkActive]="'active'"
+          [routerLink]="['/reports']"
+          ><mat-icon>assessment</mat-icon> Reports</a
+        >
+        <a
+          mat-list-item
+          [routerLinkActive]="'active'"
+          [routerLink]="['/reports/daily']"
+          ><mat-icon>event_note</mat-icon> Daily Report</a
+        >
+        <a
+          mat-list-item
+          [routerLinkActive]="'active'"
+          [routerLink]="['/reports/customer']"
+          ><mat-icon>person_search</mat-icon> Customer Report</a
+        >
+      </mat-nav-list>
+    </mat-expansion-panel>
+    <mat-expansion-panel *ngIf="userType == 'ADMIN'">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <mat-icon class="sidenav-icon">settings</mat-icon> Settings
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <mat-nav-list>
+        <a
+          mat-list-item
+          [routerLinkActive]="'active'"
+          [routerLink]="['/branch']"
+          ><mat-icon>account_tree</mat-icon> Branches</a
+        >
+      </mat-nav-list>
+    </mat-expansion-panel>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <mat-icon class="sidenav-icon">swap_horiz</mat-icon> Movements
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <mat-nav-list>
+        <a
+          *ngIf="userType != 'ADMIN'"
+          mat-list-item
+          [routerLinkActive]="'active'"
+          [routerLink]="['/orders']"
+          ><mat-icon>build</mat-icon> Orders</a
+        >
+        <a
+          mat-list-item
+          [routerLinkActive]="'active'"
+          [routerLink]="['/delivery-schedule']"
+          ><mat-icon>directions_car</mat-icon> Delivery Schedule</a
+        >
+      </mat-nav-list>
+    </mat-expansion-panel>
   </mat-nav-list>
 </div>

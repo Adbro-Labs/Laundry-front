@@ -1,0 +1,40 @@
+<div class="page">
+  <h2>{{ id ? 'Edit' : 'Create' }} Supplier</h2>
+  <form [formGroup]="form" (ngSubmit)="save()">
+    <mat-form-field appearance="outline" class="full">
+      <mat-label>Supplier Name</mat-label>
+      <input matInput formControlName="supplierName" />
+      <mat-error *ngIf="form.controls.supplierName.invalid">Supplier name is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Contact Person</mat-label>
+      <input matInput formControlName="contactPerson" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Phone</mat-label>
+      <input matInput formControlName="phone" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email" />
+      <mat-error *ngIf="form.controls.email.invalid">Invalid email</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full">
+      <mat-label>Address</mat-label>
+      <textarea matInput formControlName="address"></textarea>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full">
+      <mat-label>Notes</mat-label>
+      <textarea matInput formControlName="notes"></textarea>
+    </mat-form-field>
+
+    <div>
+      <button mat-raised-button color="primary" [disabled]="loading">Save</button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,108 @@
+/* minimal styles for allocations form — extend as needed */
+.allocations-form {
+  max-width: 900px;
+  display: block;
+
+  .full-width { width: 100%; }
+  .half-width { width: 50%; }
+
+  > form > mat-form-field {
+    display: block;
+  }
+
+  .item-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+
+  .item-select { flex: 1; }
+  .qty-field { width: 120px; }
+
+  .available-stock { font-size: 12px; color: rgba(0,0,0,0.6); }
+
+  .table-wrap { overflow-x: auto; }
+  .table-content {
+    width: 75%;
+    min-width: 600px;
+  }
+  .items-table {
+    width: 100%;
+    min-width: 600px;
+    border-collapse: collapse;
+  }
+  .item-column { width: auto; }
+  .item-select-field {
+    width: 80%;
+    max-width: 80%;
+  }
+  ::ng-deep .item-select-field .mat-form-field-infix {
+    width: auto;
+    min-width: 0;
+  }
+  .stock-column { width: 72px; white-space: nowrap; }
+  .quantity-field {
+    width: 72px;
+    max-width: 72px;
+  }
+  ::ng-deep .quantity-field .mat-form-field-infix {
+    width: auto;
+    min-width: 0;
+  }
+  .action-column { width: 88px; text-align: center; }
+  .action-cell {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 4px;
+    padding-top: 12px !important;
+  }
+  .action-cell button {
+    flex: 0 0 40px;
+  }
+  .items-table thead th { text-align: left; padding: 8px 6px; border-bottom: 1px solid rgba(0,0,0,0.12); }
+  .items-table td { padding: 6px; vertical-align: top; }
+  .center-col {
+    text-align: left;
+    padding-right: 12px;
+    vertical-align: middle !important;
+  }
+
+  .add-item-button {
+    border-radius: 50%;
+    background-color: #3f51b5;
+    color: #fff;
+  }
+
+  .delete-item-button {
+    border-radius: 50%;
+    background-color: #f44336;
+    color: #fff;
+  }
+
+  .actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .allocations-form .half-width {
+    width: 100%;
+  }
+
+  .allocations-form .items-table {
+    width: 100%;
+  }
+
+  .allocations-form .table-content {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .allocations-form .item-select-field {
+    width: 100%;
+  }
+}

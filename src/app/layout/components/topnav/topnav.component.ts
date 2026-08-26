@@ -15,24 +15,23 @@ import { AppConfigService } from 'src/app/shared/services/app-config.service';
   styleUrls: ['./topnav.component.scss'],
 })
 export class TopnavComponent implements OnInit {
-  public pushRightClass: string;
   orderNumber = new FormControl('');
   userDetails;
   appName: string;
-  readonly VAPID_PUBLIC_KEY = 'BEbE1WpMkxiJL8KR8K0tp1RFar0H5tAmLFy_Ps-JUbqGK5kM4ODCDySdDnOSEvXCEuKUKCOCgUWxHpGhtgGzcos';
+  readonly VAPID_PUBLIC_KEY =
+    'BEbE1WpMkxiJL8KR8K0tp1RFar0H5tAmLFy_Ps-JUbqGK5kM4ODCDySdDnOSEvXCEuKUKCOCgUWxHpGhtgGzcos';
   constructor(
     public router: Router,
     private order: OrderService,
     private auth: AuthService,
     private swPush: SwPush,
     private push: WebpushService,
-    private dialog: MatDialog
-    ,
+    private dialog: MatDialog,
     private appConfig: AppConfigService
   ) {
-    this.router.events.subscribe((val) => {
-      if (val instanceof NavigationEnd && window.innerWidth <= 992 && this.isToggled()) {
-        this.toggleSidebar();
+    this.router.events.subscribe(val => {
+      if (val instanceof NavigationEnd && window.innerWidth <= 992) {
+        this.order.hideSidebars();
       }
     });
     this.userDetails = auth.decodeJwt();
@@ -40,7 +39,7 @@ export class TopnavComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.orderNumber.valueChanges.subscribe((data) => {
+    this.orderNumber.valueChanges.subscribe(data => {
       if (data.length >= 4) {
         this.router.navigate(['/takeOrder', data]);
         setTimeout(() => {
@@ -51,11 +50,6 @@ export class TopnavComponent implements OnInit {
     setTimeout(() => {
       this.subscribeToNotifications();
     }, 3000);
-  }
-
-  isToggled(): boolean {
-    const dom: Element = document.querySelector('body');
-    return dom.classList.contains(this.pushRightClass);
   }
 
   toggleSidebar() {
@@ -79,25 +73,25 @@ export class TopnavComponent implements OnInit {
   goforward() {
     window.history.forward();
   }
-    subscribeToNotifications() {
-    this.swPush.requestSubscription({
-      serverPublicKey: this.VAPID_PUBLIC_KEY
-    })
-    .then(sub => {
-     this.push.subscribeforPush(sub).subscribe({
-        next: (response) => {
-          console.log('Subscription successful', response);
-        },
-        error: (err) => {
-          console.error('Subscription failed', err);
-        }
-      }
-    );
-    })
-    .catch(err => console.error('Could not subscribe', err));
+  subscribeToNotifications() {
+    this.swPush
+      .requestSubscription({
+        serverPublicKey: this.VAPID_PUBLIC_KEY,
+      })
+      .then(sub => {
+        this.push.subscribeforPush(sub).subscribe({
+          next: response => {
+            console.log('Subscription successful', response);
+          },
+          error: err => {
+            console.error('Subscription failed', err);
+          },
+        });
+      })
+      .catch(err => console.error('Could not subscribe', err));
   }
 
-    isDialogOpen = false;
+  isDialogOpen = false;
 
   async requestNotificationPermission(): Promise<void> {
     try {
@@ -120,7 +114,7 @@ export class TopnavComponent implements OnInit {
       data: { permission },
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
+    dialogRef.afterClosed().subscribe(result => {
       this.isDialogOpen = false;
       if (result === 'retry') {
         this.requestNotificationPermission();

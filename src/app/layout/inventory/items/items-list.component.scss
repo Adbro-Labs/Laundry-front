@@ -1,0 +1,13 @@
+.page {
+  box-sizing: border-box;
+}
+
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+table {
+  min-width: 720px;
+}

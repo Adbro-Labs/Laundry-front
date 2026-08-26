@@ -1,0 +1,48 @@
+.page {
+  box-sizing: border-box;
+}
+
+.page-header {
+  margin-bottom: 24px;
+
+  h2 {
+    margin: 0;
+  }
+}
+
+.search-field {
+  width: min(100%, 420px);
+  margin-bottom: 16px;
+}
+
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.amount {
+  text-align: right;
+}
+
+.invoice-link {
+  display: inline;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #1976d2;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.empty-state {
+  padding: 48px 24px;
+  color: #999;
+  text-align: center;
+}
+
+@media screen and (max-width: 600px) {
+  .search-field {
+    width: 100%;
+  }
+}

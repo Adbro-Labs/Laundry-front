@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>[TITLE]</title>
+    <style>
+      @page {
+        size: A5 portrait;
+        margin: 0;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        width: 148mm;
+        min-height: 210mm;
+        margin: 0;
+        padding: 0;
+        background: #fff;
+      }
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+        color: #000;
+      }
+      .invoice {
+        width: 148mm;
+        min-height: 210mm;
+        padding: 8mm 7mm 6mm;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed;
+      }
+      .company-name {
+        margin: 0;
+        font-size: 19px;
+        line-height: 1.1;
+        font-weight: 900;
+        letter-spacing: 0.3px;
+        text-align: center;
+        text-transform: uppercase;
+      }
+      .company-address {
+        margin: 2px 0 0;
+        font-size: 7px;
+        text-align: center;
+        text-transform: uppercase;
+      }
+      .invoice-title {
+        margin: 5px 0 1px;
+        font-size: 10px;
+        font-weight: 800;
+        text-align: center;
+        text-transform: uppercase;
+      }
+      .trn {
+        margin: 0 0 3px;
+        font-size: 7.5px;
+        text-align: center;
+      }
+      .details {
+        border-top: 1.5px solid #000;
+        border-bottom: 1.5px solid #000;
+      }
+      .details td {
+        width: 50%;
+        height: 15mm;
+        padding: 1.5mm 1mm;
+        vertical-align: top;
+        font-size: 7.5px;
+        line-height: 1.65;
+      }
+      .details td:first-child {
+        border-right: 1.5px solid #000;
+      }
+      .label {
+        font-weight: 800;
+        text-transform: uppercase;
+      }
+      .right-detail {
+        height: 4.5mm;
+        padding: 1mm;
+        border-bottom: 1px solid #000;
+      }
+      .right-detail:last-child {
+        border-bottom: 0;
+      }
+      .items {
+        border: 1.5px solid #000;
+        border-top: 0;
+      }
+      .items th,
+      .items td {
+        border-right: 1px solid #000;
+        text-align: center;
+      }
+      .items th:last-child,
+      .items td:last-child {
+        border-right: 0;
+      }
+      .items th {
+        height: 6mm;
+        padding: 1mm 0.5mm;
+        font-size: 7px;
+        font-weight: 800;
+        text-transform: uppercase;
+        vertical-align: middle;
+      }
+      .items td {
+        height: 7mm;
+        padding: 1mm 0.75mm;
+        font-size: 7px;
+        vertical-align: middle;
+      }
+      .items td:nth-child(2) {
+        padding-left: 2mm;
+        text-align: left;
+        text-transform: uppercase;
+      }
+      .summary {
+        border: 1.5px solid #000;
+        border-top: 0;
+      }
+      .summary td {
+        height: 5mm;
+        padding: 1mm 1.5mm;
+        font-size: 7px;
+        text-transform: uppercase;
+      }
+      .summary td:first-child {
+        border-right: 1px solid #000;
+        text-align: center;
+      }
+      .summary tr + tr td {
+        border-top: 1px solid #000;
+      }
+      .summary td:last-child {
+        text-align: right;
+      }
+      .declaration {
+        padding: 1.2mm 0;
+        border-bottom: 1.5px solid #000;
+        font-size: 7px;
+        text-transform: uppercase;
+      }
+      .notes {
+        padding: 4mm 1mm 0;
+        font-size: 7px;
+        line-height: 1.55;
+        text-transform: uppercase;
+      }
+      .notes p,
+      .terms p {
+        margin: 0;
+      }
+      .section-title {
+        margin: 0 0 1mm;
+        font-size: 7.5px;
+        font-weight: 800;
+        text-transform: uppercase;
+      }
+      .terms {
+        padding: 4mm 1mm 0;
+        font-size: 7px;
+        line-height: 1.35;
+        text-transform: uppercase;
+      }
+      @media print {
+        html,
+        body {
+          width: 148mm;
+          height: 210mm;
+        }
+        .invoice {
+          margin: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="invoice">
+      <header>
+        <h1 class="company-name">[SHOPNAME]</h1>
+        <p class="company-address">[SUBTITLE1], [SUBTITLE2]</p>
+        <p class="invoice-title">Tax Invoice</p>
+        <p class="trn">TRN: [TRN]</p>
+      </header>
+
+      <table class="details" aria-label="Invoice and customer details">
+        <tr>
+          <td>
+            <span class="label">Bill To:</span><br />
+            [CUSTOMER_NAME]<br />
+            [CUSTOMER_MOBILE]
+          </td>
+          <td style="padding: 0">
+            <div class="right-detail">
+              <span class="label">Invoice No:</span> [ORDER_NO]
+            </div>
+            <div class="right-detail">
+              <span class="label">Date:</span> [DATE]
+            </div>
+            <div class="right-detail">
+              <span class="label">Terms of Delivery:</span> [DELIVREY_TYPE]
+            </div>
+          </td>
+        </tr>
+      </table>
+
+      <table class="items" aria-label="Invoice items">
+        <colgroup>
+          <col style="width: 41%" />
+          <col style="width: 12%" />
+          <col style="width: 16%" />
+          <col style="width: 14%" />
+          <col style="width: 17%" />
+        </colgroup>
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Qty</th>
+            <th>Rate</th>
+            <th>VAT</th>
+            <th>Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          [itemDetails]
+        </tbody>
+      </table>
+
+      <table class="summary" aria-label="Invoice totals">
+        <colgroup>
+          <col style="width: 83%" />
+          <col style="width: 17%" />
+        </colgroup>
+        <tr id="discountLabel">
+          <td>Discount</td>
+          <td>-[DISCOUNT]</td>
+        </tr>
+        <tr id="subTotalLabel">
+          <td>Amount</td>
+          <td>[SUBTOTAL]</td>
+        </tr>
+        <tr id="vatAmountLabel">
+          <td>VAT 5%</td>
+          <td>[VATAMOUNT]</td>
+        </tr>
+        <tr id="roundoffLabel">
+          <td>Roundoff</td>
+          <td>[ROUNDOFF]</td>
+        </tr>
+        <tr>
+          <td><strong>Total (Including VAT)</strong></td>
+          <td><strong>[NETTOTAL]</strong></td>
+        </tr>
+      </table>
+
+      <div class="declaration"><span class="label">Declaration:</span></div>
+
+      <section class="notes">
+        <p class="section-title">Notes</p>
+        <p id="notelabel">[NOTES]</p>
+        <p id="deliveryTypeLabel">Delivery Type: [DELIVREY_TYPE]</p>
+        <p id="deliveryTimeLabel">Delivery Time: [DELIVREY_TIME]</p>
+        <p id="paymentTypeLabel">Payment: [PAYMENT_TYPE]</p>
+        <p id="totalItems">Total Number of Items: [TOTAL_ITEMS]</p>
+      </section>
+
+      <section class="terms">
+        <p class="section-title">Terms and Conditions</p>
+        <p>We do not hold responsibility of clothes more than one month.</p>
+        <p>
+          Clothes damaged by laundry will be reimbursed 10 times the charge of
+          laundering the item in question.
+        </p>
+      </section>
+    </main>
+  </body>
+</html>

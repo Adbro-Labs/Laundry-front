@@ -1,0 +1,45 @@
+<h2 mat-dialog-title>Allocation Details</h2>
+
+<mat-dialog-content>
+  <div *ngIf="loading" class="loading">Loading allocation...</div>
+
+  <ng-container *ngIf="!loading && allocation">
+    <div class="allocation-details">
+      <div>
+        <span>Branch</span>
+        <strong>{{ allocation.branchId?.branchName || '-' }}</strong>
+      </div>
+      <div>
+        <span>Allocation Number</span>
+        <strong>{{ allocation.allocationNumber || '-' }}</strong>
+      </div>
+      <div>
+        <span>Remarks</span>
+        <strong>{{ allocation.remarks || '-' }}</strong>
+      </div>
+    </div>
+
+    <div class="items" *ngIf="allocation.items?.length; else noItems">
+      <div class="item-row item-header">
+        <span>Item</span>
+        <span>Quantity</span>
+      </div>
+      <div class="item-row" *ngFor="let item of allocation.items">
+        <span>{{ getItemName(item) }}</span>
+        <span>{{ item.quantity }}</span>
+      </div>
+    </div>
+
+    <ng-template #noItems>
+      <p class="empty">No items found.</p>
+    </ng-template>
+  </ng-container>
+
+  <p *ngIf="!loading && !allocation" class="empty">
+    Unable to load allocation.
+  </p>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button type="button" (click)="close()">Close</button>
+</mat-dialog-actions>

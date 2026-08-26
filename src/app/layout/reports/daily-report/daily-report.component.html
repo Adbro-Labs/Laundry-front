@@ -10,7 +10,7 @@
     <input matInput [matDatepicker]="dp3" [(ngModel)]="date" disabled />
     <mat-datepicker #dp3 [disabled]="false"></mat-datepicker>
   </mat-form-field>
-  <mat-datepicker-toggle matIconSuffix [for]="dp3"></mat-datepicker-toggle>
+  <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
   <ng-container *ngIf="userType == 'ADMIN'">
     <mat-form-field>
       <mat-select [(ngModel)]="branchCode" placeholder="Branch">

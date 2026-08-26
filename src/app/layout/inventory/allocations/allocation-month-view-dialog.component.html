@@ -1,0 +1,57 @@
+<h2 mat-dialog-title>Monthly Allocation View</h2>
+
+<mat-dialog-content>
+  <div class="filters">
+    <mat-form-field>
+      <mat-label>Branch</mat-label>
+      <mat-select [formControl]="branchControl">
+        <mat-option *ngFor="let branch of branches" [value]="branch._id">
+          {{ branch.branchName }}
+        </mat-option>
+      </mat-select>
+      <mat-error>Branch is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Year</mat-label>
+      <mat-select [formControl]="yearControl">
+        <mat-option *ngFor="let year of years" [value]="year">{{
+          year
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Month</mat-label>
+      <mat-select [formControl]="monthControl">
+        <mat-option *ngFor="let month of months" [value]="month.value">{{
+          month.label
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="table" *ngIf="!loading && branchControl.valid">
+    <table>
+      <thead>
+        <tr>
+          <th>Item Name</th>
+          <th class="amount">Total Allocated</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of rows">
+          <td>{{ row.itemName }}</td>
+          <td class="amount">{{ row.totalAllocated }}</td>
+        </tr>
+        <tr *ngIf="rows.length === 0">
+          <td colspan="2" class="empty">No allocations found</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button type="button" (click)="close()">Close</button>
+</mat-dialog-actions>

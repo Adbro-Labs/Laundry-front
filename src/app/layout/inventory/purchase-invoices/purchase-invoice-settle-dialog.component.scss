@@ -1,0 +1,58 @@
+mat-dialog-content {
+  min-width: 360px;
+}
+
+.supplier-details {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+
+  span {
+    color: #666;
+  }
+}
+
+.invoice-row,
+.total-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 24px;
+  align-items: center;
+}
+
+.invoice-row {
+  padding: 8px 0;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.invoice-row span:last-child,
+.total-row strong {
+  text-align: right;
+}
+
+.invoice-header {
+  color: #666;
+  font-weight: 600;
+}
+
+.total-row {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 2px solid #e0e0e0;
+}
+
+.paying-amount {
+  width: 100%;
+  margin-top: 16px;
+}
+
+.payment-method,
+.reference-number {
+  width: 100%;
+}
+
+@media screen and (max-width: 600px) {
+  mat-dialog-content {
+    min-width: 0;
+  }
+}

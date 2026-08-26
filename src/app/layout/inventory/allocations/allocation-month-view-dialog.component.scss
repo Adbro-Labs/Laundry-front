@@ -1,0 +1,51 @@
+mat-dialog-content {
+  min-width: 520px;
+}
+
+.filters {
+  display: grid;
+  grid-template-columns: 1.4fr 0.8fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.table {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+}
+
+th {
+  background: #3f51b5;
+  color: #fff;
+}
+
+.amount {
+  text-align: right;
+}
+
+.empty {
+  text-align: center;
+  color: #777;
+}
+
+@media screen and (max-width: 600px) {
+  mat-dialog-content {
+    min-width: 0;
+  }
+
+  .filters {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+}

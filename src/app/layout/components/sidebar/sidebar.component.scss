@@ -10,12 +10,44 @@
   overflow-y: auto;
   .mat-nav-list {
     width: 100%;
+    padding-top: 0;
+    padding-bottom: 0;
     a {
+      min-height: 40px;
       .mat-icon {
         margin-right: 15px;
       }
       display: block;
     }
+  }
+
+  > .mat-nav-list > a,
+  .dashboard-item {
+    height: 48px;
+    min-height: 48px;
+  }
+
+  ::ng-deep .mat-expansion-panel-header,
+  ::ng-deep .mat-expansion-panel-header.mat-expanded {
+    height: 44px;
+    padding: 0 16px;
+  }
+
+  > .mat-nav-list > .mat-expansion-panel > ::ng-deep .mat-expansion-panel-header,
+  > .mat-nav-list > .mat-expansion-panel > ::ng-deep .mat-expansion-panel-header.mat-expanded {
+    height: 48px;
+  }
+
+  ::ng-deep .mat-expansion-panel-header .mat-icon {
+    margin-right: 15px;
+  }
+
+  ::ng-deep .mat-expansion-panel-body {
+    padding: 0;
+  }
+
+  .mat-expansion-panel .mat-nav-list a {
+    padding-left: 32px;
   }
 }
 .nested-menu {
@@ -39,10 +71,5 @@
         }
       }
     }
-  }
-}
-@media screen and (max-width: 992px) {
-  #sidebar {
-    left: -250px;
   }
 }

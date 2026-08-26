@@ -10,6 +10,10 @@
   width: 215px;
   text-align: left;
 }
+.branch-name {
+  position: absolute;
+  right: 120px;
+}
 .topnav-icon {
   text-decoration: none;
   display: flex;
@@ -34,6 +38,9 @@
 @media screen and (max-width: 768px) {
   .visible-sm {
     display: block;
+  }
+  .branch-name {
+    display: none;
   }
   .nav-brand {
     width: 100%;

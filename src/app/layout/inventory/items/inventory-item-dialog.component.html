@@ -1,0 +1,54 @@
+<h2 mat-dialog-title>{{ isEditMode ? 'Edit' : 'Create' }} Inventory Item</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="form">
+    <mat-form-field class="full-width">
+      <mat-label>Item Name</mat-label>
+      <input matInput formControlName="itemName" />
+      <mat-error *ngIf="form.controls.itemName.invalid"
+        >Item name is required</mat-error
+      >
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Item Code</mat-label>
+      <input matInput formControlName="itemCode" />
+      <mat-error *ngIf="form.controls.itemCode.invalid"
+        >Item code is required</mat-error
+      >
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Unit</mat-label>
+      <mat-select formControlName="unit">
+        <mat-option *ngFor="let u of units" [value]="u">{{ u }}</mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.controls.unit.invalid">Unit is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Description</mat-label>
+      <textarea matInput formControlName="description" rows="3"></textarea>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Minimum Stock Level</mat-label>
+      <input type="number" matInput formControlName="minimumStockLevel" />
+      <mat-error *ngIf="form.controls.minimumStockLevel.invalid"
+        >Minimum stock must be >= 0</mat-error
+      >
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="close()">Cancel</button>
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="save()"
+    [disabled]="loading || form.invalid"
+  >
+    {{ loading ? 'Saving...' : 'Save' }}
+  </button>
+</mat-dialog-actions>

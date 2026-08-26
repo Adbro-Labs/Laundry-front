@@ -1,0 +1,112 @@
+<div class="page">
+  <div class="page-header">
+    <h2>Purchase Invoices</h2>
+    <button mat-raised-button color="primary" (click)="create()">
+      <mat-icon>add</mat-icon> Create
+    </button>
+  </div>
+
+  <mat-form-field class="search-field">
+    <mat-label>Search invoices</mat-label>
+    <input
+      matInput
+      [formControl]="searchControl"
+      placeholder="Invoice number, supplier, date or status"
+    />
+    <mat-icon matSuffix>search</mat-icon>
+  </mat-form-field>
+
+  <div class="settle-action" *ngIf="selectedInvoices.size > 0">
+    <button mat-raised-button color="primary" (click)="settleSelected()">
+      <mat-icon>done_all</mat-icon> Settle Invoice(s)
+    </button>
+  </div>
+
+  <div class="table" *ngIf="paginatedInvoices.length > 0">
+    <table>
+      <thead>
+        <tr>
+          <th class="selection-column">Select</th>
+          <th>Invoice Number</th>
+          <th>Supplier</th>
+          <th>Date</th>
+          <th style="text-align: right">Grand Total</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="let invoice of paginatedInvoices"
+          [class.selected-row]="isSelected(invoice._id)"
+        >
+          <td class="selection-column">
+            <mat-checkbox
+              [checked]="isSelected(invoice._id)"
+              (change)="toggleSelection(invoice, $event.checked)"
+              [attr.aria-label]="'Select invoice ' + invoice.invoiceNumber"
+            ></mat-checkbox>
+          </td>
+          <td>{{ invoice.invoiceNumber }}</td>
+          <td>{{ invoice.supplier?.supplierName }}</td>
+          <td>{{ invoice.invoiceDate | date: 'short' }}</td>
+          <td style="text-align: right; font-weight: 600; color: #1976d2">
+            {{ invoice.grandTotal }}
+          </td>
+          <td>{{ invoice.status }}</td>
+          <td>
+            <button
+              mat-icon-button
+              matTooltip="View"
+              (click)="view(invoice._id)"
+            >
+              <mat-icon>visibility</mat-icon>
+            </button>
+            <button
+              *ngIf="canEdit(invoice)"
+              mat-icon-button
+              matTooltip="Edit"
+              (click)="edit(invoice._id)"
+            >
+              <mat-icon>edit</mat-icon>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pagination-container" *ngIf="paginatedInvoices.length > 0">
+    <div class="pagination-info">
+      Showing {{ (currentPage - 1) * pageSize + 1 }} to
+      {{ (currentPage - 1) * pageSize + paginatedInvoices.length }} of
+      {{ totalInvoices }} invoices
+    </div>
+    <div class="pagination-controls">
+      <button
+        mat-stroked-button
+        [disabled]="currentPage === 1"
+        (click)="previousPage()"
+      >
+        Previous
+      </button>
+      <span class="page-number"
+        >Page {{ currentPage }} of {{ totalPages }}</span
+      >
+      <button
+        mat-stroked-button
+        [disabled]="currentPage === totalPages"
+        (click)="nextPage()"
+      >
+        Next
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="paginatedInvoices.length === 0" class="empty-state">
+    <p>No purchase invoices found</p>
+    <button mat-stroked-button color="primary" (click)="create()">
+      Create your first invoice
+    </button>
+  </div>
+</div>

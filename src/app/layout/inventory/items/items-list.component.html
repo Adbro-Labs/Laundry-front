@@ -1,0 +1,41 @@
+<div class="page">
+  <div
+    class="page-header"
+    style="display: flex; justify-content: space-between; align-items: center"
+  >
+    <h2>Inventory Items</h2>
+    <button mat-raised-button color="primary" (click)="add()">Add Item</button>
+  </div>
+
+  <div class="table-wrapper">
+    <div class="table">
+      <table>
+        <thead>
+          <tr>
+            <th>Item Code</th>
+            <th>Item Name</th>
+            <th>Unit</th>
+            <th>Minimum Stock</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of dataSource.data">
+            <td>{{ item.itemCode }}</td>
+            <td>{{ item.itemName }}</td>
+            <td>{{ item.unit }}</td>
+            <td>{{ item.minimumStockLevel }}</td>
+            <td>{{ item.isActive ? 'Active' : 'Disabled' }}</td>
+            <td>
+              <button mat-button (click)="edit(item)">Edit</button>
+              <button mat-button color="warn" (click)="disable(item._id)">
+                Disable
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

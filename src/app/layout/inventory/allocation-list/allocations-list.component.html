@@ -1,0 +1,92 @@
+<div class="page">
+  <div
+    class="page-header"
+    style="
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    "
+  >
+    <h2>Allocations</h2>
+    <div class="header-actions">
+      <button mat-stroked-button color="primary" (click)="monthView()">
+        Month View
+      </button>
+      <button mat-raised-button color="primary" (click)="create()">
+        Create Allocation
+      </button>
+    </div>
+  </div>
+
+  <mat-form-field class="search-field">
+    <mat-label>Search allocations</mat-label>
+    <input
+      matInput
+      [formControl]="searchControl"
+      placeholder="Date, branch or remarks"
+    />
+    <mat-icon matSuffix>search</mat-icon>
+  </mat-form-field>
+
+  <div class="table">
+    <table>
+      <thead>
+        <tr>
+          <th>Allocation No</th>
+          <th>Date</th>
+          <th>Branch</th>
+          <th style="text-align: right">Items</th>
+          <th>Remarks</th>
+          <th>ACTION</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngIf="filteredAllocations?.length > 0; else nodata">
+          <tr *ngFor="let a of paginatedAllocations" style="height: 50px">
+            <td>{{ a.allocationNumber }}</td>
+            <td>{{ a.allocationDate | date: 'short' }}</td>
+            <td>{{ a.branchId?.branchName || '-' }}</td>
+            <td style="text-align: right">{{ a.items?.length || 0 }}</td>
+            <td>{{ a.remarks || '' }}</td>
+            <td>
+              <button mat-icon-button (click)="view(a._id || a.id)">
+                <mat-icon>visibility</mat-icon>
+              </button>
+            </td>
+          </tr>
+        </ng-container>
+        <ng-template #nodata>
+          <tr style="height: 50px">
+            <td colspan="6" style="text-align: center">No allocations found</td>
+          </tr>
+        </ng-template>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pagination-container" *ngIf="filteredAllocations.length > 0">
+    <span>
+      Showing {{ (currentPage - 1) * pageSize + 1 }} to
+      {{ (currentPage - 1) * pageSize + paginatedAllocations.length }} of
+      {{ filteredAllocations.length }} allocations
+    </span>
+    <div class="pagination-controls">
+      <button
+        mat-stroked-button
+        [disabled]="currentPage === 1"
+        (click)="previousPage()"
+      >
+        Previous
+      </button>
+      <span>Page {{ currentPage }} of {{ totalPages }}</span>
+      <button
+        mat-stroked-button
+        [disabled]="currentPage === totalPages"
+        (click)="nextPage()"
+      >
+        Next
+      </button>
+    </div>
+  </div>
+</div>
