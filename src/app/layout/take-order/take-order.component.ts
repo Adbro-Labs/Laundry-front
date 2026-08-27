@@ -16,6 +16,7 @@ import { ItemDetailsComponent } from '../item-details/item-details.component';
 import { SettlementComponent } from '../settlement/settlement.component';
 import { paymentMethod } from 'src/app/shared/enums';
 import { ConfirmOrderCancelComponent } from '../confirm-order-cancel/confirm-order-cancel.component';
+import { CorporateTrnComponent } from '../corporate-trn/corporate-trn.component';
 
 @Component({
   selector: 'app-take-order',
@@ -50,13 +51,13 @@ export class TakeOrderComponent implements OnInit {
   customerList = [];
   tempCustomerList = [];
   disableSave = false;
+  billType = 'NORMAL';
   payment = paymentMethod;
   @ViewChild(ItemDetailsComponent) items: ItemDetailsComponent;
-  mobileNumber = new FormControl({ value: '', disabled: this.disableNumberChange }, [
-    Validators.required,
-    Validators.minLength(10),
-    Validators.maxLength(10),
-  ]);
+  mobileNumber = new FormControl(
+    { value: '', disabled: this.disableNumberChange },
+    [Validators.required, Validators.minLength(10), Validators.maxLength(10)]
+  );
   constructor(
     private route: ActivatedRoute,
     private customer: CustomerService,
@@ -71,14 +72,14 @@ export class TakeOrderComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.route.params.subscribe((data) => {
+    this.route.params.subscribe(data => {
       this.orderNumber = data.id;
       if (this.orderNumber) {
         this.getOrderDetailsByOrderNumber(this.orderNumber);
       }
     });
     this.getAllCustomers('');
-    this.mobileNumber.valueChanges.pipe(debounceTime(500)).subscribe((data) => {
+    this.mobileNumber.valueChanges.pipe(debounceTime(500)).subscribe(data => {
       this.getAllCustomers(data);
     });
     this.order.hideSidebars();
@@ -89,7 +90,7 @@ export class TakeOrderComponent implements OnInit {
       this.showNoCustomer = false;
       this.tempCustomerList = this.customerList
         .filter(
-          (x) =>
+          x =>
             x?.customerName?.toLowerCase()?.includes(query?.toLowerCase()) ||
             x?.mobile?.toString()?.includes(query)
         )
@@ -108,7 +109,7 @@ export class TakeOrderComponent implements OnInit {
   getAllCustomers(query) {
     if (typeof query == 'string') {
       this.showNoCustomer = false;
-      this.customer.getAllCustomers(0, query).subscribe((data) => {
+      this.customer.getAllCustomers(0, query).subscribe(data => {
         this.customerList = data as any;
         this.tempCustomerList = data as any;
         if (
@@ -148,7 +149,7 @@ export class TakeOrderComponent implements OnInit {
 
   searchCustomer(query) {
     this.customer.searchCustomerByMobile(query).subscribe(
-      (data) => {
+      data => {
         this.showNoCustomer = false;
         this.customerDetails = data;
         this.order.setCustomerId((data as any)._id);
@@ -156,7 +157,7 @@ export class TakeOrderComponent implements OnInit {
         this.items.getItems();
         this.getBranchDetails();
       },
-      (error) => {
+      error => {
         this.showNoCustomer = true;
         if (error.status == 404) {
           this.customerDetails = null;
@@ -181,7 +182,7 @@ export class TakeOrderComponent implements OnInit {
         data: formData,
       })
       .afterClosed()
-      .subscribe((data) => {
+      .subscribe(data => {
         if (data) {
           this.showNoCustomer = false;
           this.customerList.push(data);
@@ -194,11 +195,12 @@ export class TakeOrderComponent implements OnInit {
   getOrderDetailsByOrderNumber(orderNumber) {
     this.orderApi
       .getOrderDetailsByNumber(orderNumber, this.auth.decodeJwt()?.branchCode)
-      .subscribe((data) => {
+      .subscribe(data => {
         this.disableUpdate = true;
         const orderMaster = (data as any).orderMaster;
         this.branchDetails = (data as any).branchDetails;
         this.orderMaster = orderMaster;
+        this.billType = orderMaster?.billType || 'NORMAL';
         if (orderMaster) {
           this.orderDate = new Date(orderMaster.orderDate);
         }
@@ -211,18 +213,68 @@ export class TakeOrderComponent implements OnInit {
         this.items.netTotal = orderMaster?.netTotal;
         this.items.disableUpdate = true;
         this.items.isVatEnabled = orderMaster.vatEnabled;
+        this.items.billType = this.billType;
         this.items.orderStatus = this.orderMaster.status;
         this.mobileNumber.setValue(this.customerDetails.mobile);
         this.items.setItemDetail((data as any).orderDetails);
-        this.enablePrint = this.orderMaster.status !== 'IN_REVIEW' && this.orderMaster.status !== 'CANCELLED' && this.orderMaster.status !== 'SETTLED';
+        this.enablePrint =
+          this.orderMaster.status !== 'IN_REVIEW' &&
+          this.orderMaster.status !== 'CANCELLED' &&
+          this.orderMaster.status !== 'SETTLED';
         this.orderStatus = this.orderMaster.status;
         this.mobileNumber.disable();
-  this.statusCode = this.orderStatusList.findIndex((x) => x.code == this.orderMaster.status);
+        this.statusCode = this.orderStatusList.findIndex(
+          x => x.code == this.orderMaster.status
+        );
       });
   }
   saveOrder(paymentMethod) {
     this.disableSave = true;
-    if (paymentMethod != this.payment.PAY_LATER && this.orderStatus != 'DELIVERED') {
+    if (this.billType === 'CORPORATE' && !this.customerDetails?.TRN) {
+      this.dialog
+        .open(CorporateTrnComponent, {
+          disableClose: true,
+          width: '400px',
+          data: { trn: this.customerDetails?.TRN },
+        })
+        .afterClosed()
+        .subscribe(TRN => {
+          if (!TRN) {
+            this.disableSave = false;
+            return;
+          }
+          this.customer
+            .saveCustomer({
+              ...this.customerDetails,
+              TRN,
+              customerType: 'CORPORATE',
+            })
+            .subscribe(
+              customerDetails => {
+                this.customerDetails = customerDetails || {
+                  ...this.customerDetails,
+                  TRN,
+                  customerType: 'CORPORATE',
+                };
+                if (!this.customerDetails.TRN) {
+                  this.customerDetails.TRN = TRN;
+                }
+                this.saveOrder(paymentMethod);
+              },
+              () => {
+                this.disableSave = false;
+                this.snack.open('Unable to update customer TRN', 'Ok', {
+                  duration: 2000,
+                });
+              }
+            );
+        });
+      return;
+    }
+    if (
+      paymentMethod != this.payment.PAY_LATER &&
+      this.orderStatus != 'DELIVERED'
+    ) {
       this.orderStatus = 'PAID';
     }
     if (this.items.orderDetails.valid) {
@@ -230,7 +282,7 @@ export class TakeOrderComponent implements OnInit {
       let total = 0;
       let netTotal = 0;
       if (items) {
-        items.forEach((element) => {
+        items.forEach(element => {
           total = total + Number(element.total);
         });
         netTotal = total;
@@ -253,15 +305,16 @@ export class TakeOrderComponent implements OnInit {
           branchCode: this.auth.decodeJwt()?.branchCode,
           status: this.orderStatus,
           paymentMethod,
+          billType: this.billType,
           vatAmount: this.items.vatAmount?.toFixed(2),
           subTotal: this.items.subTotal,
           roundoffAmount: this.items.roundoffAmount,
           vatEnabled: this.items.isVatEnabled,
-          orderDate: this.orderDate
+          orderDate: this.orderDate,
         },
         orderDetails: this.items.orderDetails.value,
       };
-      this.orderApi.saveOrdere(orderDetails).subscribe((data) => {
+      this.orderApi.saveOrdere(orderDetails).subscribe(data => {
         this.processSaveOrder(data);
       });
     } else {
@@ -274,379 +327,489 @@ export class TakeOrderComponent implements OnInit {
   printReciept() {
     const elementIdsToHide = [];
 
-    if (this.items.isVatEnabled) {
-      this.orderApi.getInvoiceTemplate().subscribe((htmlString) => {
-        // Process template replacements (same as before)
-        htmlString = htmlString.replace('[ORDER_NO]', this.orderNumber);
-        htmlString = htmlString.replace('[CUSTOMER_NAME]', this.customerDetails?.customerName);
-        htmlString = htmlString.replace('[CUSTOMER_MOBILE]', this.customerDetails?.mobile);
+    const templateRequest =
+      this.billType === 'CORPORATE'
+        ? this.orderApi.getCorporateInvoiceTemplate()
+        : this.items.isVatEnabled
+          ? this.orderApi.getInvoiceTemplate()
+          : this.orderApi.getInvoiceTemplateWithoutVat();
+
+    templateRequest.subscribe(htmlString => {
+      // Process template replacements (same as before)
+      htmlString = htmlString.replace('[ORDER_NO]', this.orderNumber);
+      htmlString = htmlString.replace(
+        '[CUSTOMER_NAME]',
+        this.customerDetails?.customerName
+      );
+      htmlString = htmlString.replace(
+        '[CUSTOMER_MOBILE]',
+        this.customerDetails?.mobile
+      );
+      htmlString = htmlString.replace(
+        '[CUSTOMER_TRN]',
+        this.customerDetails?.TRN || ''
+      );
+      htmlString = htmlString.replace(
+        '[DATE]',
+        this.datePipe.transform(this.orderDate, 'dd-MM-yyyy', '+0400')
+      );
+      htmlString = htmlString.replace('[SHOPNAME]', this.branchDetails?.title);
+      htmlString = htmlString.replace('[TITLE]', this.branchDetails?.title);
+      htmlString = htmlString.replace(
+        '[SUBTITLE1]',
+        this.branchDetails?.subtitle1
+      );
+      htmlString = htmlString.replace(
+        '[SUBTITLE2]',
+        this.branchDetails?.subtitle2
+      );
+
+      if (this.branchDetails?.imageUrl) {
         htmlString = htmlString.replace(
-          '[DATE]',
-          this.datePipe.transform(this.orderDate, 'dd-MM-yyyy', '+0400')
+          '[IMAGE_URL]',
+          this.branchDetails?.imageUrl
         );
-        htmlString = htmlString.replace('[SHOPNAME]', this.branchDetails?.title);
-        htmlString = htmlString.replace('[TITLE]', this.branchDetails?.title);
-        htmlString = htmlString.replace('[SUBTITLE1]', this.branchDetails?.subtitle1);
-        htmlString = htmlString.replace('[SUBTITLE2]', this.branchDetails?.subtitle2);
+      } else {
+        elementIdsToHide.push('shoplogo');
+      }
 
-        if (this.branchDetails?.imageUrl) {
-          htmlString = htmlString.replace('[IMAGE_URL]', this.branchDetails?.imageUrl);
-        } else {
-          elementIdsToHide.push('shoplogo');
+      const itemDetails = this.items.orderDetails.value;
+      let itemsString = '';
+      let subTotal = 0;
+
+      let totalQty = 0;
+      itemDetails.forEach(el => {
+        const item =
+          this.billType === 'CORPORATE'
+            ? `<tr>
+                <td>${itemDetails.indexOf(el) + 1}</td>
+                <td style="text-align: left;">${el.itemName}</td>
+                <td>${el.quantity}</td>
+                <td>${el.rate}</td>
+                <td>PCS</td>
+                <td>${this.items.isVatEnabled ? '5%' : ''}</td>
+                    <td>${this.items.isVatEnabled ? (Number(el.vat) * Number(el.quantity)).toFixed(2) : ''}</td>
+                <td>${el.total}</td>
+              </tr>`
+            : this.items.isVatEnabled
+              ? `<tr>
+                <td style="text-align: left;">${el.itemName}</td>
+                <td>${el.quantity}</td>
+                <td>${el.rate}</td>
+                <td>${(Number(el.vat) * Number(el.quantity)).toFixed(2)}</td>
+                <td>${el.total}</td>
+              </tr>`
+              : `<tr>
+                <td style="text-align: left;">${el.itemName}</td>
+                <td>${el.quantity}</td>
+                <td colspan="2">${el.rate}</td>
+                <td>${el.total}</td>
+              </tr>`;
+        itemsString += item;
+        subTotal += Number(el.rate);
+        if (Number(el.quantity)) {
+          totalQty += Number(el.quantity);
         }
+      });
+      htmlString = htmlString.replace('[TOTAL_ITEMS]', totalQty.toString());
+      htmlString = htmlString.replace(
+        '[PAYMENT_TYPE]',
+        this.orderMaster.paymentMethod
+      );
+      htmlString = htmlString.replace(
+        '[PAYMENT_STATUS]',
+        this.orderMaster?.status === 'PENDING' ? 'PENDING' : 'PAID'
+      );
+      htmlString = htmlString.replace('[itemDetails]', itemsString);
 
-        const itemDetails = this.items.orderDetails.value;
-        let itemsString = '';
-        let subTotal = 0;
+      if (this.orderMaster?.discount) {
+        htmlString = htmlString.replace(
+          '[DISCOUNT]',
+          Number(this.orderMaster?.discount).toFixed(2)
+        );
+      } else {
+        elementIdsToHide.push('discountLabel');
+      }
 
-        let totalQty = 0;
-        itemDetails.forEach((el) => {
-          const item = `<tr>
-                    <td style="text-align: left;">${el.itemName}</td>
-                    <td>${el.quantity}</td>
-                    <td>${el.rate}</td>
-                    <td>${el.vat}</td>
-                    <td>${el.total}</td>
-                </tr>`;
-          itemsString += item;
-          subTotal += Number(el.rate);
-          if (Number(el.quantity)) {
-            totalQty += Number(el.quantity);
+      if (this.orderMaster?.subTotal) {
+        htmlString = htmlString.replace(
+          '[SUBTOTAL]',
+          Number(this.orderMaster?.subTotal).toFixed(2)
+        );
+      } else {
+        elementIdsToHide.push('subTotalLabel');
+      }
+
+      if (this.orderMaster?.vatAmount) {
+        htmlString = htmlString.replace(
+          '[VATAMOUNT]',
+          Number(this.orderMaster?.vatAmount).toFixed(2)
+        );
+      } else {
+        elementIdsToHide.push('vatAmountLabel');
+      }
+
+      const invoiceTrn = this.branchDetails?.taxNumber;
+      if (invoiceTrn) {
+        htmlString = htmlString.replace('[TRN]', invoiceTrn);
+      } else {
+        elementIdsToHide.push('taxDetails');
+      }
+
+      if (this.billType !== 'CORPORATE' && this.orderMaster?.roundoffAmount) {
+        htmlString = htmlString.replace(
+          '[ROUNDOFF]',
+          Number(this.orderMaster?.roundoffAmount).toFixed(2)
+        );
+      } else {
+        elementIdsToHide.push('roundoffLabel');
+      }
+
+      htmlString = htmlString.replace(
+        '[NETTOTAL]',
+        Number(this.orderMaster?.netTotal).toFixed(2)
+      );
+
+      if (this.orderMaster?.additionalInstructions) {
+        htmlString = htmlString.replace(
+          '[NOTES]',
+          this.orderMaster?.additionalInstructions
+        );
+      } else {
+        elementIdsToHide.push('notelabel');
+      }
+
+      htmlString = htmlString.replace(
+        '[DELIVREY_TYPE]',
+        this.orderMaster?.deliveryType
+      );
+
+      if (this.orderMaster?.deliveryTime) {
+        htmlString = htmlString.replace(
+          '[DELIVREY_TIME]',
+          this.orderMaster?.deliveryTime
+        );
+      } else {
+        elementIdsToHide.push('deliveryTimeLabel');
+      }
+
+      htmlString = htmlString.replace('undefined', '');
+
+      // Create a new print window
+      const printWindow = window.open('', '', 'height=600,width=900');
+
+      // Add content with a function that returns a Promise
+      const setupPrintWindow = () => {
+        return new Promise<void>(resolve => {
+          printWindow.document.write(
+            `<html><head><title>${this.branchDetails?.title}</title>`
+          );
+          printWindow.document.write(
+            `<style>@media print { @page { size: ${this.billType === 'CORPORATE' ? 'A4 portrait' : '80mm auto'}; margin: 0; }}</style>`
+          );
+          printWindow.document.write('</head><body>');
+          printWindow.document.write(htmlString);
+          printWindow.document.write('</body></html>');
+          printWindow.document.close();
+
+          // Wait for window to load before resolving
+          if (printWindow.document.readyState === 'complete') {
+            resolve();
+          } else {
+            // printWindow.onload = resolve;
+            printWindow.onload = event => resolve();
           }
         });
-        htmlString = htmlString.replace('[TOTAL_ITEMS]', totalQty.toString());
-        htmlString = htmlString.replace('[PAYMENT_TYPE]', this.orderMaster.paymentMethod);
-        htmlString = htmlString.replace('[itemDetails]', itemsString);
+      };
 
-        if (this.orderMaster?.discount) {
-          htmlString = htmlString.replace(
-            '[DISCOUNT]',
-            Number(this.orderMaster?.discount).toFixed(2)
-          );
-        } else {
-          elementIdsToHide.push('discountLabel');
-        }
+      // Manipulate DOM elements
+      const manipulateDom = () => {
+        return new Promise(resolve => {
+          // Hide elements
+          for (let item of elementIdsToHide) {
+            let element = printWindow.document.getElementById(item);
+            if (element) {
+              element.style.setProperty('display', 'none', 'important');
+            }
+          }
 
-        if (this.orderMaster?.subTotal) {
-          htmlString = htmlString.replace(
-            '[SUBTOTAL]',
-            Number(this.orderMaster?.subTotal).toFixed(2)
-          );
-        } else {
-          elementIdsToHide.push('subTotalLabel');
-        }
-
-        if (this.orderMaster?.vatAmount) {
-          htmlString = htmlString.replace(
-            '[VATAMOUNT]',
-            Number(this.orderMaster?.vatAmount).toFixed(2)
-          );
-        } else {
-          elementIdsToHide.push('vatAmountLabel');
-        }
-
-        if (this.orderMaster?.vatEnabled && this.branchDetails?.taxNumber) {
-          htmlString = htmlString.replace('[TRN]', this.branchDetails?.taxNumber);
-        } else {
-          elementIdsToHide.push('taxDetails');
-        }
-
-        if (this.orderMaster?.roundoffAmount) {
-          htmlString = htmlString.replace(
-            '[ROUNDOFF]',
-            Number(this.orderMaster?.roundoffAmount).toFixed(2)
-          );
-        } else {
-          elementIdsToHide.push('roundoffLabel');
-        }
-
-        htmlString = htmlString.replace(
-          '[NETTOTAL]',
-          Number(this.orderMaster?.netTotal).toFixed(2)
-        );
-
-        if (this.orderMaster?.additionalInstructions) {
-          htmlString = htmlString.replace('[NOTES]', this.orderMaster?.additionalInstructions);
-        } else {
-          elementIdsToHide.push('notelabel');
-        }
-
-        htmlString = htmlString.replace('[DELIVREY_TYPE]', this.orderMaster?.deliveryType);
-
-        if (this.orderMaster?.deliveryTime) {
-          htmlString = htmlString.replace('[DELIVREY_TIME]', this.orderMaster?.deliveryTime);
-        } else {
-          elementIdsToHide.push('deliveryTimeLabel');
-        }
-
-        htmlString = htmlString.replace('undefined', '');
-
-        // Create a new print window
-        const printWindow = window.open('', '', 'height=600,width=900');
-
-        // Add content with a function that returns a Promise
-        const setupPrintWindow = () => {
-          return new Promise<void>((resolve) => {
-            printWindow.document.write(`<html><head><title>${this.branchDetails?.title}</title>`);
-            printWindow.document.write(
-              '<style>@media print { @page { size: 80mm auto; margin: 0; }}</style>'
+          // Add status watermark if needed
+          if (this.billType !== 'CORPORATE' && this.orderMaster.status) {
+            const div = printWindow.document.createElement('h4');
+            const node = printWindow.document.createElement('h4');
+            const text = printWindow.document.createTextNode(
+              this.orderMaster.status
             );
-            printWindow.document.write('</head><body>');
-            printWindow.document.write(htmlString);
-            printWindow.document.write('</body></html>');
-            printWindow.document.close();
-
-            // Wait for window to load before resolving
-            if (printWindow.document.readyState === 'complete') {
-              resolve();
-            } else {
-              // printWindow.onload = resolve;
-              printWindow.onload = (event) => resolve();
+            node.style.position = 'absolute';
+            node.style.top = '240px';
+            node.style.zIndex = '-1';
+            node.style.transform = 'rotate(320deg)';
+            node.style.color = '#c6afaf';
+            node.style.fontSize = '25px';
+            div.style.display = 'flex';
+            div.style.justifyContent = 'center';
+            node.appendChild(text);
+            div.appendChild(node);
+            const printDoc = printWindow.document.getElementById('invoice-box');
+            if (printDoc) {
+              printDoc.appendChild(div);
             }
-          });
-        };
+          }
 
-        // Manipulate DOM elements
-        const manipulateDom = () => {
-          return new Promise((resolve) => {
-            // Hide elements
-            for (let item of elementIdsToHide) {
-              let element = printWindow.document.getElementById(item);
-              if (element) {
-                element.style.setProperty('display', 'none', 'important');
-              }
-            }
+          // Use a short delay to ensure styles are applied
+          setTimeout(resolve, 100);
+        });
+      };
 
-            // Add status watermark if needed
-            if (this.orderMaster.status) {
-              const div = printWindow.document.createElement('h4');
-              const node = printWindow.document.createElement('h4');
-              const text = printWindow.document.createTextNode(this.orderMaster.status);
-              node.style.position = 'absolute';
-              node.style.top = '240px';
-              node.style.zIndex = '-1';
-              node.style.transform = 'rotate(320deg)';
-              node.style.color = '#c6afaf';
-              node.style.fontSize = '25px';
-              div.style.display = 'flex';
-              div.style.justifyContent = 'center';
-              node.appendChild(text);
-              div.appendChild(node);
-              const printDoc = printWindow.document.getElementById('invoice-box');
-              if (printDoc) {
-                printDoc.appendChild(div);
-              }
-            }
-
-            // Use a short delay to ensure styles are applied
-            setTimeout(resolve, 100);
-          });
-        };
-
-        // Execute the printing process as a chain of promises
-        setupPrintWindow()
-          .then(manipulateDom)
-          .then(() => {
-            return new Promise<void>((resolve) => {
-              // Force a repaint before printing
+      // Execute the printing process as a chain of promises
+      setupPrintWindow()
+        .then(manipulateDom)
+        .then(() => {
+          return new Promise<void>(resolve => {
+            // Force a repaint before printing
+            requestAnimationFrame(() => {
               requestAnimationFrame(() => {
-                requestAnimationFrame(() => {
-                  printWindow.print();
-                  setTimeout(() => {
-                    printWindow.close();
-                    resolve();
-                  }, 100);
-                });
+                printWindow.print();
+                setTimeout(() => {
+                  printWindow.close();
+                  resolve();
+                }, 100);
               });
             });
-          })
-          .catch((error) => {
-            console.error('Print error:', error);
-            printWindow.close();
           });
-      });
-    } else {
-      this.orderApi.getInvoiceTemplateWithoutVat().subscribe((htmlString) => {
-        // Process template replacements (same as before)
-        htmlString = htmlString.replace('[ORDER_NO]', this.orderNumber);
-        htmlString = htmlString.replace('[CUSTOMER_NAME]', this.customerDetails?.customerName);
-        htmlString = htmlString.replace('[CUSTOMER_MOBILE]', this.customerDetails?.mobile);
+        })
+        .catch(error => {
+          console.error('Print error:', error);
+          printWindow.close();
+        });
+    });
+  }
+  onBillTypeChange() {
+    this.items.billType = this.billType;
+    this.items.calculateNetTotal();
+  }
+  printRecieptLegacy() {
+    const elementIdsToHide = [];
+    this.orderApi.getInvoiceTemplateWithoutVat().subscribe(htmlString => {
+      // Process template replacements (same as before)
+      htmlString = htmlString.replace('[ORDER_NO]', this.orderNumber);
+      htmlString = htmlString.replace(
+        '[CUSTOMER_NAME]',
+        this.customerDetails?.customerName
+      );
+      htmlString = htmlString.replace(
+        '[CUSTOMER_MOBILE]',
+        this.customerDetails?.mobile
+      );
+      htmlString = htmlString.replace(
+        '[CUSTOMER_TRN]',
+        this.customerDetails?.TRN || ''
+      );
+      htmlString = htmlString.replace(
+        '[DATE]',
+        this.datePipe.transform(this.orderDate, 'dd-MM-yyyy', '+0400')
+      );
+      htmlString = htmlString.replace('[SHOPNAME]', this.branchDetails?.title);
+      htmlString = htmlString.replace('[TITLE]', this.branchDetails?.title);
+      htmlString = htmlString.replace(
+        '[SUBTITLE1]',
+        this.branchDetails?.subtitle1
+      );
+      htmlString = htmlString.replace(
+        '[SUBTITLE2]',
+        this.branchDetails?.subtitle2
+      );
+
+      if (this.branchDetails?.imageUrl) {
         htmlString = htmlString.replace(
-          '[DATE]',
-          this.datePipe.transform(this.orderDate, 'dd-MM-yyyy', '+0400')
+          '[IMAGE_URL]',
+          this.branchDetails?.imageUrl
         );
-        htmlString = htmlString.replace('[SHOPNAME]', this.branchDetails?.title);
-        htmlString = htmlString.replace('[TITLE]', this.branchDetails?.title);
-        htmlString = htmlString.replace('[SUBTITLE1]', this.branchDetails?.subtitle1);
-        htmlString = htmlString.replace('[SUBTITLE2]', this.branchDetails?.subtitle2);
+      } else {
+        elementIdsToHide.push('shoplogo');
+      }
 
-        if (this.branchDetails?.imageUrl) {
-          htmlString = htmlString.replace('[IMAGE_URL]', this.branchDetails?.imageUrl);
-        } else {
-          elementIdsToHide.push('shoplogo');
-        }
+      const itemDetails = this.items.orderDetails.value;
+      let itemsString = '';
+      let subTotal = 0;
 
-        const itemDetails = this.items.orderDetails.value;
-        let itemsString = '';
-        let subTotal = 0;
-
-        let totalQty = 0;
-        itemDetails.forEach((el) => {
-          const item = `<tr>
+      let totalQty = 0;
+      itemDetails.forEach(el => {
+        const item = `<tr>
                 <td style="text-align: left;">${el.itemName}</td>
                 <td>${el.quantity}</td>
                 <td colspan="2">${el.rate}</td>
                 <td>${el.total}</td>
             </tr>`;
-          itemsString += item;
-          subTotal += Number(el.rate);
-          if (Number(el.quantity)) {
-            totalQty += Number(el.quantity);
+        itemsString += item;
+        subTotal += Number(el.rate);
+        if (Number(el.quantity)) {
+          totalQty += Number(el.quantity);
+        }
+      });
+      htmlString = htmlString.replace('[TOTAL_ITEMS]', totalQty.toString());
+      htmlString = htmlString.replace(
+        '[PAYMENT_TYPE]',
+        this.orderMaster.paymentMethod
+      );
+      htmlString = htmlString.replace(
+        '[PAYMENT_STATUS]',
+        this.orderMaster?.status === 'PENDING' ? 'PENDING' : 'PAID'
+      );
+      htmlString = htmlString.replace('[itemDetails]', itemsString);
+
+      if (this.orderMaster?.discount) {
+        htmlString = htmlString.replace(
+          '[DISCOUNT]',
+          Number(this.orderMaster?.discount).toFixed(2)
+        );
+      } else {
+        elementIdsToHide.push('discountLabel');
+      }
+
+      if (this.orderMaster?.subTotal) {
+        htmlString = htmlString.replace(
+          '[SUBTOTAL]',
+          Number(this.orderMaster?.subTotal).toFixed(2)
+        );
+      } else {
+        elementIdsToHide.push('subTotalLabel');
+      }
+
+      const invoiceTrn = this.branchDetails?.taxNumber;
+      if (invoiceTrn) {
+        htmlString = htmlString.replace('[TRN]', invoiceTrn);
+      } else {
+        elementIdsToHide.push('taxDetails');
+      }
+
+      if (this.orderMaster?.roundoffAmount) {
+        htmlString = htmlString.replace(
+          '[ROUNDOFF]',
+          Number(this.orderMaster?.roundoffAmount).toFixed(2)
+        );
+      } else {
+        elementIdsToHide.push('roundoffLabel');
+      }
+
+      htmlString = htmlString.replace(
+        '[NETTOTAL]',
+        Number(this.orderMaster?.netTotal).toFixed(2)
+      );
+
+      if (this.orderMaster?.additionalInstructions) {
+        htmlString = htmlString.replace(
+          '[NOTES]',
+          this.orderMaster?.additionalInstructions
+        );
+      } else {
+        elementIdsToHide.push('notelabel');
+      }
+
+      htmlString = htmlString.replace(
+        '[DELIVREY_TYPE]',
+        this.orderMaster?.deliveryType
+      );
+
+      if (this.orderMaster?.deliveryTime) {
+        htmlString = htmlString.replace(
+          '[DELIVREY_TIME]',
+          this.orderMaster?.deliveryTime
+        );
+      } else {
+        elementIdsToHide.push('deliveryTimeLabel');
+      }
+
+      htmlString = htmlString.replace('undefined', '');
+
+      // Create a new print window
+      const printWindow = window.open('', '', 'height=600,width=900');
+
+      // Add content with a function that returns a Promise
+      const setupPrintWindow = () => {
+        return new Promise<void>(resolve => {
+          printWindow.document.write(
+            `<html><head><title>${this.branchDetails?.title}</title>`
+          );
+          printWindow.document.write(
+            `<style>@media print { @page { size: ${this.billType === 'CORPORATE' ? 'A4 portrait' : '80mm auto'}; margin: 0; }}</style>`
+          );
+          printWindow.document.write('</head><body>');
+          printWindow.document.write(htmlString);
+          printWindow.document.write('</body></html>');
+          printWindow.document.close();
+
+          // Wait for window to load before resolving
+          if (printWindow.document.readyState === 'complete') {
+            resolve();
+          } else {
+            // printWindow.onload = resolve;
+            printWindow.onload = event => resolve();
           }
         });
-        htmlString = htmlString.replace('[TOTAL_ITEMS]', totalQty.toString());
-        htmlString = htmlString.replace('[PAYMENT_TYPE]', this.orderMaster.paymentMethod);
-        htmlString = htmlString.replace('[itemDetails]', itemsString);
+      };
 
-        if (this.orderMaster?.discount) {
-          htmlString = htmlString.replace(
-            '[DISCOUNT]',
-            Number(this.orderMaster?.discount).toFixed(2)
-          );
-        } else {
-          elementIdsToHide.push('discountLabel');
-        }
+      // Manipulate DOM elements
+      const manipulateDom = () => {
+        return new Promise(resolve => {
+          // Hide elements
+          for (let item of elementIdsToHide) {
+            let element = printWindow.document.getElementById(item);
+            if (element) {
+              element.style.setProperty('display', 'none', 'important');
+            }
+          }
 
-        if (this.orderMaster?.subTotal) {
-          htmlString = htmlString.replace(
-            '[SUBTOTAL]',
-            Number(this.orderMaster?.subTotal).toFixed(2)
-          );
-        } else {
-          elementIdsToHide.push('subTotalLabel');
-        }
-
-        if (this.orderMaster?.vatEnabled && this.branchDetails?.taxNumber) {
-          htmlString = htmlString.replace('[TRN]', this.branchDetails?.taxNumber);
-        } else {
-          elementIdsToHide.push('taxDetails');
-        }
-
-        if (this.orderMaster?.roundoffAmount) {
-          htmlString = htmlString.replace(
-            '[ROUNDOFF]',
-            Number(this.orderMaster?.roundoffAmount).toFixed(2)
-          );
-        } else {
-          elementIdsToHide.push('roundoffLabel');
-        }
-
-        htmlString = htmlString.replace(
-          '[NETTOTAL]',
-          Number(this.orderMaster?.netTotal).toFixed(2)
-        );
-
-        if (this.orderMaster?.additionalInstructions) {
-          htmlString = htmlString.replace('[NOTES]', this.orderMaster?.additionalInstructions);
-        } else {
-          elementIdsToHide.push('notelabel');
-        }
-
-        htmlString = htmlString.replace('[DELIVREY_TYPE]', this.orderMaster?.deliveryType);
-
-        if (this.orderMaster?.deliveryTime) {
-          htmlString = htmlString.replace('[DELIVREY_TIME]', this.orderMaster?.deliveryTime);
-        } else {
-          elementIdsToHide.push('deliveryTimeLabel');
-        }
-
-        htmlString = htmlString.replace('undefined', '');
-
-        // Create a new print window
-        const printWindow = window.open('', '', 'height=600,width=900');
-
-        // Add content with a function that returns a Promise
-        const setupPrintWindow = () => {
-          return new Promise<void>((resolve) => {
-            printWindow.document.write(`<html><head><title>${this.branchDetails?.title}</title>`);
-            printWindow.document.write(
-              '<style>@media print { @page { size: 80mm auto; margin: 0; }}</style>'
+          // Add status watermark if needed
+          if (this.billType !== 'CORPORATE' && this.orderMaster.status) {
+            const div = printWindow.document.createElement('h4');
+            const node = printWindow.document.createElement('h4');
+            const text = printWindow.document.createTextNode(
+              this.orderMaster.status
             );
-            printWindow.document.write('</head><body>');
-            printWindow.document.write(htmlString);
-            printWindow.document.write('</body></html>');
-            printWindow.document.close();
-
-            // Wait for window to load before resolving
-            if (printWindow.document.readyState === 'complete') {
-              resolve();
-            } else {
-              // printWindow.onload = resolve;
-              printWindow.onload = (event) => resolve();
+            node.style.position = 'absolute';
+            node.style.top = '240px';
+            node.style.zIndex = '-1';
+            node.style.transform = 'rotate(320deg)';
+            node.style.color = '#c6afaf';
+            node.style.fontSize = '25px';
+            div.style.display = 'flex';
+            div.style.justifyContent = 'center';
+            node.appendChild(text);
+            div.appendChild(node);
+            const printDoc = printWindow.document.getElementById('invoice-box');
+            if (printDoc) {
+              printDoc.appendChild(div);
             }
-          });
-        };
+          }
 
-        // Manipulate DOM elements
-        const manipulateDom = () => {
-          return new Promise((resolve) => {
-            // Hide elements
-            for (let item of elementIdsToHide) {
-              let element = printWindow.document.getElementById(item);
-              if (element) {
-                element.style.setProperty('display', 'none', 'important');
-              }
-            }
+          // Use a short delay to ensure styles are applied
+          setTimeout(resolve, 100);
+        });
+      };
 
-            // Add status watermark if needed
-            if (this.orderMaster.status) {
-              const div = printWindow.document.createElement('h4');
-              const node = printWindow.document.createElement('h4');
-              const text = printWindow.document.createTextNode(this.orderMaster.status);
-              node.style.position = 'absolute';
-              node.style.top = '240px';
-              node.style.zIndex = '-1';
-              node.style.transform = 'rotate(320deg)';
-              node.style.color = '#c6afaf';
-              node.style.fontSize = '25px';
-              div.style.display = 'flex';
-              div.style.justifyContent = 'center';
-              node.appendChild(text);
-              div.appendChild(node);
-              const printDoc = printWindow.document.getElementById('invoice-box');
-              if (printDoc) {
-                printDoc.appendChild(div);
-              }
-            }
-
-            // Use a short delay to ensure styles are applied
-            setTimeout(resolve, 100);
-          });
-        };
-
-        // Execute the printing process as a chain of promises
-        setupPrintWindow()
-          .then(manipulateDom)
-          .then(() => {
-            return new Promise<void>((resolve) => {
-              // Force a repaint before printing
+      // Execute the printing process as a chain of promises
+      setupPrintWindow()
+        .then(manipulateDom)
+        .then(() => {
+          return new Promise<void>(resolve => {
+            // Force a repaint before printing
+            requestAnimationFrame(() => {
               requestAnimationFrame(() => {
-                requestAnimationFrame(() => {
-                  printWindow.print();
-                  setTimeout(() => {
-                    printWindow.close();
-                    resolve();
-                  }, 100);
-                });
+                printWindow.print();
+                setTimeout(() => {
+                  printWindow.close();
+                  resolve();
+                }, 100);
               });
             });
-          })
-          .catch((error) => {
-            console.error('Print error:', error);
-            printWindow.close();
           });
-      });
-    }
+        })
+        .catch(error => {
+          console.error('Print error:', error);
+          printWindow.close();
+        });
+    });
   }
   showCancelOrderDialog() {
     this.dialog
@@ -654,7 +817,7 @@ export class TakeOrderComponent implements OnInit {
         width: '350px',
       })
       .afterClosed()
-      .subscribe((response) => {
+      .subscribe(response => {
         if (response) {
           this.cancelOrder(response);
         }
@@ -669,13 +832,13 @@ export class TakeOrderComponent implements OnInit {
         cancellationReason,
       };
       this.orderApi.cancelOrder(orderDetails).subscribe(
-        (data) => {
+        data => {
           this.snack.open('Order cancelled successfuly', 'Ok', {
             duration: 1500,
           });
           this.router.navigate(['/orders']);
         },
-        (error) => {
+        error => {
           this.snack.open('Something went wrong', 'Ok', {
             duration: 1500,
           });
@@ -684,12 +847,14 @@ export class TakeOrderComponent implements OnInit {
     }
   }
   getBranchDetails() {
-    this.customer.getBranchByCode(this.auth.decodeJwt()?.branchCode).subscribe((data) => {
-      this.branchDetails = data as any;
-    });
+    this.customer
+      .getBranchByCode(this.auth.decodeJwt()?.branchCode)
+      .subscribe(data => {
+        this.branchDetails = data as any;
+      });
   }
   guestLogin() {
-    const guestLogin = this.customerList.find((x) => x.mobile == '9988776655');
+    const guestLogin = this.customerList.find(x => x.mobile == '9988776655');
     if (guestLogin) {
       this.mobileNumber.setValue(guestLogin);
       this.setCustomerDetails();
@@ -698,20 +863,22 @@ export class TakeOrderComponent implements OnInit {
   showPreviousBill() {
     const branchCode = this.auth.decodeJwt()?.branchCode;
     if (branchCode) {
-      this.orderApi.getOrderDetailsByCustomer(this.customerDetails._id).subscribe(
-        (data) => {
-          this.dialog.open(BillViewComponent, {
-            width: '400px',
-            data,
-            disableClose: true,
-          });
-        },
-        (error) => {
-          this.snack.open("Couldn't find Previous Bill", '', {
-            duration: 1500,
-          });
-        }
-      );
+      this.orderApi
+        .getOrderDetailsByCustomer(this.customerDetails._id)
+        .subscribe(
+          data => {
+            this.dialog.open(BillViewComponent, {
+              width: '400px',
+              data,
+              disableClose: true,
+            });
+          },
+          error => {
+            this.snack.open("Couldn't find Previous Bill", '', {
+              duration: 1500,
+            });
+          }
+        );
     }
   }
 
@@ -729,14 +896,14 @@ export class TakeOrderComponent implements OnInit {
             orderNumber: this.orderNumber,
             disablePayLater: true,
             showDiscountInput: true,
-            ...this.orderMaster
+            ...this.orderMaster,
           },
           position: {
             top: '150px',
           },
         })
         .afterClosed()
-        .subscribe((paymentMethod) => {
+        .subscribe(paymentMethod => {
           this.updateOrderStatus(paymentMethod);
         });
     }
@@ -745,15 +912,19 @@ export class TakeOrderComponent implements OnInit {
   updateOrderStatus(paymentMethod) {
     if (paymentMethod) {
       this.orderApi
-        .updateOrderStatus(this.orderMaster?._id, this.orderStatus, paymentMethod)
+        .updateOrderStatus(
+          this.orderMaster?._id,
+          this.orderStatus,
+          paymentMethod
+        )
         .subscribe(
-          (data) => {
+          data => {
             this.getOrderDetailsByOrderNumber(this.orderNumber);
             this.snack.open('Order updated successfuly', 'Ok', {
               duration: 1500,
             });
           },
-          (error) => {
+          error => {
             console.error(error);
           }
         );
@@ -776,25 +947,31 @@ export class TakeOrderComponent implements OnInit {
 
   initiateSettlement() {
     if (this.items.orderDetails.valid) {
-      if (this.orderMaster?.paymentMethod != 'CARD' && this.orderMaster?.paymentMethod != 'CASH') {
+      if (
+        this.orderMaster?.paymentMethod != 'CARD' &&
+        this.orderMaster?.paymentMethod != 'CASH'
+      ) {
         this.dialog
-        .open(SettlementComponent, {
-          width: '500px',
-          data: {
-            orderNumber: this.orderNumber,
-            disablePayLater: (!this.orderMaster?.paymentMethod || this.orderMaster?.paymentMethod == paymentMethod.PAY_LATER) && this.orderMaster?.status == 'DELIVERED'
-          },
-          position: {
-            top: '150px',
-          },
-        })
-        .afterClosed()
-        .subscribe((data) => {
-          if (data) {
-            console.log(data);
-            this.saveOrder(data);
-          }
-        });
+          .open(SettlementComponent, {
+            width: '500px',
+            data: {
+              orderNumber: this.orderNumber,
+              disablePayLater:
+                (!this.orderMaster?.paymentMethod ||
+                  this.orderMaster?.paymentMethod == paymentMethod.PAY_LATER) &&
+                this.orderMaster?.status == 'DELIVERED',
+            },
+            position: {
+              top: '150px',
+            },
+          })
+          .afterClosed()
+          .subscribe(data => {
+            if (data) {
+              console.log(data);
+              this.saveOrder(data);
+            }
+          });
       } else {
         this.saveOrder(this.orderMaster.paymentMethod);
       }

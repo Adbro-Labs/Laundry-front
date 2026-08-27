@@ -27,10 +27,14 @@ import { SettlementComponent } from './settlement/settlement.component';
 import { AddcategoryComponent } from './addcategory/addcategory.component';
 import { CategoryComponent } from './category/category.component';
 import { MatChipsModule } from '@angular/material/chips';
-import { OwlDateTimeModule, OwlNativeDateTimeModule } from '@danielmoncada/angular-datetime-picker';
+import {
+  OwlDateTimeModule,
+  OwlNativeDateTimeModule,
+} from '@danielmoncada/angular-datetime-picker';
 import { DeliveryScheduleComponent } from './delivery-schedule/delivery-schedule.component';
 import { ConfirmOrderCancelComponent } from './confirm-order-cancel/confirm-order-cancel.component';
 import { NotificationPermissionDialogComponent } from './notification-permission-dialog/notification-permission-dialog.component';
+import { CorporateTrnComponent } from './corporate-trn/corporate-trn.component';
 
 @NgModule({
   imports: [
@@ -70,6 +74,7 @@ import { NotificationPermissionDialogComponent } from './notification-permission
     DeliveryScheduleComponent,
     ConfirmOrderCancelComponent,
     NotificationPermissionDialogComponent,
+    CorporateTrnComponent,
   ],
   providers: [DatePipe],
 })

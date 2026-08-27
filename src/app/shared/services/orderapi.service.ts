@@ -9,7 +9,8 @@ export class OrderapiService {
   constructor(private http: HttpClient) {}
 
   getLatestOrderNumber(branchCode) {
-    const url = environment.apiUrl + 'order/getOrderNumber?branchCode=' + branchCode;
+    const url =
+      environment.apiUrl + 'order/getOrderNumber?branchCode=' + branchCode;
     return this.http.get(url);
   }
   saveOrdere(body) {
@@ -24,6 +25,10 @@ export class OrderapiService {
     const url = '/assets/html/invoice-withoutVat.html';
     return this.http.get(url, { responseType: 'text' });
   }
+  getCorporateInvoiceTemplate() {
+    const url = '/assets/html/corporate.html';
+    return this.http.get(url, { responseType: 'text' });
+  }
 
   getInvoiceReportTemplate() {
     const url = '/assets/html/invoice-report.html';
@@ -36,7 +41,9 @@ export class OrderapiService {
     return this.http.get(url);
   }
   getOrderDetailsByCustomer(customerId, index = 0) {
-    const url = environment.apiUrl + `order/ByCustomerId?customerId=${customerId}&index=${index}`;
+    const url =
+      environment.apiUrl +
+      `order/ByCustomerId?customerId=${customerId}&index=${index}`;
     return this.http.get(url);
   }
   getAllOrders(index, limit, searchText, branchCode) {
@@ -69,12 +76,19 @@ export class OrderapiService {
     return this.http.post(url, {});
   }
   getBillHistory(orderNumber, branchCode) {
-    const url = environment.apiUrl + `bills/getBillHistory?orderNumber=${orderNumber}&branchCode=${branchCode}`;
+    const url =
+      environment.apiUrl +
+      `bills/getBillHistory?orderNumber=${orderNumber}&branchCode=${branchCode}`;
     return this.http.get(url);
   }
-  
+
   closeBillWithStatus(orderNumber, status, description, branchCode) {
     const url = environment.apiUrl + 'bills/closeBillWithStatus';
-    return this.http.post(url, { orderNumber, status, description, branchCode });
+    return this.http.post(url, {
+      orderNumber,
+      status,
+      description,
+      branchCode,
+    });
   }
 }

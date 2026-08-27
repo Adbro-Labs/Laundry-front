@@ -27,7 +27,7 @@
             <td style="text-align: right">{{ item.rate }}</td>
             <td style="text-align: right">{{ item.quantity }}</td>
             <td *ngIf="isVatEnabled" style="text-align: right">
-              {{ item.vat }}
+              {{ item.vat * item.quantity | number: '1.2-2' }}
             </td>
             <td style="text-align: right">{{ item.total }}</td>
             <td>
@@ -69,7 +69,7 @@
           </tr>
           <tr *ngIf="netTotal && isVatEnabled" style="height: 25px">
             <td [attr.colspan]="isVatEnabled ? 5 : 4" style="text-align: right">
-              <label>VAT(5%)</label>
+              <label>Total VAT (5%)</label>
             </td>
             <td style="text-align: right; margin-right: 10px">
               <span>{{ vatAmount?.toFixed(2) }}</span>
@@ -97,7 +97,10 @@
         </ng-container>
         <ng-template #nodata>
           <tr style="height: 50px">
-            <td [attr.colspan]="isVatEnabled ? 7 : 6" style="text-align: center">
+            <td
+              [attr.colspan]="isVatEnabled ? 7 : 6"
+              style="text-align: center"
+            >
               add items to list here
             </td>
           </tr>

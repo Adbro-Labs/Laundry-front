@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>[TITLE]</title>
+    <style>
+      @page {
+        size: A4 portrait;
+        margin: 0;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        width: 210mm;
+        height: 297mm;
+        min-height: 297mm;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+        color: #000000;
+      }
+
+      .invoice {
+        width: 100%;
+        height: 297mm;
+        min-height: 297mm;
+        padding: 10mm;
+      }
+
+      .center {
+        text-align: center;
+      }
+
+      .company-name {
+        margin: 0;
+        font-size: 9.5mm;
+        line-height: 1;
+        font-weight: 900;
+        letter-spacing: 0.4px;
+        text-transform: uppercase;
+      }
+
+      .company-address {
+        margin: 1.2mm 0 0;
+        font-size: 3.3mm;
+        text-transform: uppercase;
+      }
+
+      .invoice-title {
+        margin: 1.5mm 0 0;
+        font-size: 5.1mm;
+        font-weight: 800;
+        text-transform: uppercase;
+      }
+
+      .tax-details {
+        margin-top: 0.8mm;
+        font-size: 3.2mm;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed;
+      }
+
+      .party {
+        margin-top: 1.8mm;
+        border-top: 0.8px solid #000;
+        border-bottom: 0.8px solid #000;
+      }
+
+      .party td {
+        border-right: 0.8px solid #000;
+        vertical-align: top;
+      }
+
+      .party td:last-child {
+        border-right: 0;
+      }
+
+      .party-left {
+        width: 52%;
+        padding: 1.4mm 1.4mm;
+        font-size: 3.5mm;
+        line-height: 1.55;
+        text-transform: uppercase;
+      }
+
+      .party-right {
+        width: 48%;
+        padding: 0;
+      }
+
+      .party-row {
+        min-height: 7.2mm;
+        padding: 1.4mm 1.5mm;
+        border-bottom: 0.8px solid #000;
+        font-size: 3.5mm;
+        line-height: 1.35;
+        text-transform: uppercase;
+      }
+
+      .party-row:last-child {
+        border-bottom: 0;
+      }
+
+      .label {
+        font-weight: 800;
+      }
+
+      .items {
+        border-left: 0.8px solid #000;
+        border-right: 0.8px solid #000;
+        border-bottom: 0.8px solid #000;
+      }
+
+      .items th,
+      .items td {
+        border-right: 0.8px solid #000;
+        text-align: center;
+        text-transform: uppercase;
+      }
+
+      .items th:last-child,
+      .items td:last-child {
+        border-right: 0;
+      }
+
+      .items th {
+        height: 7mm;
+        font-size: 3.4mm;
+        font-weight: 800;
+        border-bottom: 0.8px solid #000;
+        padding: 0.5mm;
+      }
+
+      .items td {
+        height: 6.6mm;
+        font-size: 3.45mm;
+        padding: 0.5mm 0.8mm;
+      }
+
+      .items td:nth-child(2) {
+        text-align: left;
+      }
+
+      .blank-row td {
+        color: transparent;
+      }
+
+      .summary {
+        border-left: 0.8px solid #000;
+        border-right: 0.8px solid #000;
+        border-bottom: 0.8px solid #000;
+      }
+
+      .summary td {
+        height: 5.6mm;
+        font-size: 3.6mm;
+        text-transform: uppercase;
+        border-top: 0.8px solid #000;
+      }
+
+      .summary td:first-child {
+        width: 79.5%;
+        text-align: center;
+        border-right: 0.8px solid #000;
+      }
+
+      .summary td:last-child {
+        width: 20.5%;
+        text-align: right;
+        padding-right: 1.8mm;
+      }
+
+      .declaration {
+        border-left: 0.8px solid #000;
+        border-right: 0.8px solid #000;
+        border-bottom: 0.8px solid #000;
+        height: 5.5mm;
+        padding: 1mm 1.4mm;
+        font-size: 3.5mm;
+        text-transform: uppercase;
+      }
+
+      .meta {
+        margin-top: 4mm;
+        font-size: 3.3mm;
+        line-height: 1.55;
+        text-transform: uppercase;
+      }
+
+      .meta p {
+        margin: 0;
+      }
+
+      .section-title {
+        margin: 0 0 0.6mm;
+        font-size: 3.8mm;
+        font-weight: 800;
+        text-transform: uppercase;
+      }
+
+      .terms {
+        margin-top: 5mm;
+        font-size: 3.35mm;
+        line-height: 1.35;
+        text-transform: uppercase;
+      }
+
+      .terms ul {
+        margin: 0;
+        padding-left: 4.5mm;
+      }
+
+      .terms li {
+        margin: 0;
+      }
+
+      @media print {
+        html,
+        body {
+          width: 210mm;
+          height: 297mm;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="invoice" id="invoice-box">
+      <header class="center">
+        <img src="[IMAGE_URL]" width="64" alt="Logo" id="shoplogo" />
+        <h1 class="company-name">[SHOPNAME]</h1>
+        <p class="company-address">[SUBTITLE1], [SUBTITLE2]</p>
+        <p class="invoice-title">Tax Invoice</p>
+        <p class="tax-details" id="taxDetails">TRN: [TRN]</p>
+      </header>
+
+      <table class="party" aria-label="Customer and invoice details">
+        <tr>
+          <td class="party-left" id="customerDetails">
+            <span class="label">Bill To:</span><br />
+            [CUSTOMER_NAME]<br />
+            [CUSTOMER_MOBILE]<br />
+            <span>TRN: [CUSTOMER_TRN]</span>
+          </td>
+          <td class="party-right">
+            <div class="party-row" id="billno">
+              <span class="label">Invoice No:</span> [ORDER_NO]
+            </div>
+            <div class="party-row"><span class="label">Date:</span> [DATE]</div>
+            <div class="party-row">
+              <span class="label">Terms of Delivery:</span>
+            </div>
+          </td>
+        </tr>
+      </table>
+
+      <table class="items" aria-label="Invoice items">
+        <colgroup>
+          <col style="width: 8%" />
+          <col style="width: 32%" />
+          <col style="width: 9%" />
+          <col style="width: 9%" />
+          <col style="width: 9%" />
+          <col style="width: 9%" />
+          <col style="width: 10%" />
+          <col style="width: 14%" />
+        </colgroup>
+        <thead>
+          <tr>
+            <th>SNO</th>
+            <th id="itemLabel">Item</th>
+            <th id="qtylabel">Qty</th>
+            <th id="pricelabel">Rate</th>
+            <th>Per</th>
+            <th>VAT%</th>
+            <th>VAMT</th>
+            <th>Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          [itemDetails]
+          <tr class="blank-row">
+            <td>0</td>
+            <td>&nbsp;</td>
+            <td>0</td>
+            <td>0</td>
+            <td>&nbsp;</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+          <tr class="blank-row">
+            <td>0</td>
+            <td>&nbsp;</td>
+            <td>0</td>
+            <td>0</td>
+            <td>&nbsp;</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+          <tr class="blank-row">
+            <td>0</td>
+            <td>&nbsp;</td>
+            <td>0</td>
+            <td>0</td>
+            <td>&nbsp;</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+          <tr class="blank-row">
+            <td>0</td>
+            <td>&nbsp;</td>
+            <td>0</td>
+            <td>0</td>
+            <td>&nbsp;</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+          <tr class="blank-row">
+            <td>0</td>
+            <td>&nbsp;</td>
+            <td>0</td>
+            <td>0</td>
+            <td>&nbsp;</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+          <tr class="blank-row">
+            <td>0</td>
+            <td>&nbsp;</td>
+            <td>0</td>
+            <td>0</td>
+            <td>&nbsp;</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table class="summary" aria-label="Invoice totals">
+        <tr id="discountLabel">
+          <td>Discount</td>
+          <td>- [DISCOUNT] AED</td>
+        </tr>
+        <tr id="subTotalLabel">
+          <td>Amount</td>
+          <td>[SUBTOTAL] AED</td>
+        </tr>
+        <tr id="vatAmountLabel">
+          <td>VAT 5%</td>
+          <td>[VATAMOUNT] AED</td>
+        </tr>
+        <tr id="roundoffLabel">
+          <td>Roundoff</td>
+          <td>[ROUNDOFF] AED</td>
+        </tr>
+        <tr>
+          <td><strong>Total (Including VAT)</strong></td>
+          <td><strong>[NETTOTAL] AED</strong></td>
+        </tr>
+      </table>
+
+      <div class="declaration"><span class="label">Declaration:</span></div>
+
+      <section class="meta">
+        <p class="section-title">Notes</p>
+        <p id="notelabel">[NOTES]</p>
+        <p id="deliveryTypeLabel">Delivery Type: [DELIVREY_TYPE]</p>
+        <p id="deliveryTimeLabel">Delivery Time: [DELIVREY_TIME]</p>
+        <p id="paymentTypeLabel">Payment Status: [PAYMENT_STATUS]</p>
+        <p id="totalItems">Total Number of Items: [TOTAL_ITEMS]</p>
+      </section>
+
+      <section class="terms">
+        <p class="section-title" id="terms-label">Terms and Conditions</p>
+        <ul id="terms-list">
+          <li>We do not hold responsibility of clothes more than one month.</li>
+          <li>
+            Clothes damaged by laundry will be reimbursed 10 times the charge of
+            laundering the item in question.
+          </li>
+        </ul>
+      </section>
+    </main>
+  </body>
+</html>

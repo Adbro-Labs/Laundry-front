@@ -30,9 +30,18 @@ export class AddCustomerComponent implements OnInit {
       _id: [''],
       customerName: ['', Validators.required],
       address: ['', Validators.required],
-      mobile: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(10)]],
+      mobile: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(10),
+          Validators.maxLength(10),
+        ],
+      ],
       emailId: [''],
       cardNumber: [''],
+      TRN: [''],
+      customerType: ['NORMAL'],
     });
   }
   saveCustomer() {
@@ -43,10 +52,10 @@ export class AddCustomerComponent implements OnInit {
         delete customerDetails._id;
       }
       this.customer.saveCustomer(customerDetails).subscribe(
-        (data) => {
+        data => {
           this.popup.close(data);
         },
-        (error) => {
+        error => {
           console.log(error);
           if (error.status && error.status == 400) {
             this.errorMessage = error.error.message;

@@ -25,6 +25,7 @@ export class ItemDetailsComponent implements OnInit {
   netTotal;
   subTotal;
   @Input() customerId: string;
+  @Input() billType = 'NORMAL';
   @Output() disableNumberChange = new EventEmitter();
   disableItemSelection = false;
   discount;
@@ -50,24 +51,29 @@ export class ItemDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.getItems();
     this.getActiveCategories();
-    this.orderDetails = new FormArray([], [Validators.required, Validators.minLength(1)]);
+    this.orderDetails = new FormArray(
+      [],
+      [Validators.required, Validators.minLength(1)]
+    );
     this.isVatEnabled = this.auth.decodeJwt()?.vatEnabled;
   }
   getItems() {
-    this.item.getItems(this.customerId).subscribe((data) => {
+    this.item.getItems(this.customerId).subscribe(data => {
       this.items = data as any;
       this.tempItems = data as any;
     });
   }
   getActiveCategories() {
-    this.category.getActiveCategories().subscribe((data) => {
+    this.category.getActiveCategories().subscribe(data => {
       this.categories = data;
     });
   }
 
   filterItems(categoryId) {
     if (categoryId) {
-      this.tempItems = this.items.filter((x) => x?.categories?.includes(categoryId));
+      this.tempItems = this.items.filter(x =>
+        x?.categories?.includes(categoryId)
+      );
     } else {
       this.tempItems = this.items;
     }
@@ -105,7 +111,7 @@ export class ItemDetailsComponent implements OnInit {
   }
   setItemDetail(items: any[]) {
     this.orderDetails = new FormArray([]);
-    items.forEach((x) => {
+    items.forEach(x => {
       const form = this.initOrderDetails();
       form.patchValue(x);
       this.orderDetails.push(form);
@@ -171,7 +177,8 @@ export class ItemDetailsComponent implements OnInit {
           }
 
           total = this.isVatEnabled
-            ? Number(total) * response?.quantity + form.value?.vat * form.value?.quantity
+            ? Number(total) * response?.quantity +
+              form.value?.vat * form.value?.quantity
             : Number(total) * response?.quantity;
 
           services = services + `(${response?.processType?.charAt(0)})`;
@@ -185,9 +192,13 @@ export class ItemDetailsComponent implements OnInit {
             this.calculateNetTotal();
           } else {
             if (form.get('total').invalid) {
-              this.snack.open('total should be greater than 0', 'Ok', { duration: 1500 });
+              this.snack.open('total should be greater than 0', 'Ok', {
+                duration: 1500,
+              });
             } else {
-              this.snack.open('something wrong with item details', 'Ok', { duration: 1500 });
+              this.snack.open('something wrong with item details', 'Ok', {
+                duration: 1500,
+              });
             }
           }
         }
@@ -197,7 +208,9 @@ export class ItemDetailsComponent implements OnInit {
   calculateNetTotal() {
     const items = this.orderDetails.value;
 
-    this.subTotal = items.map((x) => x.rate * x.quantity).reduce((a, b) => a + b, 0);
+    this.subTotal = items
+      .map(x => x.rate * x.quantity)
+      .reduce((a, b) => a + b, 0);
 
     if (this.discount) {
       if (this.discount > this.subTotal) {
@@ -210,7 +223,7 @@ export class ItemDetailsComponent implements OnInit {
     if (this.subTotal) {
       if (this.isVatEnabled) {
         const totalAmount = this.orderDetails.value
-          .map((x) => x.rate * x.quantity)
+          .map(x => x.rate * x.quantity)
           .reduce((a, b) => a + b, 0);
         this.vatAmount = parseFloat((this.subTotal * 0.05).toFixed(2));
         this.netTotal = this.subTotal + this.vatAmount;
@@ -218,11 +231,18 @@ export class ItemDetailsComponent implements OnInit {
         this.netTotal = this.subTotal;
       }
 
-      const roundedAmount = Math.floor(this.netTotal);
-      const decimalPart = this.netTotal - roundedAmount;
-      const adjustedTotal = decimalPart >= 0.5 ? roundedAmount + 0.5 : roundedAmount;
-      this.roundoffAmount = parseFloat((adjustedTotal - this.netTotal)?.toFixed(2));
-      this.netTotal = adjustedTotal;
+      if (this.billType === 'CORPORATE') {
+        this.roundoffAmount = 0;
+      } else {
+        const roundedAmount = Math.floor(this.netTotal);
+        const decimalPart = this.netTotal - roundedAmount;
+        const adjustedTotal =
+          decimalPart >= 0.5 ? roundedAmount + 0.5 : roundedAmount;
+        this.roundoffAmount = parseFloat(
+          (adjustedTotal - this.netTotal)?.toFixed(2)
+        );
+        this.netTotal = adjustedTotal;
+      }
     }
   }
   addNewItem() {
@@ -237,21 +257,24 @@ export class ItemDetailsComponent implements OnInit {
       });
   }
   showKeyPad() {
-    const dialogRef = this.dialog
-      .open(NumberpadComponent, { width: '270px', data: this.discount, position: {
-        right: '40%'
-      } });
-     
-    dialogRef.componentInstance.valueChanged.subscribe((value) => {
+    const dialogRef = this.dialog.open(NumberpadComponent, {
+      width: '270px',
+      data: this.discount,
+      position: {
+        right: '40%',
+      },
+    });
+
+    dialogRef.componentInstance.valueChanged.subscribe(value => {
       console.log('Value changed:', value);
       this.discount = value.toFixed(2);
       this.calculateNetTotal();
     });
-    dialogRef.afterClosed().subscribe((quantity) => {
-        if (Number(quantity) >= 0) {
-          this.discount = quantity.toFixed(2);
-        }
-        this.calculateNetTotal();
+    dialogRef.afterClosed().subscribe(quantity => {
+      if (Number(quantity) >= 0) {
+        this.discount = quantity.toFixed(2);
+      }
+      this.calculateNetTotal();
     });
   }
   deleteItem(index) {

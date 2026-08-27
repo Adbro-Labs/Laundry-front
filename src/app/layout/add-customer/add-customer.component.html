@@ -1,5 +1,7 @@
 <div class="container">
-  <p *ngIf="errorMessage" style="text-align: center; color: red">{{ errorMessage }}</p>
+  <p *ngIf="errorMessage" style="text-align: center; color: red">
+    {{ errorMessage }}
+  </p>
   <form class="form" [formGroup]="customerForm" (ngSubmit)="saveCustomer()">
     <mat-form-field>
       <input
@@ -45,9 +47,32 @@
         placeholder="e-mail"
       />
     </mat-form-field>
+    <mat-form-field>
+      <mat-label>Customer Type</mat-label>
+      <mat-select formControlName="customerType">
+        <mat-option value="NORMAL">Normal</mat-option>
+        <mat-option value="CORPORATE">Corporate</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <input
+        formControlName="TRN"
+        autocomplete="off"
+        matInput
+        type="text"
+        placeholder="TRN"
+      />
+    </mat-form-field>
     <div class="btn-group">
       <button type="submit" mat-raised-button color="primary">Submit</button>
-      <button (click)="closePopup()" type="reset" mat-raised-button color="accent">Cancel</button>
+      <button
+        (click)="closePopup()"
+        type="reset"
+        mat-raised-button
+        color="accent"
+      >
+        Cancel
+      </button>
     </div>
   </form>
 </div>

@@ -54,6 +54,17 @@
     </div>
   </div>
   <div style="display: flex; justify-content: space-between; gap: 40px">
+    <div>
+      <mat-button-toggle-group
+        [(ngModel)]="billType"
+        (change)="onBillTypeChange()"
+        [disabled]="disableUpdate"
+        aria-label="Billing type"
+      >
+        <mat-button-toggle value="NORMAL">Normal</mat-button-toggle>
+        <mat-button-toggle value="CORPORATE">Corporate</mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
     <div style="display: flex; flex-direction: column">
       <mat-form-field class="example-full-width" appearance="fill">
         <mat-label>Customer</mat-label>
@@ -129,6 +140,7 @@
   </div>
   <app-item-details
     [customerId]="customerDetails?._id"
+    [billType]="billType"
     (disableNumberChange)="updateNumberChange($event)"
   ></app-item-details>
 </div>

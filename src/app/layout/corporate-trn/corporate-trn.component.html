@@ -1,0 +1,25 @@
+<h2 mat-dialog-title>Corporate Customer TRN</h2>
+<div mat-dialog-content>
+  <p>Enter the customer TRN to continue this corporate bill.</p>
+  <form [formGroup]="trnForm">
+    <mat-form-field appearance="fill" style="width: 100%">
+      <mat-label>TRN</mat-label>
+      <input matInput formControlName="trn" autocomplete="off" />
+      <mat-error *ngIf="trnForm.get('trn')?.hasError('required')"
+        >TRN is required</mat-error
+      >
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-button type="button" (click)="cancel()">Cancel</button>
+  <button
+    mat-raised-button
+    color="primary"
+    type="button"
+    (click)="confirm()"
+    [disabled]="trnForm.invalid"
+  >
+    Continue
+  </button>
+</div>
