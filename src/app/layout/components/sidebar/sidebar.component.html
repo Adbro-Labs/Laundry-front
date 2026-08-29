@@ -107,7 +107,7 @@
         >
       </mat-nav-list>
     </mat-expansion-panel>
-    <mat-expansion-panel *ngIf="userType == 'ADMIN'">
+    <mat-expansion-panel *ngIf="userType == 'ADMIN' && !isSuperAdmin">
       <mat-expansion-panel-header>
         <mat-panel-title>
           <mat-icon class="sidenav-icon">settings</mat-icon> Settings
@@ -119,6 +119,27 @@
           [routerLinkActive]="'active'"
           [routerLink]="['/branch']"
           ><mat-icon>account_tree</mat-icon> Branches</a
+        >
+      </mat-nav-list>
+    </mat-expansion-panel>
+    <mat-expansion-panel *ngIf="isSuperAdmin">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <mat-icon class="sidenav-icon">store</mat-icon> Settings
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <mat-nav-list>
+        <a
+          mat-list-item
+          [routerLinkActive]="'active'"
+          [routerLink]="['/branch']"
+          ><mat-icon>account_tree</mat-icon> Branches</a
+        >
+        <a
+          mat-list-item
+          [routerLinkActive]="'active'"
+          [routerLink]="['/stores']"
+          ><mat-icon>store</mat-icon> Stores</a
         >
       </mat-nav-list>
     </mat-expansion-panel>

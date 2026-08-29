@@ -1,28 +1,60 @@
 <div class="container">
   <div class="heading">
     <h3>Branches</h3>
-    <button mat-raised-button color="primary" (click)="showCustomerDialog()">Add Branch</button>
+    <mat-form-field *ngIf="isSuperAdmin" style="min-width: 220px; margin-right: 12px;">
+      <mat-select [value]="selectedStoreCode" placeholder="Select Store" (selectionChange)="onStoreChange($event.value)">
+        <mat-option [value]="''">Select a store</mat-option>
+        <mat-option [value]="item.storeCode" *ngFor="let item of stores; index as i">
+          {{ item.storeName }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button
+      mat-raised-button
+      color="primary"
+      *ngIf="userType == 'ADMIN' || isSuperAdmin"
+      [disabled]="isSuperAdmin && !selectedStoreCode"
+      (click)="showCustomerDialog()"
+    >
+      Add Branch
+    </button>
   </div>
+</div>
+<div *ngIf="isSuperAdmin && !selectedStoreCode" style="padding: 12px 0;">
+  Select a store to view or add branches.
 </div>
 <div class="table">
   <table>
     <thead>
       <th>No</th>
       <th>Name</th>
+      <th>Store</th>
       <th>Invoice Title</th>
       <th>Invoice SubTitle 1</th>
       <th>Invoice SubTitle 2</th>
+      <th>Status</th>
       <th>Action</th>
     </thead>
     <tbody>
       <tr *ngFor="let item of tempCustomerList; index as i">
         <td>{{ i + 1 }}</td>
         <td>{{ item.branchName }}</td>
+        <td>{{ findStore(item.storeCode) }}</td>
         <td>{{ item.title }}</td>
         <td>{{ item.subtitle1 }}</td>
         <td>{{ item.subtitle2 }}</td>
+        <td>{{ item.approved === false ? 'Pending Approval' : 'Approved' }}</td>
         <td>
           <button mat-icon-button (click)="editBranch(item)"><mat-icon>edit</mat-icon></button>
+          <button
+            mat-icon-button
+            color="primary"
+            *ngIf="canApproveBranch() && item.approved === false"
+            (click)="approveBranch(item)"
+            matTooltip="Approve branch"
+          >
+            <mat-icon>check_circle</mat-icon>
+          </button>
         </td>
       </tr>
     </tbody>

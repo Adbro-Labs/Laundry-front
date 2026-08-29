@@ -12,8 +12,11 @@ export class BranchService {
     const url = environment.apiUrl + 'branch';
     return this.http.post(url, body);
   }
-  getAllBranch() {
-    const url = environment.apiUrl + 'branch';
+  getAllBranch(storeCode?: string) {
+    let url = environment.apiUrl + 'branch';
+    if (storeCode) {
+      url += `?storeCode=${storeCode}`;
+    }
     return this.http.get(url);
   }
   getBranchById(measureId) {
@@ -23,5 +26,9 @@ export class BranchService {
   deleteBranchById(measureId) {
     const url = environment.apiUrl + 'branch/ById/' + measureId;
     return this.http.delete(url);
+  }
+  approveBranch(branchId) {
+    const url = environment.apiUrl + 'branch/approve/' + branchId;
+    return this.http.patch(url, {});
   }
 }

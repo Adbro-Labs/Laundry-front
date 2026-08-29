@@ -35,7 +35,7 @@ export class LoginComponent implements OnInit {
         this.router.navigate(['/dashboard']);
       },
       (error) => {
-        this.message = 'Invalid Credentials';
+        this.message = error?.error?.message || 'Invalid Credentials';
         console.log(error);
       }
     );

@@ -22,6 +22,8 @@ import { NumberpadComponent } from './numberpad/numberpad.component';
 import { ItemListComponent } from './item-list/item-list.component';
 import { BranchComponent } from './branch/branch.component';
 import { AddBranchComponent } from './add-branch/add-branch.component';
+import { StoreComponent } from './store/store.component';
+import { AddStoreComponent } from './add-store/add-store.component';
 import { BillViewComponent } from './bill-view/bill-view.component';
 import { SettlementComponent } from './settlement/settlement.component';
 import { AddcategoryComponent } from './addcategory/addcategory.component';
@@ -67,6 +69,8 @@ import { CorporateTrnComponent } from './corporate-trn/corporate-trn.component';
     ItemListComponent,
     BranchComponent,
     AddBranchComponent,
+    StoreComponent,
+    AddStoreComponent,
     BillViewComponent,
     SettlementComponent,
     AddcategoryComponent,

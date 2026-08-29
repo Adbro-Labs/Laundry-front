@@ -13,6 +13,10 @@ export class AuthService {
     const url = environment.apiUrl + 'user/auth';
     return this.http.post(url, body);
   }
+  getAdminUsers() {
+    const url = environment.apiUrl + 'user';
+    return this.http.get(url);
+  }
   decodeJwt(): any {
     try {
       const token = this.getToken();
@@ -27,8 +31,15 @@ export class AuthService {
   getUserRole() {
     const data: any = this.decodeJwt();
     if (data && data.userType) {
+      if (data.userType === 'SUPER_ADMIN') {
+        return 'ADMIN';
+      }
       return data.userType;
     }
+  }
+  isSuperAdmin() {
+    const data: any = this.decodeJwt();
+    return data?.userType === 'SUPER_ADMIN';
   }
   getToken() {
     const token = localStorage.getItem('token');
@@ -38,6 +49,12 @@ export class AuthService {
     const data: any = this.decodeJwt();
     if (data && data.branchCode) {
       return data.branchCode;
+    }
+  }
+  getStoreCode() {
+    const data: any = this.decodeJwt();
+    if (data && data.storeCode) {
+      return data.storeCode;
     }
   }
 }

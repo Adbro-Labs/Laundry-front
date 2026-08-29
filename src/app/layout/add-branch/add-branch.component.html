@@ -10,6 +10,16 @@
         placeholder="Branch Name"
       />
     </mat-form-field>
+    <mat-form-field *ngIf="showStoreSelector && stores.length > 0">
+      <mat-select formControlName="storeCode" placeholder="Store">
+        <mat-option [value]="item.storeCode" *ngFor="let item of stores; index as i">
+          {{ item.storeName }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div *ngIf="!showStoreSelector && customerForm.get('storeCode')?.value" class="helper-text">
+      Store: {{ findStoreName(customerForm.get('storeCode')?.value) }}
+    </div>
     <mat-form-field>
       <input
         formControlName="title"

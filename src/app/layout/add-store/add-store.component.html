@@ -1,0 +1,72 @@
+<div class="container">
+  <p *ngIf="errormessage" style="color: red; text-align: center">
+    {{ errormessage }}
+  </p>
+  <form class="form" [formGroup]="storeForm" (ngSubmit)="saveStore()">
+    <mat-form-field>
+      <input
+        formControlName="storeName"
+        autocomplete="off"
+        matInput
+        type="text"
+        placeholder="Store Name"
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <input
+        formControlName="contactName"
+        autocomplete="off"
+        matInput
+        type="text"
+        placeholder="Contact Name"
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <input
+        formControlName="phoneNumber"
+        autocomplete="off"
+        matInput
+        type="text"
+        placeholder="Phone Number"
+      />
+    </mat-form-field>
+    <mat-form-field *ngIf="admins.length > 0">
+      <mat-select
+        formControlName="adminAuthId"
+        placeholder="Existing Admin Login"
+      >
+        <mat-option [value]="''">Create new store admin login</mat-option>
+        <mat-option [value]="item._id" *ngFor="let item of admins; index as i">
+          {{ item.fullName || item.userName
+          }}{{ item.storeCode ? ' (linked)' : '' }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field *ngIf="!storeForm.get('adminAuthId')?.value">
+      <input
+        formControlName="accessCode"
+        autocomplete="off"
+        matInput
+        type="password"
+        placeholder="Access Code"
+      />
+    </mat-form-field>
+    <div class="helper-text" *ngIf="storeForm.get('adminAuthId')?.value">
+      Access code will be taken from the selected admin login.
+    </div>
+    <mat-checkbox class="example-margin" formControlName="active"
+      >Active Login</mat-checkbox
+    >
+    <div class="btn-group">
+      <button type="submit" mat-raised-button color="primary">Submit</button>
+      <button
+        (click)="closePopup()"
+        type="reset"
+        mat-raised-button
+        color="accent"
+      >
+        Cancel
+      </button>
+    </div>
+  </form>
+</div>

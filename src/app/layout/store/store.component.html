@@ -1,0 +1,52 @@
+<div class="container">
+  <div class="heading">
+    <h3>Stores</h3>
+    <button mat-raised-button color="primary" *ngIf="isSuperAdmin()" (click)="showStoreDialog()">
+      Add Store
+    </button>
+  </div>
+</div>
+<div *ngIf="message" style="padding: 8px 0; color: #2e7d32;">
+  {{ message }}
+</div>
+
+<div class="table">
+  <table>
+    <thead>
+      <th>No</th>
+      <th>Store Name</th>
+      <th>Contact Name</th>
+      <th>Phone Number</th>
+      <th>Access Code</th>
+      <th>Status</th>
+      <th>Action</th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of tempStoreList; index as i">
+        <td>{{ i + 1 }}</td>
+        <td>{{ item.storeName }}</td>
+        <td>{{ item.contactName }}</td>
+        <td>{{ item.phoneNumber }}</td>
+        <td>{{ item.accessCode }}</td>
+        <td>{{ item.active ? 'Active' : 'Inactive' }}</td>
+        <td>
+          <button mat-icon-button (click)="editStore(item)"><mat-icon>edit</mat-icon></button>
+          <button
+            mat-icon-button
+            color="primary"
+            *ngIf="isSuperAdmin()"
+            (click)="linkBranches(item)"
+            matTooltip="Link existing branches"
+          >
+            <mat-icon>call_merge</mat-icon>
+          </button>
+          <mat-slide-toggle
+            [checked]="item.active"
+            *ngIf="isSuperAdmin()"
+            (change)="toggleStore(item)"
+          ></mat-slide-toggle>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -9,11 +9,13 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 export class SidebarComponent implements OnInit {
   public showMenu: string;
   userType;
+  isSuperAdmin = false;
   constructor(private auth: AuthService) {}
 
   ngOnInit() {
     this.showMenu = '';
     this.userType = this.auth.getUserRole();
+    this.isSuperAdmin = this.auth.isSuperAdmin();
   }
 
   addExpandClass(element: any) {
