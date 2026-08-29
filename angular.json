@@ -23,7 +23,13 @@
             "main": "src/main.ts",
             "tsConfig": "src/tsconfig.app.json",
             "polyfills": "src/polyfills.ts",
-            "assets": ["src/assets", "src/favicon.ico", "src/_redirects", "src/manifest.webmanifest", "src/custom-sw.js"],
+            "assets": [
+              "src/assets",
+              "src/favicon.ico",
+              "src/_redirects",
+              "src/manifest.webmanifest",
+              "src/custom-sw.js"
+            ],
             "styles": ["src/styles/styles.scss"],
             "scripts": [],
             "serviceWorker": true,
@@ -137,6 +143,33 @@
                   "maximumWarning": "6kb"
                 }
               ]
+            },
+            "unified": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.unified.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ]
             }
           }
         },
@@ -166,7 +199,11 @@
             "karmaConfig": "src/karma.conf.js",
             "scripts": [],
             "styles": ["styles.scss"],
-            "assets": ["src/assets", "src/favicon.ico", "src/manifest.webmanifest"]
+            "assets": [
+              "src/assets",
+              "src/favicon.ico",
+              "src/manifest.webmanifest"
+            ]
           }
         },
         "lint": {
