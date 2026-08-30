@@ -39,6 +39,7 @@ import { NotificationPermissionDialogComponent } from './notification-permission
 import { CorporateTrnComponent } from './corporate-trn/corporate-trn.component';
 import { BranchUsersComponent } from './branch-users/branch-users.component';
 import { AddBranchUserComponent } from './add-branch-user/add-branch-user.component';
+import { BillSettingsComponent } from './bill-settings/bill-settings.component';
 
 @NgModule({
   imports: [
@@ -83,6 +84,7 @@ import { AddBranchUserComponent } from './add-branch-user/add-branch-user.compon
     CorporateTrnComponent,
     BranchUsersComponent,
     AddBranchUserComponent,
+    BillSettingsComponent,
   ],
   providers: [DatePipe],
 })

@@ -144,6 +144,13 @@
           (click)="closeSidebarAfterNavigation()"
           ><mat-icon>people</mat-icon> Users</a
         >
+        <a
+          mat-list-item
+          [routerLinkActive]="'active'"
+          [routerLink]="['/bill-settings']"
+          (click)="closeSidebarAfterNavigation()"
+          ><mat-icon>receipt_long</mat-icon> Bill Number</a
+        >
       </mat-nav-list>
     </mat-expansion-panel>
     <mat-expansion-panel *ngIf="isSuperAdmin">
@@ -173,6 +180,13 @@
           [routerLink]="['/users']"
           (click)="closeSidebarAfterNavigation()"
           ><mat-icon>people</mat-icon> Users</a
+        >
+        <a
+          mat-list-item
+          [routerLinkActive]="'active'"
+          [routerLink]="['/bill-settings']"
+          (click)="closeSidebarAfterNavigation()"
+          ><mat-icon>receipt_long</mat-icon> Bill Number</a
         >
       </mat-nav-list>
     </mat-expansion-panel>

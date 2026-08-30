@@ -1,0 +1,28 @@
+.heading {
+  margin-bottom: 20px;
+}
+
+.heading h3,
+.heading p {
+  margin: 0;
+}
+
+.heading p {
+  margin-top: 6px;
+  color: #666;
+  font-size: 13px;
+}
+
+.settings-form {
+  display: flex;
+  flex-direction: column;
+  max-width: 360px;
+}
+
+.success-message {
+  color: #2e7d32;
+}
+
+.error-message {
+  color: #c62828;
+}

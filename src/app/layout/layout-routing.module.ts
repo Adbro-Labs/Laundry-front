@@ -10,6 +10,7 @@ import { CategoryComponent } from './category/category.component';
 import { DeliveryScheduleComponent } from './delivery-schedule/delivery-schedule.component';
 import { StoreComponent } from './store/store.component';
 import { BranchUsersComponent } from './branch-users/branch-users.component';
+import { BillSettingsComponent } from './bill-settings/bill-settings.component';
 
 const routes: Routes = [
   {
@@ -63,6 +64,10 @@ const routes: Routes = [
       {
         path: 'users',
         component: BranchUsersComponent,
+      },
+      {
+        path: 'bill-settings',
+        component: BillSettingsComponent,
       },
       {
         path: 'stores',

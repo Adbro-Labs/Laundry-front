@@ -48,7 +48,6 @@ export class AddBranchComponent implements OnInit {
       title: ['', Validators.required],
       subtitle1: ['', Validators.required],
       subtitle2: ['', [Validators.required]],
-      accessCode: [''],
       imageUrl: [''],
       enableVat: [false],
       taxNumber: [''],
@@ -63,7 +62,7 @@ export class AddBranchComponent implements OnInit {
     if (!storeCode) {
       return '-';
     }
-    const store = this.stores.find((item) => item.storeCode === storeCode);
+    const store = this.stores.find(item => item.storeCode === storeCode);
     return store?.storeName || storeCode;
   }
   initializeStoreContext() {
@@ -92,10 +91,10 @@ export class AddBranchComponent implements OnInit {
         delete customerDetails._id;
       }
       this.item.saveBranch(customerDetails).subscribe(
-        (data) => {
+        data => {
           this.popup.close(data);
         },
-        (error) => {
+        error => {
           this.errormessage = error?.error?.message;
         }
       );

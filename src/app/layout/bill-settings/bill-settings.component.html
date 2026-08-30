@@ -1,0 +1,50 @@
+<div class="container">
+  <div class="heading">
+    <h3>Bill Number Settings</h3>
+    <p>Set the first bill number for a branch with no existing bills.</p>
+  </div>
+
+  <p *ngIf="message" class="success-message">{{ message }}</p>
+  <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
+
+  <form class="settings-form" [formGroup]="form" (ngSubmit)="save()">
+    <mat-form-field *ngIf="isSuperAdmin">
+      <mat-select
+        formControlName="storeCode"
+        placeholder="Select Store"
+        (selectionChange)="onStoreChange()"
+      >
+        <mat-option *ngFor="let store of stores" [value]="store.storeCode">{{
+          store.storeName
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select
+        formControlName="branchCode"
+        placeholder="Select Branch"
+        (selectionChange)="onBranchChange()"
+      >
+        <mat-option
+          *ngFor="let branch of branches"
+          [value]="branch.branchCode"
+          >{{ branch.branchName }}</mat-option
+        >
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <input
+        matInput
+        type="number"
+        min="0"
+        step="1"
+        formControlName="billNumberStart"
+        placeholder="Bill No. Starting Number"
+      />
+      <mat-error *ngIf="form.get('billNumberStart')?.invalid"
+        >Enter a non-negative whole number</mat-error
+      >
+    </mat-form-field>
+    <button mat-raised-button color="primary" type="submit">Save</button>
+  </form>
+</div>

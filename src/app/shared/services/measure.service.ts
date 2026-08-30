@@ -31,4 +31,11 @@ export class BranchService {
     const url = environment.apiUrl + 'branch/approve/' + branchId;
     return this.http.patch(url, {});
   }
+  updateBillNumberStart(branchCode: string, billNumberStart: number) {
+    const url =
+      environment.apiUrl +
+      'branch/bill-number-start/' +
+      encodeURIComponent(branchCode);
+    return this.http.patch(url, { billNumberStart });
+  }
 }

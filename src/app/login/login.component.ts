@@ -9,13 +9,13 @@ import { AppConfigService } from '../shared/services/app-config.service';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
+  userName = '';
   password = '';
   message = '';
   appName: string;
   constructor(
     private router: Router,
-    private auth: AuthService
-    ,
+    private auth: AuthService,
     private appConfig: AppConfigService
   ) {}
 
@@ -26,6 +26,7 @@ export class LoginComponent implements OnInit {
   onLogin() {
     this.message = '';
     const body = {
+      userName: this.userName,
       password: this.password,
     };
     this.auth.login(body).subscribe(
@@ -34,7 +35,7 @@ export class LoginComponent implements OnInit {
         localStorage.setItem('token', data.token);
         this.router.navigate(['/dashboard']);
       },
-      (error) => {
+      error => {
         this.message = error?.error?.message || 'Invalid Credentials';
         console.log(error);
       }

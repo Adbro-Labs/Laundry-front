@@ -8,7 +8,8 @@
       <p class="eyebrow">Laundry management reimagined</p>
       <h1>{{ appName }}</h1>
       <p class="brand-copy">
-        A cleaner way to run billing, orders, and operations from one calm dashboard.
+        A cleaner way to run billing, orders, and operations from one calm
+        dashboard.
       </p>
       <div class="brand-pills">
         <span>Fast billing</span>
@@ -20,17 +21,32 @@
     <section class="form-panel">
       <form class="login-form" (ngSubmit)="onLogin()">
         <p class="form-kicker">Welcome back</p>
-        <h2>Enter your access code</h2>
-        <p class="form-note">Use your registered access code to continue into the workspace.</p>
+        <h2>Sign in to your workspace</h2>
+        <p class="form-note">
+          Use your registered username and password to continue.
+        </p>
+
+        <mat-form-field class="w-100">
+          <input
+            matInput
+            type="text"
+            placeholder="Username"
+            [(ngModel)]="userName"
+            name="userName"
+            autocomplete="username"
+            required
+          />
+        </mat-form-field>
 
         <mat-form-field class="w-100">
           <input
             matInput
             type="password"
-            placeholder="Access Code"
+            placeholder="Password"
             [(ngModel)]="password"
             name="password"
-            [ngModelOptions]="{ standalone: true }"
+            autocomplete="current-password"
+            required
           />
         </mat-form-field>
 
@@ -38,7 +54,12 @@
           <p>{{ message }}</p>
         </div>
 
-        <button mat-raised-button color="primary" class="w-100 login-button" type="submit">
+        <button
+          mat-raised-button
+          color="primary"
+          class="w-100 login-button"
+          type="submit"
+        >
           Login
         </button>
       </form>

@@ -1,5 +1,7 @@
 <div class="container">
-  <p *ngIf="errormessage" style="color: red; text-align: center">{{ errormessage }}</p>
+  <p *ngIf="errormessage" style="color: red; text-align: center">
+    {{ errormessage }}
+  </p>
   <form class="form" [formGroup]="customerForm" (ngSubmit)="saveCustomer()">
     <mat-form-field>
       <input
@@ -12,12 +14,18 @@
     </mat-form-field>
     <mat-form-field *ngIf="showStoreSelector && stores.length > 0">
       <mat-select formControlName="storeCode" placeholder="Store">
-        <mat-option [value]="item.storeCode" *ngFor="let item of stores; index as i">
+        <mat-option
+          [value]="item.storeCode"
+          *ngFor="let item of stores; index as i"
+        >
           {{ item.storeName }}
         </mat-option>
       </mat-select>
     </mat-form-field>
-    <div *ngIf="!showStoreSelector && customerForm.get('storeCode')?.value" class="helper-text">
+    <div
+      *ngIf="!showStoreSelector && customerForm.get('storeCode')?.value"
+      class="helper-text"
+    >
       Store: {{ findStoreName(customerForm.get('storeCode')?.value) }}
     </div>
     <mat-form-field>
@@ -49,15 +57,6 @@
     </mat-form-field>
     <mat-form-field>
       <input
-        formControlName="accessCode"
-        autocomplete="off"
-        matInput
-        type="password"
-        placeholder="Access Code"
-      />
-    </mat-form-field>
-    <mat-form-field>
-      <input
         formControlName="imageUrl"
         autocomplete="off"
         matInput
@@ -65,7 +64,8 @@
         placeholder="Logo Url"
       />
     </mat-form-field>
-    <mat-checkbox class="example-margin" formControlName="enableVat">Enable VAT(5%)</mat-checkbox
+    <mat-checkbox class="example-margin" formControlName="enableVat"
+      >Enable VAT(5%)</mat-checkbox
     ><br />
     <mat-form-field>
       <input
@@ -78,7 +78,14 @@
     </mat-form-field>
     <div class="btn-group">
       <button type="submit" mat-raised-button color="primary">Submit</button>
-      <button (click)="closePopup()" type="reset" mat-raised-button color="accent">Cancel</button>
+      <button
+        (click)="closePopup()"
+        type="reset"
+        mat-raised-button
+        color="accent"
+      >
+        Cancel
+      </button>
     </div>
   </form>
 </div>

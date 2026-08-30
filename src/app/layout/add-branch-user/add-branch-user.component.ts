@@ -44,6 +44,9 @@ export class AddBranchUserComponent implements OnInit {
     }
 
     const user = { ...this.userForm.value };
+    if (!user._id) {
+      delete user._id;
+    }
     if (this.isEditing && !user.password) {
       delete user.password;
     }
