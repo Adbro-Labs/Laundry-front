@@ -65,7 +65,10 @@ export class OrderService {
     });
   }
   generateNewOrder() {
-     this.router.navigate(['/takeOrder']);
+    const businessType = this.auth.decodeJwt()?.businessType;
+    this.router.navigate([
+      businessType === 'GROCERY' ? '/grocery-checkout' : '/takeOrder',
+    ]);
   }
   showSidebars() {
     this.showSidebar.next(true);

@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>[TITLE]</title>
+    <style>
+      body {
+        width: 72mm;
+        margin: 0 auto;
+        color: #111;
+        font:
+          12px/1.35 Arial,
+          sans-serif;
+      }
+      .receipt {
+        padding: 5mm 3mm;
+      }
+      header,
+      .total {
+        text-align: center;
+      }
+      h1 {
+        margin: 0;
+        font-size: 18px;
+        text-transform: uppercase;
+      }
+      p {
+        margin: 3px 0;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 10px 0;
+      }
+      th,
+      td {
+        padding: 4px 0;
+        border-bottom: 1px dotted #777;
+        vertical-align: top;
+      }
+      th {
+        text-align: left;
+        font-size: 10px;
+      }
+      th:last-child,
+      td:last-child {
+        text-align: right;
+      }
+      .sku {
+        color: #555;
+        font-size: 10px;
+      }
+      .summary {
+        margin-top: 8px;
+      }
+      .summary p {
+        display: flex;
+        justify-content: space-between;
+      }
+      .summary .grand {
+        margin-top: 6px;
+        padding-top: 6px;
+        border-top: 1px solid #111;
+        font-size: 15px;
+        font-weight: bold;
+      }
+      @media print {
+        body {
+          width: 72mm;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="receipt">
+      <header>
+        <h1>[SHOPNAME]</h1>
+        <p>[ADDRESS]</p>
+        <p>[TRN]</p>
+        <p>Receipt #[ORDER_NO]</p>
+        <p>[DATE]</p>
+      </header>
+      <table>
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Qty</th>
+            <th>Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          [ITEMS]
+        </tbody>
+      </table>
+      <section class="summary">
+        <p><span>Subtotal</span><span>AED [SUBTOTAL]</span></p>
+        <p><span>Discount</span><span>AED [DISCOUNT]</span></p>
+        <p>[VAT_LABEL]</p>
+        <p class="grand"><span>Total</span><span>AED [TOTAL]</span></p>
+      </section>
+      <footer class="total">
+        <p>Payment: [PAYMENT]</p>
+        <p>Thank you for shopping with us.</p>
+      </footer>
+    </main>
+  </body>
+</html>

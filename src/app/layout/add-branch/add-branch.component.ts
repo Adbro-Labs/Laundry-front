@@ -51,6 +51,7 @@ export class AddBranchComponent implements OnInit {
       imageUrl: [''],
       enableVat: [false],
       taxNumber: [''],
+      businessType: ['LAUNDRY', Validators.required],
     });
   }
   loadStores() {

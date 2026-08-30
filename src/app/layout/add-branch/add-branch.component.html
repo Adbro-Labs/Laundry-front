@@ -29,6 +29,12 @@
       Store: {{ findStoreName(customerForm.get('storeCode')?.value) }}
     </div>
     <mat-form-field>
+      <mat-select formControlName="businessType" placeholder="Business Type">
+        <mat-option value="LAUNDRY">Laundry</mat-option>
+        <mat-option value="GROCERY">Grocery</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
       <input
         formControlName="title"
         autocomplete="off"

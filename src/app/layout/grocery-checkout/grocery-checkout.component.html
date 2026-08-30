@@ -1,0 +1,145 @@
+<div class="checkout-page">
+  <section class="catalog-panel">
+    <div class="checkout-heading">
+      <div>
+        <p class="eyebrow">Grocery point of sale</p>
+        <h2>New Sale</h2>
+      </div>
+    </div>
+    <mat-form-field class="search-field" appearance="outline">
+      <mat-label>Scan barcode, SKU, or search products</mat-label>
+      <input
+        #productSearch
+        matInput
+        [formControl]="searchControl"
+        autocomplete="off"
+        (keydown.enter)="addFromSearch()"
+        autofocus
+      />
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+    <div class="category-list">
+      <button
+        mat-stroked-button
+        [class.active]="!selectedCategory"
+        (click)="selectCategory('')"
+      >
+        All
+      </button>
+      <button
+        mat-stroked-button
+        *ngFor="let category of categories"
+        [class.active]="selectedCategory === category"
+        (click)="selectCategory(category)"
+      >
+        {{ category }}
+      </button>
+    </div>
+    <div class="product-list">
+      <button
+        type="button"
+        class="product-row"
+        *ngFor="let product of products"
+        (click)="addProduct(product)"
+      >
+        <span class="product-name"
+          >{{ product.itemName
+          }}<small
+            >{{ product.sku
+            }}{{ product.barcode ? ' · ' + product.barcode : '' }}</small
+          ></span
+        >
+        <span
+          class="stock"
+          [class.low]="product.currentStock <= product.minimumStockLevel"
+          >Stock {{ product.currentStock }}</span
+        >
+        <strong>AED {{ product.sellingPrice | number: '1.2-2' }}</strong>
+      </button>
+      <p class="empty" *ngIf="!products.length">
+        No products match this search.
+      </p>
+    </div>
+  </section>
+
+  <aside class="basket-panel">
+    <div class="basket-heading">
+      <h2>Basket</h2>
+      <span>{{ basket.length }} items</span>
+    </div>
+    <div class="basket-lines">
+      <div class="basket-line" *ngFor="let line of basket">
+        <div>
+          <strong>{{ line.itemName }}</strong
+          ><small
+            >{{ line.sku }} · AED {{ line.sellingPrice | number: '1.2-2' }}/{{
+              line.unit === 'KG' ? 'kg' : 'unit'
+            }}</small
+          >
+        </div>
+        <input
+          type="number"
+          [step]="line.unit === 'KG' ? '0.001' : '1'"
+          [min]="line.unit === 'KG' ? '0.001' : '1'"
+          [value]="line.quantity"
+          (change)="updateQuantity(line, $any($event.target).value)"
+        />
+        <strong
+          >AED {{ line.sellingPrice * line.quantity | number: '1.2-2' }}</strong
+        >
+        <button
+          mat-icon-button
+          type="button"
+          (click)="removeLine(line)"
+          aria-label="Remove {{ line.itemName }}"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+      <p class="empty" *ngIf="!basket.length">
+        Search or scan a product to add it here.
+      </p>
+    </div>
+    <div class="totals">
+      <label
+        >Discount
+        <input type="number" min="0" [max]="subtotal" [(ngModel)]="discount"
+      /></label>
+      <div>
+        <span>Subtotal</span
+        ><strong>AED {{ subtotal | number: '1.2-2' }}</strong>
+      </div>
+      <div *ngIf="vatEnabled">
+        <span>VAT (5%)</span><strong>AED {{ vat | number: '1.2-2' }}</strong>
+      </div>
+      <div class="grand-total">
+        <span>Total</span><strong>AED {{ total | number: '1.2-2' }}</strong>
+      </div>
+    </div>
+    <div class="payment-actions">
+      <button
+        mat-raised-button
+        color="primary"
+        [disabled]="!basket.length || isSaving"
+        (click)="checkout('CASH')"
+      >
+        Cash
+      </button>
+      <button
+        mat-stroked-button
+        color="primary"
+        [disabled]="!basket.length || isSaving"
+        (click)="checkout('CARD')"
+      >
+        Card
+      </button>
+      <button
+        mat-stroked-button
+        [disabled]="!basket.length || isSaving"
+        (click)="checkout('PAY_LATER')"
+      >
+        Pay Later
+      </button>
+    </div>
+  </aside>
+</div>

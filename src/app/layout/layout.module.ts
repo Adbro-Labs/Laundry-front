@@ -40,6 +40,8 @@ import { CorporateTrnComponent } from './corporate-trn/corporate-trn.component';
 import { BranchUsersComponent } from './branch-users/branch-users.component';
 import { AddBranchUserComponent } from './add-branch-user/add-branch-user.component';
 import { BillSettingsComponent } from './bill-settings/bill-settings.component';
+import { GroceryCheckoutComponent } from './grocery-checkout/grocery-checkout.component';
+import { GroceryProductsComponent } from './grocery-products/grocery-products.component';
 
 @NgModule({
   imports: [
@@ -85,6 +87,8 @@ import { BillSettingsComponent } from './bill-settings/bill-settings.component';
     BranchUsersComponent,
     AddBranchUserComponent,
     BillSettingsComponent,
+    GroceryCheckoutComponent,
+    GroceryProductsComponent,
   ],
   providers: [DatePipe],
 })

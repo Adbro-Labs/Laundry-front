@@ -90,6 +90,13 @@
             (click)="closeSidebarAfterNavigation()"
             ><mat-icon>assessment</mat-icon> Reports</a
           >
+          <a
+            mat-list-item
+            [routerLinkActive]="'active'"
+            [routerLink]="['/grocery-products']"
+            (click)="closeSidebarAfterNavigation()"
+            ><mat-icon>local_grocery_store</mat-icon> Grocery Products</a
+          >
         </mat-nav-list>
       </mat-expansion-panel>
     </ng-container>
@@ -214,5 +221,13 @@
         >
       </mat-nav-list>
     </mat-expansion-panel>
+    <a
+      *ngIf="userType != 'ADMIN' && isGroceryBranch"
+      mat-list-item
+      [routerLinkActive]="'active'"
+      [routerLink]="['/grocery-checkout']"
+      (click)="closeSidebarAfterNavigation()"
+      ><mat-icon>point_of_sale</mat-icon> Grocery Sale</a
+    >
   </mat-nav-list>
 </div>

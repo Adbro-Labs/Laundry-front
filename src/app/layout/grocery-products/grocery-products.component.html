@@ -1,0 +1,128 @@
+<div class="grocery-products-page">
+  <div class="heading">
+    <div>
+      <h3>Grocery Products</h3>
+      <p>Store-specific retail catalog and prices.</p>
+    </div>
+  </div>
+  <p *ngIf="message" class="success-message">{{ message }}</p>
+  <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
+  <mat-form-field *ngIf="isSuperAdmin"
+    ><mat-select
+      [(ngModel)]="selectedStoreCode"
+      placeholder="Select Store"
+      (selectionChange)="onStoreChange()"
+      ><mat-option *ngFor="let store of stores" [value]="store.storeCode">{{
+        store.storeName
+      }}</mat-option></mat-select
+    ></mat-form-field
+  >
+  <div class="content" *ngIf="selectedStoreCode; else selectStore">
+    <form [formGroup]="form" (ngSubmit)="save()" class="product-form">
+      <h4>{{ form.value._id ? 'Edit Product' : 'Add Product' }}</h4>
+      <mat-form-field
+        ><input matInput formControlName="itemName" placeholder="Product Name"
+      /></mat-form-field>
+      <mat-form-field
+        ><input matInput formControlName="category" placeholder="Category"
+      /></mat-form-field>
+      <mat-form-field
+        ><input matInput formControlName="sku" placeholder="SKU"
+      /></mat-form-field>
+      <mat-form-field
+        ><input matInput formControlName="barcode" placeholder="Barcode"
+      /></mat-form-field>
+      <mat-form-field
+        ><mat-select formControlName="unit" placeholder="Unit"
+          ><mat-option value="PIECE">Piece / Unit</mat-option
+          ><mat-option value="KG">Weight (kg)</mat-option></mat-select
+        ></mat-form-field
+      >
+      <mat-form-field
+        ><input
+          matInput
+          type="number"
+          min="0"
+          step="0.01"
+          formControlName="sellingPrice"
+          placeholder="Selling Price (AED)"
+      /></mat-form-field>
+      <mat-form-field
+        ><input
+          matInput
+          type="number"
+          min="0"
+          step="0.001"
+          formControlName="minimumStockLevel"
+          placeholder="Low Stock Level"
+      /></mat-form-field>
+      <div class="form-actions">
+        <button mat-raised-button color="primary" type="submit">
+          Save Product</button
+        ><button mat-button type="button" (click)="clearForm()">Clear</button>
+      </div>
+    </form>
+    <section class="product-table">
+      <div class="list-tools">
+        <h4>Products</h4>
+        <mat-form-field
+          ><input
+            matInput
+            [(ngModel)]="query"
+            (keyup.enter)="loadProducts()"
+            placeholder="Search product, SKU, barcode"
+          /><button
+            mat-icon-button
+            matSuffix
+            type="button"
+            (click)="loadProducts()"
+            aria-label="Search products"
+          >
+            <mat-icon>search</mat-icon>
+          </button></mat-form-field
+        >
+      </div>
+      <div class="table">
+        <table>
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Category</th>
+              <th>SKU</th>
+              <th>Unit</th>
+              <th>Price</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let product of products">
+              <td>{{ product.itemName }}</td>
+              <td>{{ product.category }}</td>
+              <td>{{ product.sku }}</td>
+              <td>{{ product.unit }}</td>
+              <td>AED {{ product.sellingPrice | number: '1.2-2' }}</td>
+              <td>
+                <button
+                  mat-icon-button
+                  color="primary"
+                  (click)="edit(product)"
+                  aria-label="Edit {{ product.itemName }}"
+                >
+                  <mat-icon>edit</mat-icon>
+                </button>
+              </td>
+            </tr>
+            <tr *ngIf="!products.length">
+              <td colspan="6">No products found.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+  <ng-template #selectStore
+    ><p class="empty">
+      Select a store to manage its grocery catalog.
+    </p></ng-template
+  >
+</div>

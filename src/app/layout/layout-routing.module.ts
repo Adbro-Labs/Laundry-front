@@ -11,6 +11,8 @@ import { DeliveryScheduleComponent } from './delivery-schedule/delivery-schedule
 import { StoreComponent } from './store/store.component';
 import { BranchUsersComponent } from './branch-users/branch-users.component';
 import { BillSettingsComponent } from './bill-settings/bill-settings.component';
+import { GroceryCheckoutComponent } from './grocery-checkout/grocery-checkout.component';
+import { GroceryProductsComponent } from './grocery-products/grocery-products.component';
 
 const routes: Routes = [
   {
@@ -42,6 +44,14 @@ const routes: Routes = [
       {
         path: 'takeOrder',
         component: TakeOrderComponent,
+      },
+      {
+        path: 'grocery-checkout',
+        component: GroceryCheckoutComponent,
+      },
+      {
+        path: 'grocery-products',
+        component: GroceryProductsComponent,
       },
       {
         path: 'items',
