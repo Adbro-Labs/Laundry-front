@@ -1,0 +1,39 @@
+.heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.heading h3,
+.heading p {
+  margin: 0;
+}
+
+.heading p {
+  color: #666;
+  font-size: 12px;
+}
+
+.filters {
+  display: flex;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.filters mat-form-field {
+  min-width: 220px;
+}
+
+.error-message {
+  color: #c62828;
+}
+
+@media screen and (max-width: 768px) {
+  .filters {
+    flex-direction: column;
+  }
+
+  .filters mat-form-field {
+    min-width: 100%;
+  }
+}

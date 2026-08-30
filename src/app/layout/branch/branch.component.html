@@ -1,10 +1,20 @@
 <div class="container">
   <div class="heading">
     <h3>Branches</h3>
-    <mat-form-field *ngIf="isSuperAdmin" style="min-width: 220px; margin-right: 12px;">
-      <mat-select [value]="selectedStoreCode" placeholder="Select Store" (selectionChange)="onStoreChange($event.value)">
+    <mat-form-field
+      *ngIf="isSuperAdmin"
+      style="min-width: 220px; margin-right: 12px"
+    >
+      <mat-select
+        [value]="selectedStoreCode"
+        placeholder="Select Store"
+        (selectionChange)="onStoreChange($event.value)"
+      >
         <mat-option [value]="''">Select a store</mat-option>
-        <mat-option [value]="item.storeCode" *ngFor="let item of stores; index as i">
+        <mat-option
+          [value]="item.storeCode"
+          *ngFor="let item of stores; index as i"
+        >
           {{ item.storeName }}
         </mat-option>
       </mat-select>
@@ -20,7 +30,7 @@
     </button>
   </div>
 </div>
-<div *ngIf="isSuperAdmin && !selectedStoreCode" style="padding: 12px 0;">
+<div *ngIf="isSuperAdmin && !selectedStoreCode" style="padding: 12px 0">
   Select a store to view or add branches.
 </div>
 <div class="table">
@@ -45,7 +55,9 @@
         <td>{{ item.subtitle2 }}</td>
         <td>{{ item.approved === false ? 'Pending Approval' : 'Approved' }}</td>
         <td>
-          <button mat-icon-button (click)="editBranch(item)"><mat-icon>edit</mat-icon></button>
+          <button mat-icon-button (click)="editBranch(item)">
+            <mat-icon>edit</mat-icon>
+          </button>
           <button
             mat-icon-button
             color="primary"

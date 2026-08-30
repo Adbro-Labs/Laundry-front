@@ -1,0 +1,85 @@
+<div class="container">
+  <div class="heading">
+    <div>
+      <h3>User Management</h3>
+      <p *ngIf="selectedBranchCode">
+        {{ findStoreName() }} / {{ findBranchName() }}
+      </p>
+    </div>
+    <button
+      mat-raised-button
+      color="primary"
+      type="button"
+      [disabled]="!selectedBranchCode"
+      (click)="openUserDialog()"
+    >
+      <mat-icon>person_add</mat-icon>
+      Add User
+    </button>
+  </div>
+
+  <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
+
+  <div class="filters">
+    <mat-form-field *ngIf="isSuperAdmin">
+      <mat-select
+        placeholder="Select Store"
+        [value]="selectedStoreCode"
+        (selectionChange)="onStoreChange($event.value)"
+      >
+        <mat-option [value]="''">Select a store</mat-option>
+        <mat-option *ngFor="let store of stores" [value]="store.storeCode">{{
+          store.storeName
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select
+        placeholder="Select Branch"
+        [value]="selectedBranchCode"
+        [disabled]="!selectedStoreCode"
+        (selectionChange)="onBranchChange($event.value)"
+      >
+        <mat-option [value]="''">Select a branch</mat-option>
+        <mat-option
+          *ngFor="let branch of branches"
+          [value]="branch.branchCode"
+          >{{ branch.branchName }}</mat-option
+        >
+      </mat-select>
+    </mat-form-field>
+  </div>
+</div>
+
+<div class="table">
+  <table>
+    <thead>
+      <th>No</th>
+      <th>Name</th>
+      <th>User Name</th>
+      <th>Status</th>
+      <th>Action</th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users; index as i">
+        <td>{{ i + 1 }}</td>
+        <td>{{ user.fullName }}</td>
+        <td>{{ user.userName }}</td>
+        <td>{{ user.active ? 'Active' : 'Inactive' }}</td>
+        <td>
+          <button
+            mat-icon-button
+            color="primary"
+            (click)="openUserDialog(user)"
+            matTooltip="Edit user"
+          >
+            <mat-icon>edit</mat-icon>
+          </button>
+        </td>
+      </tr>
+      <tr *ngIf="selectedBranchCode && users.length === 0">
+        <td colspan="5">No users found for this branch.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

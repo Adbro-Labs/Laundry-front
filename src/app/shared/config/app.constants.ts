@@ -1,1 +1,1 @@
-export const APP_NAME = 'Royal Touch';
+export const APP_NAME = 'Laundr';

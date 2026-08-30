@@ -17,6 +17,16 @@ export class AuthService {
     const url = environment.apiUrl + 'user';
     return this.http.get(url);
   }
+  getBranchUsers(branchCode: string) {
+    const url =
+      environment.apiUrl + 'user/branch/' + encodeURIComponent(branchCode);
+    return this.http.get(url);
+  }
+  saveBranchUser(branchCode: string, body) {
+    const url =
+      environment.apiUrl + 'user/branch/' + encodeURIComponent(branchCode);
+    return this.http.post(url, body);
+  }
   decodeJwt(): any {
     try {
       const token = this.getToken();

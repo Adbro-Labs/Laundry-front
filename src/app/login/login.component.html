@@ -1,30 +1,47 @@
 <div class="login-page">
-  <div class="content">
-    <form class="login-form">
-      <div class="text-center">
-  <h2 class="app-name">{{ appName }}</h2>
+  <div class="login-shell">
+    <section class="brand-panel">
+      <div class="logo-orb">
+        <div class="logo-glow"></div>
+        <img src="assets/images/logo.png" alt="{{ appName }} logo" />
       </div>
-      <div>
-        <div>
-          <mat-form-field class="w-100">
-            <input
-              matInput
-              type="password"
-              placeholder="Access Code"
-              [(ngModel)]="password"
-              [ngModelOptions]="{ standalone: true }"
-            />
-          </mat-form-field>
+      <p class="eyebrow">Laundry management reimagined</p>
+      <h1>{{ appName }}</h1>
+      <p class="brand-copy">
+        A cleaner way to run billing, orders, and operations from one calm dashboard.
+      </p>
+      <div class="brand-pills">
+        <span>Fast billing</span>
+        <span>Live orders</span>
+        <span>Daily control</span>
+      </div>
+    </section>
+
+    <section class="form-panel">
+      <form class="login-form" (ngSubmit)="onLogin()">
+        <p class="form-kicker">Welcome back</p>
+        <h2>Enter your access code</h2>
+        <p class="form-note">Use your registered access code to continue into the workspace.</p>
+
+        <mat-form-field class="w-100">
+          <input
+            matInput
+            type="password"
+            placeholder="Access Code"
+            [(ngModel)]="password"
+            name="password"
+            [ngModelOptions]="{ standalone: true }"
+          />
+        </mat-form-field>
+
+        <div class="message" *ngIf="message">
+          <p>{{ message }}</p>
         </div>
-      </div>
-      <div *ngIf="message" style="text-align: center">
-        <p style="color: red">{{ message }}</p>
-      </div>
-      <div>
-        <div>
-          <button mat-raised-button color="primary" class="w-100" (click)="onLogin()">Login</button>
-        </div>
-      </div>
-    </form>
+
+        <button mat-raised-button color="primary" class="w-100 login-button" type="submit">
+          Login
+        </button>
+      </form>
+    </section>
   </div>
 </div>

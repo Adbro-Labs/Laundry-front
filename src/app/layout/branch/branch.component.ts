@@ -57,7 +57,7 @@ export class BranchComponent implements OnInit {
         data: { storeCode: this.selectedStoreCode },
       })
       .afterClosed()
-      .subscribe((data) => {
+      .subscribe(data => {
         this.getAllCustomers();
       });
   }
@@ -68,14 +68,16 @@ export class BranchComponent implements OnInit {
       return;
     }
 
-    this.branch.getAllBranch(this.selectedStoreCode).subscribe((data) => {
+    this.branch.getAllBranch(this.selectedStoreCode).subscribe(data => {
       this.customerDetails = data;
       this.tempCustomerList = data;
     });
   }
   searchCustomer() {
     this.tempCustomerList = this.customerDetails.filter(
-      (x) => x.customerName.includes(this.query) || x.mobile.toString().includes(this.query)
+      x =>
+        x.customerName.includes(this.query) ||
+        x.mobile.toString().includes(this.query)
     );
   }
   editBranch(branchDetails) {
@@ -83,10 +85,13 @@ export class BranchComponent implements OnInit {
       .open(AddBranchComponent, {
         disableClose: true,
         width: '400px',
-        data: { ...branchDetails, storeCode: branchDetails.storeCode || this.selectedStoreCode },
+        data: {
+          ...branchDetails,
+          storeCode: branchDetails.storeCode || this.selectedStoreCode,
+        },
       })
       .afterClosed()
-      .subscribe((data) => {
+      .subscribe(data => {
         this.getAllCustomers();
       });
   }
@@ -102,7 +107,7 @@ export class BranchComponent implements OnInit {
     if (!storeCode) {
       return '-';
     }
-    const store = this.stores.find((item) => item.storeCode === storeCode);
+    const store = this.stores.find(item => item.storeCode === storeCode);
     return store?.storeName || storeCode;
   }
 }

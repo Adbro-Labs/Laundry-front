@@ -37,6 +37,8 @@ import { DeliveryScheduleComponent } from './delivery-schedule/delivery-schedule
 import { ConfirmOrderCancelComponent } from './confirm-order-cancel/confirm-order-cancel.component';
 import { NotificationPermissionDialogComponent } from './notification-permission-dialog/notification-permission-dialog.component';
 import { CorporateTrnComponent } from './corporate-trn/corporate-trn.component';
+import { BranchUsersComponent } from './branch-users/branch-users.component';
+import { AddBranchUserComponent } from './add-branch-user/add-branch-user.component';
 
 @NgModule({
   imports: [
@@ -79,6 +81,8 @@ import { CorporateTrnComponent } from './corporate-trn/corporate-trn.component';
     ConfirmOrderCancelComponent,
     NotificationPermissionDialogComponent,
     CorporateTrnComponent,
+    BranchUsersComponent,
+    AddBranchUserComponent,
   ],
   providers: [DatePipe],
 })

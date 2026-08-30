@@ -9,6 +9,7 @@ import { TakeOrderComponent } from './take-order/take-order.component';
 import { CategoryComponent } from './category/category.component';
 import { DeliveryScheduleComponent } from './delivery-schedule/delivery-schedule.component';
 import { StoreComponent } from './store/store.component';
+import { BranchUsersComponent } from './branch-users/branch-users.component';
 
 const routes: Routes = [
   {
@@ -22,7 +23,8 @@ const routes: Routes = [
       },
       {
         path: 'dashboard',
-        loadChildren: () => import('./dashboard/dashboard.module').then((m) => m.DashboardModule),
+        loadChildren: () =>
+          import('./dashboard/dashboard.module').then(m => m.DashboardModule),
       },
       {
         path: 'orders',
@@ -46,15 +48,21 @@ const routes: Routes = [
       },
       {
         path: 'reports',
-        loadChildren: () => import('./reports/reports.module').then((m) => m.ReportsModule),
+        loadChildren: () =>
+          import('./reports/reports.module').then(m => m.ReportsModule),
       },
       {
         path: 'inventory',
-        loadChildren: () => import('./inventory/inventory.module').then((m) => m.InventoryModule),
+        loadChildren: () =>
+          import('./inventory/inventory.module').then(m => m.InventoryModule),
       },
       {
         path: 'branch',
         component: BranchComponent,
+      },
+      {
+        path: 'users',
+        component: BranchUsersComponent,
       },
       {
         path: 'stores',
@@ -67,7 +75,7 @@ const routes: Routes = [
       {
         path: 'delivery-schedule',
         component: DeliveryScheduleComponent,
-      }
+      },
     ],
   },
 ];

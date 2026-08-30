@@ -5,6 +5,7 @@
       class="dashboard-item"
       [routerLinkActive]="'active'"
       [routerLink]="['/dashboard']"
+      (click)="closeSidebarAfterNavigation()"
     >
       <mat-icon class="sidenav-icon">dashboard</mat-icon> {{ 'Dashboard' }}
     </a>
@@ -19,9 +20,14 @@
           mat-list-item
           [routerLinkActive]="'active'"
           [routerLink]="['/customers']"
+          (click)="closeSidebarAfterNavigation()"
           ><mat-icon>people</mat-icon> Customers</a
         >
-        <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/items']"
+        <a
+          mat-list-item
+          [routerLinkActive]="'active'"
+          [routerLink]="['/items']"
+          (click)="closeSidebarAfterNavigation()"
           ><mat-icon>local_laundry_service</mat-icon> Items</a
         >
         <a
@@ -29,6 +35,7 @@
           mat-list-item
           [routerLinkActive]="'active'"
           [routerLink]="['/category']"
+          (click)="closeSidebarAfterNavigation()"
           ><mat-icon>category</mat-icon> Category</a
         >
       </mat-nav-list>
@@ -45,36 +52,42 @@
             mat-list-item
             [routerLinkActive]="'active'"
             [routerLink]="['/inventory/items']"
+            (click)="closeSidebarAfterNavigation()"
             ><mat-icon>inventory_2</mat-icon> Items</a
           >
           <a
             mat-list-item
             [routerLinkActive]="'active'"
             [routerLink]="['/inventory/suppliers']"
+            (click)="closeSidebarAfterNavigation()"
             ><mat-icon>local_shipping</mat-icon> Suppliers</a
           >
           <a
             mat-list-item
             [routerLinkActive]="'active'"
             [routerLink]="['/inventory/purchase-invoices']"
+            (click)="closeSidebarAfterNavigation()"
             ><mat-icon>receipt_long</mat-icon> Purchase Invoices</a
           >
           <a
             mat-list-item
             [routerLinkActive]="'active'"
             [routerLink]="['/inventory/payments']"
+            (click)="closeSidebarAfterNavigation()"
             ><mat-icon>payments</mat-icon> Supplier Payments</a
           >
           <a
             mat-list-item
             [routerLinkActive]="'active'"
             [routerLink]="['/inventory/allocations']"
+            (click)="closeSidebarAfterNavigation()"
             ><mat-icon>swap_horiz</mat-icon> Stock Allocation</a
           >
           <a
             mat-list-item
             [routerLinkActive]="'active'"
             [routerLink]="['/inventory/reports']"
+            (click)="closeSidebarAfterNavigation()"
             ><mat-icon>assessment</mat-icon> Reports</a
           >
         </mat-nav-list>
@@ -91,18 +104,21 @@
           mat-list-item
           [routerLinkActive]="'active'"
           [routerLink]="['/reports']"
+          (click)="closeSidebarAfterNavigation()"
           ><mat-icon>assessment</mat-icon> Reports</a
         >
         <a
           mat-list-item
           [routerLinkActive]="'active'"
           [routerLink]="['/reports/daily']"
+          (click)="closeSidebarAfterNavigation()"
           ><mat-icon>event_note</mat-icon> Daily Report</a
         >
         <a
           mat-list-item
           [routerLinkActive]="'active'"
           [routerLink]="['/reports/customer']"
+          (click)="closeSidebarAfterNavigation()"
           ><mat-icon>person_search</mat-icon> Customer Report</a
         >
       </mat-nav-list>
@@ -118,7 +134,15 @@
           mat-list-item
           [routerLinkActive]="'active'"
           [routerLink]="['/branch']"
+          (click)="closeSidebarAfterNavigation()"
           ><mat-icon>account_tree</mat-icon> Branches</a
+        >
+        <a
+          mat-list-item
+          [routerLinkActive]="'active'"
+          [routerLink]="['/users']"
+          (click)="closeSidebarAfterNavigation()"
+          ><mat-icon>people</mat-icon> Users</a
         >
       </mat-nav-list>
     </mat-expansion-panel>
@@ -133,13 +157,22 @@
           mat-list-item
           [routerLinkActive]="'active'"
           [routerLink]="['/branch']"
+          (click)="closeSidebarAfterNavigation()"
           ><mat-icon>account_tree</mat-icon> Branches</a
         >
         <a
           mat-list-item
           [routerLinkActive]="'active'"
           [routerLink]="['/stores']"
+          (click)="closeSidebarAfterNavigation()"
           ><mat-icon>store</mat-icon> Stores</a
+        >
+        <a
+          mat-list-item
+          [routerLinkActive]="'active'"
+          [routerLink]="['/users']"
+          (click)="closeSidebarAfterNavigation()"
+          ><mat-icon>people</mat-icon> Users</a
         >
       </mat-nav-list>
     </mat-expansion-panel>
@@ -155,12 +188,14 @@
           mat-list-item
           [routerLinkActive]="'active'"
           [routerLink]="['/orders']"
+          (click)="closeSidebarAfterNavigation()"
           ><mat-icon>build</mat-icon> Orders</a
         >
         <a
           mat-list-item
           [routerLinkActive]="'active'"
           [routerLink]="['/delivery-schedule']"
+          (click)="closeSidebarAfterNavigation()"
           ><mat-icon>directions_car</mat-icon> Delivery Schedule</a
         >
       </mat-nav-list>

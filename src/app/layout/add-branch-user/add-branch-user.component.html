@@ -1,0 +1,45 @@
+<div class="container">
+  <h3>{{ isEditing ? 'Edit User' : 'Add User' }}</h3>
+  <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
+  <form class="form" [formGroup]="userForm" (ngSubmit)="saveUser()">
+    <mat-form-field>
+      <input
+        matInput
+        formControlName="fullName"
+        autocomplete="off"
+        placeholder="Full Name"
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <input
+        matInput
+        formControlName="userName"
+        autocomplete="off"
+        placeholder="User Name"
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <input
+        matInput
+        formControlName="password"
+        autocomplete="new-password"
+        type="password"
+        placeholder="Secret Code"
+      />
+    </mat-form-field>
+    <mat-checkbox formControlName="active">Active Login</mat-checkbox>
+    <div class="btn-group">
+      <button mat-raised-button color="primary" type="submit">
+        {{ isEditing ? 'Update' : 'Add User' }}
+      </button>
+      <button
+        mat-raised-button
+        color="accent"
+        type="button"
+        (click)="closeDialog()"
+      >
+        Cancel
+      </button>
+    </div>
+  </form>
+</div>
