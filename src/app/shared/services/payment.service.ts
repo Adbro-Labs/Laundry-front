@@ -15,7 +15,8 @@ export class PaymentService {
     invoiceIds: string[],
     amount: number,
     paymentMethod: string,
-    referenceNumber: string
+    referenceNumber: string,
+    chequeDate?: string | null
   ) {
     const url = environment.apiUrl + 'purchase-payment/settle';
     return this.http.post(url, {
@@ -23,6 +24,7 @@ export class PaymentService {
       amount,
       paymentMethod,
       referenceNumber,
+      chequeDate,
     });
   }
 

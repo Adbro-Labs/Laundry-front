@@ -11,6 +11,7 @@ export class PurchaseInvoiceSettleDialogComponent {
   payingAmount: FormControl;
   paymentMethod: FormControl;
   referenceNumber: FormControl;
+  chequeDate: FormControl;
   totalAmount: number;
   supplierName: string;
 
@@ -35,14 +36,28 @@ export class PurchaseInvoiceSettleDialogComponent {
     ]);
     this.paymentMethod = new FormControl('', Validators.required);
     this.referenceNumber = new FormControl('');
+    this.chequeDate = new FormControl('', []);
+
+    this.paymentMethod.valueChanges.subscribe(value => {
+      if (value === 'CHEQUE') {
+        this.chequeDate.setValidators(Validators.required);
+      } else {
+        this.chequeDate.clearValidators();
+        this.chequeDate.setValue('');
+      }
+      this.chequeDate.updateValueAndValidity();
+    });
   }
 
   settle(): void {
     if (this.payingAmount.invalid || this.paymentMethod.invalid) return;
+    if (this.paymentMethod.value === 'CHEQUE' && this.chequeDate.invalid)
+      return;
     this.dialogRef.close({
       payingAmount: this.payingAmount.value,
       paymentMethod: this.paymentMethod.value,
       referenceNumber: this.referenceNumber.value,
+      chequeDate: this.chequeDate.value || null,
     });
   }
 

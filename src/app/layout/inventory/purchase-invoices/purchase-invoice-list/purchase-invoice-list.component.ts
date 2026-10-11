@@ -141,7 +141,8 @@ export class PurchaseInvoiceListComponent implements OnInit {
           selected.map(invoice => invoice._id),
           result.payingAmount,
           result.paymentMethod,
-          result.referenceNumber
+          result.referenceNumber,
+          result.chequeDate
         )
         .subscribe(
           () => {

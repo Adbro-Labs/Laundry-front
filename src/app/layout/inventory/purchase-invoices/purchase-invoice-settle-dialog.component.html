@@ -46,6 +46,7 @@
     <mat-select [formControl]="paymentMethod">
       <mat-option value="CASH">Cash</mat-option>
       <mat-option value="CARD">Card</mat-option>
+      <mat-option value="CHEQUE">Cheque</mat-option>
     </mat-select>
     <mat-error>Payment method is required</mat-error>
   </mat-form-field>
@@ -53,6 +54,14 @@
   <mat-form-field class="reference-number">
     <mat-label>Reference Number</mat-label>
     <input matInput [formControl]="referenceNumber" />
+  </mat-form-field>
+
+  <mat-form-field class="cheque-date" *ngIf="paymentMethod.value === 'CHEQUE'">
+    <mat-label>Cheque Date</mat-label>
+    <input matInput type="date" [formControl]="chequeDate" />
+    <mat-error *ngIf="chequeDate.hasError('required')">
+      Cheque date is required
+    </mat-error>
   </mat-form-field>
 </mat-dialog-content>
 
@@ -63,7 +72,11 @@
     color="primary"
     type="button"
     (click)="settle()"
-    [disabled]="payingAmount.invalid"
+    [disabled]="
+      payingAmount.invalid ||
+      paymentMethod.invalid ||
+      (paymentMethod.value === 'CHEQUE' && chequeDate.invalid)
+    "
   >
     Settle
   </button>
